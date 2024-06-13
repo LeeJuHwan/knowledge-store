@@ -5,4 +5,4 @@
 ## Table of contents
 
 ### CS
-* [Computer-artichtecture](./CS-test/C-A-test/01-CA.md)
+* [Chater 3. The Essentials of Memory and Disk Sequential Logic](./CS-test/C-A-test/01-CA.md)
