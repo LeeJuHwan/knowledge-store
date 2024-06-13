@@ -123,7 +123,7 @@ IN: 0111
   - 64비트 사용
   - 10^308 +- 범위 표현 가능
 
-![image](https://github.com/LeeJuHwan/knowledge-store/assets/118493627/db8eecba-da28-4129-b7b7-8fa77a174412)
+![image](../../statics/computer-architecture-images/section1_image0001.png)
 
 - 두 형태 모두 가수에 대한 부호 사용 → S 문자
 - 2배 정밀도 수가 기본 정밀도 수 보다 지수가 3비트 더 크다
@@ -139,7 +139,7 @@ IN: 0111
 
 IEEE 형식은 특별한 비트 패턴을 하나 더 가지고 있습니다. 지수의 모든 비트가 1일 때 가수가 0이라면, 표현되는 수는 **무한대**입니다. 그리고 가수가 0이 아니라면 그 수는 **Not a Number(NaN)**입니다. 위에서 0을 표현할 때 봤던 표를 다시 가져왔습니다. 아래 표는 IEEE 부동 소수점 형식에 대한 모든 특별한 비트 패턴을 보여줍니다.
 
-![image](https://github.com/LeeJuHwan/knowledge-store/assets/118493627/814c15e6-4e06-4c8a-b03c-a76092aa14f8)
+![image](../../statics/computer-architecture-images/section1_image0002.png)
 
 [이해를 도운 블로그 글 출처](https://junstar92.tistory.com/253)
 
@@ -180,22 +180,18 @@ IEEE 형식은 특별한 비트 패턴을 하나 더 가지고 있습니다. 지
 
 컴퓨터 모니터는 RGB 색 모델을 만들어내며, 컬러큐브 라는 것으로 표현 할 수 있다.
 
-![image](https://github.com/LeeJuHwan/knowledge-store/assets/118493627/4c478f97-b361-4277-b4f7-c0c2a033b252)
-
-<aside>
+![image](../../statics/computer-architecture-images/section1_image0003.png)
 💡 컬러큐브에서 각 축은 주 색을 표현 하며, 값이 0이면 그 에 해당 하는 주 색의 빛을 끄고, 1이면 최대 밝기로 켜는 것이다.
 
 색상을 섞어 다른 색을 나타내는 혼합 색 표현 방식을 가산 색 시스템이라고 부른다.
 
 - 컴퓨터가 아닌 손으로 그림을 그린다면 감산 색 시스템에 더 익숙하다.
 
-</aside>
-
 **컴퓨터가 표현하는 색상**
 
 현대 컴퓨터들은 색을 표현 하는 데 24비트를 사용 해 1천만에 가까운 2의 제곱수에 해당 하는 색을 표현 할 수 있는데, 이 24비트는 세 가지 8비트 필드로 나뉘며 각 필드는 세 가지 주요 색을 표현한다.
 
-![image](https://github.com/LeeJuHwan/knowledge-store/assets/118493627/4518ccea-234b-45d5-abcb-aa2e3be1d511)
+![image](../../statics/computer-architecture-images/section1_image0004.png)
 
 - 24비트에 해당 하는 미사용인 이유는 현대 컴퓨터들이 24비트 단위로 계산을 수행 하도록 설계 되지 않았기 때문
   - 24비트에 가장 가까운 표준 크기인 32비트(워드)에 색을 넣어서 처리함.
@@ -210,7 +206,6 @@ RGB 색상을 그대로 저장 하는 대신, 각각의 색 값에 a를 곱한 �
 
 R: 200, G: 0, B: 0 의 투명도
 
-<aside>
 💡 a(투명도) = 0.5
 
 - R: 200 * 0.5 = 100
@@ -222,5 +217,3 @@ R: 200, G: 0, B: 0 의 투명도
 
 1. 이미지 합성은 색값을 a로 곱하는 과정을 통해 이루어짐.
 2. 미리 곱한 값을 저장하는 방법을 이용 하여 픽셀을 사용 할 때 마다 a를 곱하는 계산을 반복 할 필요가 없음
-
-</aside>

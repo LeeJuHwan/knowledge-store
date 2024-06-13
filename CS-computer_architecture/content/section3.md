@@ -93,7 +93,7 @@
 - 디스크는 **DRAM** 등과 달리 데이터 연결을 위한 공간이 필요 하지 않다.
   - 여기서 말 하는 데이터 연결을 위한 공간이란 것은 디스크를 읽기 위한 메모리 주소를 의미 하는 것 같음
 
-<img width="710" alt="Pasted image 20231110175524" src="https://github.com/LeeJuHwan/knowledge-store/assets/118493627/f2f82fe7-daab-4eea-8eab-0fb76eb9b798">
+![image](../../statics/computer-architecture-images/section3_image0001.png)
 
 - 위 그림 처럼 이뤄진 원판(**platter**)이 하나 이상 회전축에 연결 되어 돌아간다.
   - **탐색시간**: 헤드를 한 트랙에서 다른 트랙으로 옮길 때 걸리는 시간
