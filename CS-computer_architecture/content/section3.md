@@ -1,4 +1,15 @@
 
+<details>
+<summary>Properties</summary>
+
+|학습 자료|작성 일자||
+|------|---|---|
+|[한 권으로 읽는 컴퓨터 구조와 프로그래밍](https://product.kyobobook.co.kr/detail/S000001932753): 챕터 3|2023.11.10||
+
+</details>
+
+<br>
+
 # Introduction
 
 컴퓨터는 비트를 어떻게 기억 하여 자신의 이전 데이터를 현재와 합산 하는 ALU를 구현 했을까s?

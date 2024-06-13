@@ -1,12 +1,15 @@
 # Chapter 1: 컴퓨터 내부의 언어체계 - 컴퓨터는 어떤 말을 사용할까
 
----
+<details>
+<summary>Properties</summary>
 
-|참고 자료|작성 일자||
+|학습 자료|작성 일자||
 |------|---|---|
-|[한 권으로 읽는 컴퓨터 구조와 프로그래밍](https://product.kyobobook.co.kr/detail/S000001932753)|2023.09.28||
+|[한 권으로 읽는 컴퓨터 구조와 프로그래밍](https://product.kyobobook.co.kr/detail/S000001932753): 챕터 1|2023.09.28||
 
----
+</details>
+
+<br>
 
 ### 들어가며
 
