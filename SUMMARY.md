@@ -1,11 +1,21 @@
-# Table of contents
+# knowledge-store
 
-* [README](README.md)
+"
+Welcome to the knowledge store, I hope to make learning a way of life. :fire:
+"
 
-## Comupter Architecture
+<br>
+<br>
 
-* [computer architecture scratch](comupter-architecture/computer-architecture-scratch/README.md)
-  * [Introduction and Goal](CS-computer\_architecture/content/README.md)
-  * [Chapter 1. The Internal Language of Computers](CS-computer\_architecture/content/section1.md)
-  * [Chapter 2. Combinatorial Logic](CS-computer\_architecture/content/section2.md)
-  * [Chapter 3. The Essentials of Memory and Disk Sequential Logic](CS-computer\_architecture/content/section3.md)
+## Table of contents
+
+<br>
+
+### Comupter Architecture
+
+- #### :point_right: computer architecture scratch
+
+  - [Introduction and Goal](/comupter-architecture/computer-architecture-scratch/README.md)
+  - [Chapter 1. The Internal Language of Computers](/comupter-architecture/computer-architecture-scratch/section1.md)
+  - [Chapter 2. Combinatorial Logic](/comupter-architecture/computer-architecture-scratch/section2.md)
+  - [Chapter 3. The Essentials of Memory and Disk Sequential Logic](/comupter-architecture/computer-architecture-scratch/section3.md)
