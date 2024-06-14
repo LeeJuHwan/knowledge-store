@@ -23,5 +23,5 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 - #### :point_right: computer architecture hands-on
 
   - [Introduction and Goal](/comupter-architecture/computer-architecture-hands-on/README.md)
-  - [:pencil: Chapter 1. Logic Gates](/comupter-architecture/computer-architecture-hands-on/chapter1.md)
-  - [:computer: Project 1. Elementary logic gates implement](/comupter-architecture/computer-architecture-hands-on/project1.md)
+  - :pencil: [Chapter 1. Logic Gates](/comupter-architecture/computer-architecture-hands-on/chapter1.md)
+  - :computer:[Project 1. Elementary logic gates implement](/comupter-architecture/computer-architecture-hands-on/project1.md)
