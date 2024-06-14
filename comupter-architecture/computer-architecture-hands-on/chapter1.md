@@ -1,4 +1,12 @@
 
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2023.08.28
+
+</details>
+
 ## Boolean Logic
 
 ---

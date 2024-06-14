@@ -1,5 +1,13 @@
 # Nand2Tetris
 
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2023.08.23
+
+</details>
+
 ## Project1: Logic gates implemention
 
 ![image](../../statics/computer-architecture-images/project1_image0001.png)
