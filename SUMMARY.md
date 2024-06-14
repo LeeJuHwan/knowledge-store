@@ -13,18 +13,18 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 
 ### Comupter Architecture
 
-- #### :point_right: computer architecture scratch
+- #### :point_right: Basic
 
   - [Introduction and Goal](/comupter-architecture/computer-architecture-scratch/README.md)
   - [Chapter 1. The Internal Language of Computers](/comupter-architecture/computer-architecture-scratch/section1.md)
   - [Chapter 2. Combinatorial Logic](/comupter-architecture/computer-architecture-scratch/section2.md)
   - [Chapter 3. The Essentials of Memory and Disk Sequential Logic](/comupter-architecture/computer-architecture-scratch/section3.md)
 
-- #### :point_right: computer architecture hands-on
+- #### :point_right: Hands-on
 
   - [Introduction and Goal](/comupter-architecture/computer-architecture-hands-on/README.md)
 
-  - ##### :pencil: theory
+  - ##### theory
     - [Chapter 1. Logic Gates](/comupter-architecture/computer-architecture-hands-on/chapter1.md)
-  - ##### :computer: project
+  - ##### project
     - [Project 1. Elementary logic gates implement](/comupter-architecture/computer-architecture-hands-on/project1.md)
