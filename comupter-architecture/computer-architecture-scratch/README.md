@@ -1,10 +1,18 @@
 # computer architecture scratch
 
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2023.09.28
+
+</details>
+
 ## 학습 내용
 
-|학습 자료|시작|완료|
+|학습 자료|시작|상태|
 |------|---|---|
-|[한 권으로 읽는 컴퓨터 구조와 프로그래밍](https://product.kyobobook.co.kr/detail/S000001932753)|2023.09.28|진행 중|
+|[한 권으로 읽는 컴퓨터 구조와 프로그래밍](https://product.kyobobook.co.kr/detail/S000001932753)|2023.09.28|시작|
 
 ### 학습 목적
 

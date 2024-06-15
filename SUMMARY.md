@@ -28,3 +28,8 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
     - [Chapter 1. Logic Gates](/comupter-architecture/computer-architecture-hands-on/chapter1.md)
   - ##### project
     - [Project 1. Elementary logic gates implement](/comupter-architecture/computer-architecture-hands-on/project1.md)
+  
+### Java
+
+- #### :point_right: Playground
+  - [Introduction and Goal]
