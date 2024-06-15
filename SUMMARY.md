@@ -33,6 +33,7 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 
 - #### :point_right: Playground
   - [Introduction and Goal](/java/nextstep:java-playground/README.md)
+  - [Mission1. 숫자야구게임](/java/nextstep:java-playground/mission1.md)
 
 ### Projects
 
