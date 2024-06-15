@@ -31,3 +31,10 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 - #### :point_right: nextstep: java-playground
 
   - [Introduction and Goal](/java/nextstep:java-playground/README.md)
+
+
+### Projects
+
+- #### :point_right: 채용 공고 알리미
+
+  - [Introduction and Goal](/projects/채용-공고-알리미/README.md)
