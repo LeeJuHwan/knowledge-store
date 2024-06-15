@@ -65,6 +65,7 @@
 - [AssertJ Exception Assertions 문서 링크](https://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#exception-assertion)
 
 > 내용
+
 `DisplayName` 테스트 메서드를 보자마자 다른 테스트 케이스에도 모두 작성 해줬다. 기존에는 파이썬의 Docstring 형태로 주석을 달아서 사용 하려고 했지만 매우 유용한 메서드가 있었기 때문에 안 쓸 이유가 없었다. 
 
 힌트에 제공 해준 문서를 보자마자 바로 해결 할 수 있을 것 같다고 판단 했는데 문서에 명시 된 상황과 내가 작성하는 상황과 유사한 느낌이 들지 않아서 구글링을 한 번 더 하여 정확하게 키워드를 뽑아내었다.  결국 `assertThatThrownBy` 내부에서 실행 한 함수를 `Exception` 으로 잡은 뒤 체이닝 방식으로 검증을 이어나갈 수 있다는 걸 배웠다. 이렇게 되면 Given, When, Then 구조가 정확하게 나온다.
