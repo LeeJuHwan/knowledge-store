@@ -29,6 +29,11 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
   - ##### project
     - [Project 1. Elementary logic gates implement](/comupter-architecture/computer-architecture-hands-on/project1.md)
   
+### Java
+
+- #### :point_right: Playground
+  - [Introduction and Goal](/java/nextstep:java-playground/README.md)
+
 ### Projects
 
 - #### :point_right: Job Opening Notice Messenger
