@@ -12,5 +12,5 @@
 ### Missions
 ---
 
-- [학습 테스트](/java/nextstep:java-playground/mssion1_section1.md)
+- [학습 테스트 실습](/java/nextstep:java-playground/mssion1_section1.md)
     
