@@ -29,3 +29,5 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 ### Java
 
 - #### :point_right: nextstep: java-playground
+
+  - [Introduction and Goal](/java/nextstep:java-playground/README.md)

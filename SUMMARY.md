@@ -32,4 +32,4 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 ### Java
 
 - #### :point_right: Playground
-  - [Introduction and Goal]
+  - [Introduction and Goal](/java/nextstep:java-playground/README.md)
