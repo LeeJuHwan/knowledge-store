@@ -12,5 +12,5 @@
 ### Missions
 ---
 
-- [학습 테스트 실습](/mission1_section1.md)
+- [학습 테스트 실습](./mission1_section1.md)
     
