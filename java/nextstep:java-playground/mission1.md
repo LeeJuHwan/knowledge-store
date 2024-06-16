@@ -77,4 +77,75 @@
 - 검색 키워드: Google > "Junit exception test"
 - [assertThatThrownBy](https://covenant.tistory.com/256)
 
-    
+<br>
+
+### SetCollection 학습 테스트
+---
+
+**Fixture**
+
+```java
+    @BeforeEach
+    void setUp() {
+        numbers = new HashSet<>();
+        numbers.add(1);
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+    }
+```
+
+
+✅ **요구사항 1**
+
+- Fixture numbers의 `size` 메서드를 활용해 데이터 크기 검증
+
+> 힌트 키워드
+
+- 없음
+
+> 내용
+
+워낙 간단한 코드이기도 하고, 요구사항이 명확했기 때문에 특별한 검색 없이 바로 검증을 할 수 있었는데 `StringClass` 학습 테스트 파일은 기존에 스켈레톤 코드 형식으로 작성 되어있는 부분이 있었다. 하지만, `SetCollection` 학습 테스트 파일은 Scratch로 다시 작성 해야했기 때문에 `import` 하는 내용이 이렇게 많았었나 싶었다.
+
+> 참고 자료
+
+- 없음
+
+<br>
+
+✅ **요구사항 2**
+
+- Fixture numbers의 `contains` 메서드를 활용해 데이터 존재 여부 검증
+    - 단, 반복 되는 코드를 최적화 할 것
+
+> 힌트 키워드
+
+- [Parameterized Test](https://www.baeldung.com/parameterized-tests-junit-5)
+
+
+> 내용
+
+`Parameterized Test`는 `StringClass` 학습 테스트 당시 사용 해봤기 때문에 내용을 어느정도 알고 있었다. 아는듯 한 느낌이 아닌 안다고 확신 할 수 있었기 때문에 해당 요구사항도 별 다른 검색 없이 진행 할 수 있었다.
+
+> 참고 자료
+
+- 없음
+
+<br>
+
+✅ **요구사항 3**
+
+- Fixture numbers의 `contains` 메서드를 활용해 데이터 유무 검증 및 예외 케이스(존재 하지 않는 데이터 일 때) 검증
+
+> 힌트 키워드
+
+- Parameterized Test의 `@CsvSource`
+
+> 내용
+
+테스트 메서드에 Key, Value로 매핑되는 값을 받을 수 있어 정적인 데이터를 검증 할 때 편리했다. 그 중 처음 `StringClass` 학습 테스트 때 사용 했을 땐 `delimiter` 를 몰랐었던 터라 사용하지 않고 쉼표로 구분 했었는데 콜론으로 구분 할 수 있어서 가독성이 조금 더 나아진 것 같다.
+
+> 참고 자료
+
+- 없음
