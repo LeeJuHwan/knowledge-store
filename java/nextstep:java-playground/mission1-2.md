@@ -6,7 +6,7 @@
 
 :pencil:2024.06.17
 
-:computer: [source\_code](https://github.com/java-playground-hiking/java-baseball/pull/8/commits/c9ced178a51f2856a80b5f02fb81c79d0811f02d)
+:computer: [source_code](https://github.com/java-playground-hiking/java-baseball/pull/8/commits/c9ced178a51f2856a80b5f02fb81c79d0811f02d)
 
 </details>
 
@@ -16,7 +16,7 @@
 
 ***
 
-\
+
 
 
 #### 문자열 계산기 기능 구현
@@ -35,7 +35,7 @@
 3. `Array`에서 개별 요소에 접근 할 때 마다 문자열 수식이 피연산자인지, 연산자인지 구분이 필요함.
 4. 연산자에 따른 피연산자와의 연산을 수행 하는 핵심 비즈니스 로직이 필요함.
 
-\-> 필요한 내용을 코드로 옮길 때, 어떤 아키텍처 구조가 만들어져야 할까?
+:point_right: 필요한 내용을 코드로 옮길 때, 어떤 아키텍처 구조가 만들어져야 할까?
 
 * 역할과 관심사 분리를 위한 계층 구조 설계
 * 사용자의 입, 출력을 다루는 `Presentation Layer`
@@ -44,10 +44,10 @@
 
 :clap: 위 방식으로 가장 러프하게 코드가 작동 할 수 있도록 구현
 
-\
 
 
-> :man\_running: 러프하게 코드 구현 과정
+
+> :man_running: 러프하게 코드 구현 과정
 
 기능이 정상적으로 작동할 수 있는 가장 작은 단위의 개발을 시작 하고 클래스명을 기준으로 계층을 잠시 나눴다. `CalculatorService`, `CalculatorUser`, `StringCalculatorMain` 이렇게 파일을 생성 한 뒤 가장 쉽게 접근 할 수 있는 사용자의 입력 값을 받는 과정을 먼저 구현 하고 `split` 메서드를 활용한 `String -> Array` 변환 작업을 마무리 지었다.
 
