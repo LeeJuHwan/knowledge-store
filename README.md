@@ -31,7 +31,8 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 - #### :point_right: nextstep: java-playground
 
   - [Introduction and Goal](/java/nextstep:java-playground/README.md)
-  - [Mission1. 숫자야구게임 - 학습테스트 실습](/java/nextstep:java-playground/mission1.md)
+  - [Mission1. 숫자야구게임 - 학습테스트 실습](/java/nextstep:java-playground/mission1-1.md)
+  - [Mission1. 숫자야구게임 - 문자열 계산기](/java/nextstep:java-playground/mission1-2.md)
 
 
 ### Projects

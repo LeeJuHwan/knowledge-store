@@ -33,7 +33,8 @@ Welcome to the knowledge store, I hope to make learning a way of life. :fire:
 
 - #### :point_right: Playground
   - [Introduction and Goal](/java/nextstep:java-playground/README.md)
-  - [Mission1. Baseball-UnitTest](/java/nextstep:java-playground/mission1.md)
+  - [Mission1. Baseball-Unit Test](/java/nextstep:java-playground/mission1-1.md)
+  - [Mission1. Baseball-String Calculator](/java/nextstep:java-playground/mission1-2.md)
 
 ### Projects
 
