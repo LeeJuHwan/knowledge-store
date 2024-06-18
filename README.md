@@ -31,6 +31,3 @@
   * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
 
 ### Projects
-
-* :point_right: **채용 공고 알리미**
-  * [Introduction and Goal](projects/채용-공고-알리미/)

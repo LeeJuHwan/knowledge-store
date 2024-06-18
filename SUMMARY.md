@@ -24,6 +24,3 @@
   * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
 
 ## Projects
-
-* [Job Opening Notice Messenger](projects/job-opening-notice-messenger/README.md)
-  * [Introduction and Goal](projects/채용-공고-알리미/README.md)
