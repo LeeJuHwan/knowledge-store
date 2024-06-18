@@ -246,3 +246,110 @@ public static String[] convertExpressionArraysByBlank(String mathExpression) {
 #### 테스트 케이스 작성
 
 ---
+
+> 🤔 어떻게 테스트 할 것인가?
+
+1. 유틸성 클래스가 제공 하는 메서드의 정상 케이스, 예외 케이스 검증
+2. 핵심 비즈니스 로직의 결과 값 검증
+
+그 외 어플리케이션 컨트롤러 단위도 해야 하지만, 콘솔 프로젝트이기 때문에 자주 사용되는 메서드 검증을 위주로 단위 테스트를 작성 할 계획이다.
+테스트 코드를 작성 하면 좋은 이점은 굉장히 많은 것 같다. 그걸 알지만 굉장히 많은 시간을 쏟아야 하기 때문에 쉽게 놓치는 작업 중 하나인데, 그 중 이점을 뽑아 보자면 이런 내용들이 있을 것 같다.
+
+- 코드 구현 단계에서 생각 하지 못 했던 예외 케이스
+- 회귀 케이스 예방
+- 잘못된 메서드 반환 값
+
+<br>
+
+> `Fixture` 생성
+
+```java
+public class StringCalculatorTest {
+
+    String stringExpression;
+    static StringCalculator service;
+
+    @BeforeAll
+    static void serviceInit() {
+        service = new StringCalculator();
+    }
+
+    @BeforeEach
+    void setUp() {
+        stringExpression = "2 + 3 * 4 / 2";
+    }
+    ...
+
+```
+
+테스트 케이스를 실행 시킬 때 마다 사용 해야 할 문자열 수식과, 서비스 클래스를 인스턴스화 함으로 써 반복되는 코드를 줄일 수 있다. 하지만, 문자열 수식과 같은 경우에는 명확한 `Given`을 주기 위해 테스트 케이스 내부에서 작성해도 상관 없을 것 같다.
+
+> 유틸 클래스 검증
+
+```java
+    @ParameterizedTest
+    @DisplayName("`StringExpression` 숫자 여부 검증")
+    @CsvSource(value = {"1:true", "+:false"}, delimiter = ':')
+    void 숫자_여부_검증(String expectedNumericValue, boolean expectedResult) {
+        // Given
+        String stringExpressionValue = expectedNumericValue;
+        boolean expect = expectedResult;
+
+        // When
+        boolean result = StringExpression.isNumeric(stringExpressionValue);
+
+        // Then
+        assertThat(result).isEqualTo(expect);
+    }
+```
+
+파이썬에서 테스트 코드의 메서드 이름을 국문으로 짓는걸 선호하는 편인데, 자바에서도 마찬가지로 사용 했다. 하지만 `DisplayName`이 있다면 굳이 메서드를 국문으로 해야 됐을까란 생각도 들었다.
+
+테스트 방법은 `Given-When-Then` 방법으로 사람이 이해하기 가장 쉬운 방법이기 때문에 사용 했고, 대부분의 케이스도 그렇게 사용 해 왔다. 이 방법은 주어진 데이터가 어떠한 행동을 했을 때 이러한 반응을 보일 것이다 라는게 워크플로우 자체를 나타내기 때문에 손 쉽게 이해할 수 있다.
+
+하나의 메서드에서 정상, 이상 검증을 할 때 `ParameterizedTest` 를 이용 하면 여러 데이터를 순차적으로 처리하여 결과를 검증 할 수 있는 장점이 있기 때문에 1개의 메서드에서 여러가지 상황을 나타낼 수 있다.
+
+> 에러 케이스 검증
+
+```java
+
+    @ParameterizedTest
+    @DisplayName("`Operator` 연산자 나눗셈 예외 케이스 검증")
+    @CsvSource({"0,1", "1,0"})
+    void 연산자_나눗셈_예외_검증(int num1, int num2) {
+        // Given
+        String op = "/";
+
+        // When
+        assertThatThrownBy(() -> {
+            Operator.getOperator(op).apply(num1, num2);
+        })      // Then
+                .isInstanceOf(ArithmeticException.class)
+                .hasMessageContaining("can't division by zero");
+    }
+```
+
+에러 케이스를 검증 한다는 것은 의도적으로 내가 해당 케이스를 예외 처리 했다는 내용과 같다. 하지만 의도적이지 않은 경우 이렇게 컴파일 에러를 만나 서비스가 종료되는 것을 미연에 방지 할 수 있다. `Mission1 - 학습 테스트 실습` 과정에서 사용 했던 `Exception`클래스 검증 + `ErrorMessage` 검증을 통해 해당 에러 케이스를 테스트 할 수 있다.
+
+이렇게 테스트 하는 이유는 `Throw` 로 예외 처리를 했지만 `Try-Catch`에서 해당 에러 상황이 안 잡히는 경우를 방지 할 수 있다. 
+
+
+> 핵심 비즈니스 로직 검증
+
+```java
+    @Test
+    @DisplayName("`StingCalculator` 문자열 연산 검증")
+    void 문자열_연산_검증() {
+        // Given
+        String[] fixture = StringExpression.convertExpressionArraysByBlank(stringExpression);
+
+        // When
+        int result = service.calculate(fixture);
+
+        // Then
+        assertThat(result).isEqualTo(10);
+    }
+```
+
+위에서 유틸성 메서드들을 테스트 했기 때문에 비즈니스 로직은 주어진 문자열 수식이 원하는 값을 반환 하는지 테스트만 하면 된다. 그 과정에서 여러 데이터를 `ParameterizedTest`로 넣어 데이터 정합성을 조금 더 요구할 수 있지만 일반적인 케이스이기 때문에 하나의 문자열 수식만 검증 했다.
+
