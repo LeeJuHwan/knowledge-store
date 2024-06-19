@@ -22,6 +22,7 @@
   * [Introduction and Goal](comupter-architecture/computer-architecture-hands-on/)
   * :pencil: [Chapter 1. Logic Gates](comupter-architecture/computer-architecture-hands-on/chapter1.md)
   * :computer:[Project 1. Elementary logic gates implement](comupter-architecture/computer-architecture-hands-on/project1.md)
+  * :pencil: [Chapter 2. ALU](comupter-architecture/computer-architecture-hands-on/chapter2.md)
 
 ### Java
 

@@ -13,6 +13,7 @@
   * [Introduction and Goal](comupter-architecture/computer-architecture-hands-on/README.md)
   * [theory](comupter-architecture/hands-on/theory/README.md)
     * [Chapter 1. Logic Gates](comupter-architecture/computer-architecture-hands-on/chapter1.md)
+    * [Chapter 2. ALU](comupter-architecture/computer-architecture-hands-on/chapter2.md)
   * [project](comupter-architecture/hands-on/project/README.md)
     * [Project 1. Elementary logic gates implement](comupter-architecture/computer-architecture-hands-on/project1.md)
 
