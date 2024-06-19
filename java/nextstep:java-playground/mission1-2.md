@@ -241,6 +241,29 @@ public static String[] convertExpressionArraysByBlank(String mathExpression) {
 
 이렇게 숫자나 연산 기호 다음 공백이 없는 경우는 에러 처리를 해 주었다.
 
+3. 연산자 기호가 공백을 구분 하여 연속으로 오는 경우가 있다면 에러로 유도를 해야한다.
+
+```java
+
+// NOTE: 짝수 인덱스는 항상 피연산자며, 홀수 인덱스는 항상 연산자가 되어야 정상 수식의 패턴이 됨
+for (int i = 0; i < expressionValues.length - 2; i += 2) {
+    String expressionNumber = expressionValues[i + 2];
+
+-    if (isNumeric(expressionNumber)) {
+-        operandLast = Integer.parseInt(expressionValues[i + 2]);
+-    }
+
+->   if (!StringExpression.isNumeric(expressionNumber)) {
+->       throw new ArithmeticException("Math expression must be operated on numeric only");
+->   }
+
+    operandLast = Integer.parseInt(expressionValues[i + 2]);
+    op = expressionValues[i + 1];
+
+```
+
+위에서 사용한 `calculate` 메서드에서 숫자가 아닌 경우는 에러로 유도하면 간단하게 처리 할 수 있다. 기존 소스 코드에서 숫자를 검사한 후 숫자일 때 피연산자 값을 넘겼는데 연산자가 연속으로 오는 경우는 이전 할당 된 값을 기준으로 연산을 하게 되니 의도치 않은 값이 나올 수 있다.
+
 <br>
 
 #### 테스트 케이스 작성
