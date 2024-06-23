@@ -16,6 +16,7 @@
     * [Chapter 2. ALU](comupter-architecture/computer-architecture-hands-on/chapter2.md)
   * [project](comupter-architecture/hands-on/project/README.md)
     * [Project 1. Elementary logic gates implement](comupter-architecture/computer-architecture-hands-on/project1.md)
+    * [Project 2. Boolean Arithmetic](comupter-architecture/computer-architecture-hands-on/project2.md)
 
 ## Java
 
