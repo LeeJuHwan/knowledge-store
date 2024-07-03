@@ -5,7 +5,14 @@
 ## Table of contents
 
 ### AWS
-* :point_right: AWS101
+* :point_right: **AWS101**
+
+
+### Network
+
+* :point_right: **Network-Handbook**
+  * [Introduction and Goal](network/network-handbook/README.md)
+  * [OSI7Layer](network/network-handbook/osi7layer.md)
 
 
 ### Comupter Architecture
@@ -16,7 +23,7 @@
   * [Chapter 2. Combinatorial Logic](comupter-architecture/computer-architecture-scratch/section2.md)
   * [Chapter 3. The Essentials of Memory and Disk Sequential Logic](comupter-architecture/computer-architecture-scratch/section3.md)
 
-***
+---
 
 *   :point_right: **computer architecture hands-on**
 
@@ -40,5 +47,6 @@
   * [Introduction and Goal](java/nextstep:java-playground/)
   * [Mission1. 숫자야구게임 - 학습테스트 실습](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
+
 
 ### Projects
