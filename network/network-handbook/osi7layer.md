@@ -165,4 +165,194 @@ Data Link Layer에서 해결 하지 못한 문제
 
     ![image](../../.gitbook/assets/osi7layer_img07.png)
 
-    - LocalNetwork1 -> LocalNetwork2로 통신을 할 수 없기 때문에 외부 통신을 가능하게 하기 위해서 다음 Layer인 Network Layer로 데이터를 전송해야한다.
+    - LocalNetwork1 -> LocalNetwork2로 통신을 할 수 없기 때문에 외부 통신을 가능하게 하기 위해서 다음 Layer인 Network Layer로 데이터를 전송해야한다. 
+
+<br>
+
+### Network Layer
+
+{% hint style="info" %}
+    Network Layer
+
+    💡각 각의 Local Network 혹은 Network간의 통신을 하는 방법을 정의
+{% endhint %}
+
+- 여러 노드의 경로를 찾고 올바르게 전달 될 수 있는 기능과 수단을 정의
+- 단위: 패킷
+- 구성 요소: **Router, IP, ARP**
+- 특징: **서로 떨어진** Local Network간의 통신을 지원
+    - "Network간의" -> Inter Network -> Internet
+    - 중간 중간 Node들을 거쳐서 목적지 까지 도달 할 수 있는 방법을 지원
+
+    ![image](../../.gitbook/assets/osi7layer_img08.png)
+
+👉 중간 중간 노드들을 거쳐 목적지까지 도달 할 수 있는지에 대한 내용을 정의 하는 계층이다
+
+
+{% hint style="info" %}
+    IP(Internet Protocol) Address
+{% endhint %}
+
+- Internet Protocol상에서 통신 주체를 식별하기 위한 아이디
+    - Data Link Layer에서 MAC Address를 사용 했지만 Network Layer에서는 IP Address를 사용
+
+- 두 가지 종류가 존재
+    - IPv4: 32bits(2^32 = 약 32억개)
+        - 아이피 개 수가 턱없이 부족하기 때문에 최대로 활용하기 위해서 사설(Private)IP와 공인(Public)IP로 분류
+    - IPv6: 128bits(2^128 = 지구에 있는 사람 당 수만개 씩 사용해도 부족하지 않을 정도의 양)
+        - 따라서 사설 IP 개념이 불 필요함
+- IP Address는 디바이스당 하나의 주소를 갖게 되며 MAC Address와 다르게 수시로 변동이 가능
+
+> IPv4
+- `67.133.25.33` 과 같이 10진수로 표시되며 각 각 8Bit Binary로 이루어져 총 32Bit 주소 체계를 사용함
+
+> IPv6
+- `2001:0유8:85a3:0000:0000:8a2e:0370:7334` 처럼 16진수로 표시 되며 IPv4보다 4배 큰 128비트 주소 체계를 사용함
+
+{% hint style="info" %}
+    CIDR(Classless Inter Domain  Routing)
+    - IPv4를 표시 하는 여러 방법 중 하나
+    - IP는 주소의 영역을 여러 네트워크 영역으로 나누기 위해 IP를 묶는 방식
+        - 10.10.0.0/16 -> 10.10.(0~255).(0~255)
+    - 여러 개의 사설망을 구축하기 위해 망을 나누는 방법
+{% endhint %}
+
+
+{% hint style="info" %}
+    CIDR Notation
+{% endhint %}
+
+- IP 주소의 집합
+- 네트워크 주소와 호스트 주소로 구성
+- 각 호스트 주소 숫자 만큼의 IP를 가진 네트워크 망 형성 가능
+- A.B.C.D/E 형식
+    - 예: 10.0.1.0/24, 172.16.0.0/12
+    - A, B, C, D: 네트워크 주소 + 호스트 주소 표시
+    - E: 0 ~ 32: 네트워크 주소가 몇 Bit 인지 표시
+
+    ![image](../../.gitbook/assets/osi7layer_img09.png)
+
+
+{% hint style="info" %}
+    CIDR Block
+{% endhint %}
+
+- 호스트 주소 비트만큼 IP 주소를 보유 가능
+- 예: 192.168.2.0/24
+    - 네트워크 비트 24
+    - 호스트 주소: 32-24 = 8
+    - 즉 2^8 = 256개의 IP 주소 보유
+    - 192.168.2.0 ~ 192.168.2.255까지 총 256개 주소를 의미
+- 네트워크 비트가 무엇이냐에 따라 같은 네트워크에 있는지 없는지를 식별할 수 잇는 정보이다.
+    - 네트워크 비트가 같다면 같은 네트워크를 사용한다고 판단
+    - 네트워크 비트가 다르다면 외부 네트워크와 통신 해야 한다고 판단
+
+
+{% hint style="info" %}
+    Subnet Mask
+{% endhint %}
+
+- 어느 부분이 호스트 비트인지, 어느 부분이 네트워크 비트인지 구분 해주는 Mask
+    - AND 연산을 활용해 네트워크 주소를 필터링
+
+- 네트워크 비트 수 만큼 1을 보유한 마스크를 IP에 적용하면 네트워크 비트만 추출 가능
+
+    ![image](../../.gitbook/assets/osi7layer_img10.png)
+
+
+{% hint style="info" %}
+    라우터(Router)
+{% endhint %}
+
+- 네트워크간에 패킷을 주고 받는 Layer3 장치
+- IP대역별 최적 경로를 수집 및 관리
+    - 어떤 경로의 노드를 경유해야 가장 효율적으로 대상에 도착하는지 알고 있음(Router Table이 있기 때문)
+    - 이 경로를 바탕으로 특정 IP 주소가 대상인 패킷의 전달을 요청 받을 때 해당 경로로 요청
+- Local Network는 자신의 Local Network 주소가 아니라면 라우터로 전달
+    - 확인 방법: 네트워크 주소가 같은지 확인(Subnet Mask 등)
+- 이후 Router는 패킷을 Frame안에 넣어서 최적 경로에 따른 다른 Router로 전달
+    - IP 주소에 따른 Frame 확인 방법: ARP
+    - Frame은 MAC Address가 필요한데 Network Layer에서는 현재 IP Address로 대상을 지정하고 있음, 그러므로 IP Addres를 MAC Address로 변환하는 과정이 필요한데 이 것이 **ARP**를 통해 이루어짐
+
+
+{% hint style="info" %}
+    ARP(Addre ss Resolution Protocol)
+{% endhint %}
+
+- IP Address로 MAC Address를 찾는 프로토콜
+- 흐름
+    - Broadcast -> MAC Address FF:FF:FF:FF:FF:FF로 IP 요청
+        - 연결 되어있는 모두에게 해당 IP를 소유하고 있는지 물어봄
+
+        ![image](../../.gitbook/assets/osi7layer_img11.png)
+
+    - 응답 받은 IP MAC Address를 기반으로 MAC 확정 후 테이블에 저장
+        - IP를 갖고 있는 대상의 응답을 받아 테이블에 저장 
+
+        ![image](../../.gitbook/assets/osi7layer_img12.png)
+
+
+{% hint style="info" %}
+    Network Layer Summary
+{% endhint %}
+
+1. 라우터까지 데이터 전달하기
+    - IP 대상(63.12.33.12)이 로컬이 아닌 것을 식별 함
+        - 식별 기준은 네트워크 주소가 같은지 다른지를 판단
+    - 같은 네트워크가 아니라면 라우터로 전달
+        - 하지만 라우터의 IP는 알지만 MAC 주소를 모르는 상황
+        - 이때, ARP를 호라용 하여 IP 주소로 MAC 주소를 찾는 과정을 거침
+    - 이후 해당 MAC 주소로 Frame(Data Link Layer의 데이터 단위) 생성 후 전달
+
+    ![image](../../.gitbook/assets/osi7layer_img13.png)
+
+2. 라우터에서 패킷을 분석하고 최적화 된 경로로 전달하기
+    - 대상이 로컬 네트워크가 아니라면 가장 잘 전달할 수 있는 노드로 전달 하는 과정
+
+    - 라우터로 전달 된 Frame을 확인 함
+        - Frame에는 Dest, Src, Packet이 존재
+    - 패킷 분석
+        - 패킷에 담겨있는 대상 IP의 주소를 확인 하여 로컬 네트워크인지 아닌지 판별
+    - 최적화 된 경로로 Frame 전달
+        - Route Table에 대상 IP 주소와 가장 정확하게 매칭 되는 Node의 MAC 주소 저장
+        - 기존에 전달 받으 Frame을 폐기하고 새롭게 생성
+            - 새로운 Frame은 현재 Router의 MAC 주소, 가장 정확하게 매칭 된 Node의 MAC 주소, 기존에 전달받은 패킷을 그대로 포함 하여 생성함
+        - 가장 정확하게 매칭 된 Node로 전달
+
+    ![image](../../.gitbook/assets/osi7layer_img14.png)
+
+3. 최적의 경로로 전달한 라우터에서 목적지의 로컬 네트워크로 식별 될 때 까지 2번 과정을 반복 함
+
+4. 목적지에 도착 하여 데이터를 전달
+    - 2번 과정을 거쳐 로컬 네트워크로 판별 되었을 때 더 이상 다른 경로로 전달 할 필요가 없기 때문에 Router로 보내는 것이 아닌 데이터링크 레이어의 Switch를 통해 보내게 됨
+        - 이 때, 라우터 입장에서는 목적지의 MAC 주소를 알고 있기 때문에 Unicast 방식으로 어디로 보내야 하는지 알고 있음
+    
+    - 프레임을 새로 생성 하여 목적지 대상에게 데이터 전달
+        - 라우터는 물리적인 신호로 Physical Layer를 통해 보내게 됨
+        - 로컬 컴퓨터는 최초 Binary data(Physical Layer에서 변환 된 데이터)를 수신 함
+        - Binary 데이터를 복원해서 확인 하면 Frame을 확인 할 수 있음
+            - 대상 MAC 주소는 나 자신, 소스 주소는 전달 받은 라우터, 최초 데이터를 전달한 패킷이 들어있음
+        - 패킷 내용 분석
+            - 패킷은 맨 처음 보냈던 소스 IP와 대상인 나의 IP, Payload(데이터), 기타 내용이 있음
+            - 패킷은 많은 노드를 거쳐 여행을 해왔지만 패킷은 변하지 않음
+            - 반면 Frame은 노드를 거칠 때 마다 새롭게 생성 되었음
+    
+    ![image](../../.gitbook/assets/osi7layer_img15.png)
+
+> 💡 여기서 알 수 있는 사실
+
+- 데이터를 전달 할 때는 Network Layer - DataLink Layer - Physical Layer 순서로 전달 됨
+- 데이터를 수신 할 때는 역 순인 Physical Layer - Data Link Layer - Network Layer를 통해 수신 함
+- Packet은 최초 전달 되는 내용이 변하지 않지만 Frame은 Node를 거칠 때 마다 새롭게 생성되어 변함
+
+
+{% hint style="info" %}
+    Network Layer에서 해결하지 못한 문제
+{% endhint %}
+
+- 한 번에 하나의 통신만 가능
+    - 여러 어플리케이션이 동시에 통신이 불가능 함
+
+- 패킷 등의 순서를 보장 할 수 없으며 유실에 대한 대응도 불가능
+    - 라우터에 의해 최적화 된 경로로 보내지지만 매번 같은 홉을 통해 이동하는 것이 아니기 때문에 달라질 수 있음, 달라졌을 때 첫 번째 패킷보다 그 다음에 보내진 패킷이 먼저 도착할 가능성이 있음
+    - 패킷이 홉에 의해 이동 하다 다음 경로가 없을 땐 유실이 될 수 있음
