@@ -172,9 +172,9 @@ Data Link Layer에서 해결 하지 못한 문제
 ### Network Layer
 
 {% hint style="info" %}
-    Network Layer
+Network Layer
 
-    💡각 각의 Local Network 혹은 Network간의 통신을 하는 방법을 정의
+💡각 각의 Local Network 혹은 Network간의 통신을 하는 방법을 정의
 {% endhint %}
 
 - 여러 노드의 경로를 찾고 올바르게 전달 될 수 있는 기능과 수단을 정의
@@ -190,7 +190,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    IP(Internet Protocol) Address
+IP(Internet Protocol) Address
 {% endhint %}
 
 - Internet Protocol상에서 통신 주체를 식별하기 위한 아이디
@@ -210,16 +210,16 @@ Data Link Layer에서 해결 하지 못한 문제
 - `2001:0유8:85a3:0000:0000:8a2e:0370:7334` 처럼 16진수로 표시 되며 IPv4보다 4배 큰 128비트 주소 체계를 사용함
 
 {% hint style="info" %}
-    CIDR(Classless Inter Domain  Routing)
-    - IPv4를 표시 하는 여러 방법 중 하나
-    - IP는 주소의 영역을 여러 네트워크 영역으로 나누기 위해 IP를 묶는 방식
-        - 10.10.0.0/16 -> 10.10.(0~255).(0~255)
-    - 여러 개의 사설망을 구축하기 위해 망을 나누는 방법
+CIDR(Classless Inter Domain  Routing)
+- IPv4를 표시 하는 여러 방법 중 하나
+- IP는 주소의 영역을 여러 네트워크 영역으로 나누기 위해 IP를 묶는 방식
+    - 10.10.0.0/16 -> 10.10.(0~255).(0~255)
+- 여러 개의 사설망을 구축하기 위해 망을 나누는 방법
 {% endhint %}
 
 
 {% hint style="info" %}
-    CIDR Notation
+CIDR Notation
 {% endhint %}
 
 - IP 주소의 집합
@@ -234,7 +234,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    CIDR Block
+CIDR Block
 {% endhint %}
 
 - 호스트 주소 비트만큼 IP 주소를 보유 가능
@@ -249,7 +249,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    Subnet Mask
+Subnet Mask
 {% endhint %}
 
 - 어느 부분이 호스트 비트인지, 어느 부분이 네트워크 비트인지 구분 해주는 Mask
@@ -261,7 +261,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    라우터(Router)
+라우터(Router)
 {% endhint %}
 
 - 네트워크간에 패킷을 주고 받는 Layer3 장치
@@ -276,7 +276,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    ARP(Addre ss Resolution Protocol)
+ARP(Addre ss Resolution Protocol)
 {% endhint %}
 
 - IP Address로 MAC Address를 찾는 프로토콜
@@ -293,7 +293,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    Network Layer Summary
+Network Layer Summary
 {% endhint %}
 
 1. 라우터까지 데이터 전달하기
@@ -347,7 +347,7 @@ Data Link Layer에서 해결 하지 못한 문제
 
 
 {% hint style="info" %}
-    Network Layer에서 해결하지 못한 문제
+Network Layer에서 해결하지 못한 문제
 {% endhint %}
 
 - 한 번에 하나의 통신만 가능
