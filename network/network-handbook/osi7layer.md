@@ -356,3 +356,111 @@ Network Layer에서 해결하지 못한 문제
 - 패킷 등의 순서를 보장 할 수 없으며 유실에 대한 대응도 불가능
     - 라우터에 의해 최적화 된 경로로 보내지지만 매번 같은 홉을 통해 이동하는 것이 아니기 때문에 달라질 수 있음, 달라졌을 때 첫 번째 패킷보다 그 다음에 보내진 패킷이 먼저 도착할 가능성이 있음
     - 패킷이 홉에 의해 이동 하다 다음 경로가 없을 땐 유실이 될 수 있음
+
+
+### Transport Layer
+
+네트워크 계층에서 해결하지 못한 문제를 해결하기 위해 나온 계층
+
+{% hint style="info" %}
+Transport Layer
+{% endhint %}
+
+- 통신 주체끼리 데이터 전달의 신뢰성을 확보하는 방법을 정의
+
+- 주요 단위: 세그먼트
+
+- 주요 구성 요소: TCP/UDP
+
+- 주요 특징: Network Layer로 성립된 통신 위에서 실질적인 활용을 위한 다양한 기능을 정의
+    - 패킷의 순서 보장, 에러 처리, 포트 기반 분할 등
+
+
+{% hint style="info" %}
+Transmission Control Protcol(TCP)
+{% endhint %}
+
+- 패킷의 전달 과정에서 순서를 보장하고 유실되지 않도록 보장할 수 있는 통신 규약
+    - 패킷 안에 세그먼트를 담아 주고 받아서 로직을 처리함
+
+- 연결 지향
+    - 지속적으로 채널을 수립 하여 전달 여부를 확인하고 무결성을 확인
+    - 지속적으로 무결성을 확보하는 과정에서 비교적 **느리고** 복잡한 과정이 필요함
+
+- 주요 사용 사례
+    - 웹 페이지(HTTP/HTTPS)
+    - 이메일
+    - 파일 전송
+    - SSH 등
+
+![image](../../.gitbook/assets/osi7layer_img17.png)
+
+{% hint style="info" %}
+Segment(세그먼트)
+{% endhint %}
+
+- TCP/UDP의 데이터 전달 단위
+- TCP 세그먼트의 주요 구성
+    - Port(Source/Destination)
+    - Sequece/Acknowledgement Number: 통신 주체끼리 데이터를 주고 받았는지 확인 할 때 사용
+    - Flags: Segment의 목적 등을 정의(예: ACK, SYN, FIN)
+    - Window Size: 세그먼트를 만든 주체가 얼마나 많은 데이터를 받을지 전달
+    - Urgent Pointer: 세그먼트의 중요도를 설정(먼저 처리해야 하는 세그먼트)
+    - 기타 (checksum 등)
+    - 실제 데이터
+
+    ![image](../../.gitbook/assets/osi7layer_img16.png)
+
+    - 세그먼트는 바로 밑에 레이어인 패킷에 담기게 되며 패킷은 그 밑에 레이어인 프레임에 담긴다.
+
+> TCP에서 데이터의 순서 보장, 유실 방지 과정
+
+1. 세그먼트들에서 1번 세그먼트를 Client A -> Client B로 전송
+2. Client B는 1번 세그먼트를 잘 받았다는 의미로 Acknowledgement를 Client A에게 전달
+3. Client A는 1번을 잘 받았다는 것을 인지하고 Client B에게 전달 받은 데이터를 확인 하여 다음 보내야 할 데이터를 보낸다.
+    - 이 때, Client B가 Client A에게 전달 할 때 다음 보내야 할 데이터를 미리 알려준다.
+3-1. 만약, 세그먼트를 보낼 때 유실이 된 경우
+    - 유실이 되었다면 Client B가 응답을 하지 않았기 때문에 Client A는 "아직 B가 데이터를 받지 못했나보다" 라며 다시 보내게 된다.
+    - 다시 보낼 때 Client B가 정상적으로 수신 하여 Acknowledgement로 응답 값을 보냈다면 그 다음 보내야 할 데이터를 Client A는 보내게 되며 이 과정을 반복한다.
+
+* 💡 TCP는 전달 하고 싶은 데이터가 잘 전달 되었는지 무결성을 확보함
+    - 받았는지 받지 못했는지를 체크하는 과정이 있음
+
+![image](../../.gitbook/assets/osi7layer_img18.png)
+
+{% hint style="info" %}
+Port
+{% endhint %}
+
+- IP 프로토콜에서 패킷을 올바른 프로세스로 라우팅 하기 위한 논리적 단위
+- TCP Port / UDP Port로 구분
+    - 각각 0~65535까지 정수 범위를 갖을 수 있음
+- Well Known Port: 주로 서버에서 사용하는 어플리케이션/프로토콜 별로 미리 지정된 포트로 **이 포트는 마음대로 변경 할 수 있다.**
+    - 예:
+        - 80: HTTP
+        - 443: HTTPS
+        - 22: SSH
+        - 3306: MySQL
+        - 5432: PostgreSQL
+
+    - 웹 브라우저에 접속 할 때 생각 해보면 80번 포트를 입력 하지 않아도 자동으로 80번 포트를 우선적으로 시도한다. 그 외에는 클라이언트가 별도로 포트를 입력해야한다.
+
+- Ephemeral Port: 클라이언트에서 사용하는 포트로 연결 할 때 마다 임의로 지정되는 포트로 **남는 포트 아무거나 지정한다**
+
+    - 클라이언트 입장에서 자기만 통신 하기 때문에 포트를 남는 것 아무거나 사용해도 문제가 없다.
+    - 서버 입장에서 요청을 받을 때 마다 포트가 변경 된다면 **클라이언트가 어떤 포트로 보내야 하는지 알 수가 없고 서버가 점유해야 할 포트가 무수히 많아야 한다** 이런 이유 때문에 서버는 일반적으로 잘 알려진 포트를 점유한다.
+
+![image](../../.gitbook/assets/osi7layer_img20.png)
+
+각 Application 마다 임의의 포트 번호를 점유 하여 Source Port를 할당 하고 서버에서 사용 하고 있는 Port를 할당 하여 `Segment` 안에 `Source Port`, `Destination Port`로 대상을 지정하여 여러 한 번에 여러 개의 어플리케이션과 통신 할 수 있는 구조가 생성 된다.
+
+![image](../../.gitbook/assets/osi7layer_img19.png)
+
+> 만약, 위 그림에서 Chrome Browser에서 Server로 요청을 보냈다 라고 가정 한다면
+- 네트워크 계층에서 Packet을 전달한다.
+- Packet을 분석 하면 안에 Segment가 존재 하기 때문에 Segment를 분석 하게 된다.
+- Segment는 Source Port, Destination Port가 존재 하기 때문에 Destination에 해당 하는 WEB으로 전달한다.
+- WEB에서 요청을 받아들이고 응답 할 때 받았던 Source Port로 다시 전달하면 사용자가 Chrome Browser를 클릭 하여 접속 했을 때 나타나는 화면이 된다.
+
+
+* 💡 서로 통신 하는 아이피가 동일 하더라도 Packet 안에 Segment를 활용 할 수 있게 된다면 동일한 IP에서 여러 어플리케이션과 통신할 수 있게된다.
