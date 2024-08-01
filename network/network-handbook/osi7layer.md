@@ -17,6 +17,8 @@ OSI 7 Layer Model
 * 컴퓨터 네트워크 및 통신을 7개의 레이어로 표현한 모델
 * 각 계층은 하위 계층의 기능을 활용해 역할을 수행하고 상위 계층으로 처리 결과를 전달 함
 
+## 하드웨어 모델 계층
+
 ### Physical Layer
 
 * 장치를 연결 하기 위한 매체의 물리적인 사항을 정의
@@ -423,7 +425,7 @@ Segment(세그먼트)
     - 유실이 되었다면 Client B가 응답을 하지 않았기 때문에 Client A는 "아직 B가 데이터를 받지 못했나보다" 라며 다시 보내게 된다.
     - 다시 보낼 때 Client B가 정상적으로 수신 하여 Acknowledgement로 응답 값을 보냈다면 그 다음 보내야 할 데이터를 Client A는 보내게 되며 이 과정을 반복한다.
 
-* 💡 TCP는 전달 하고 싶은 데이터가 잘 전달 되었는지 무결성을 확보함
+💡 TCP는 전달 하고 싶은 데이터가 잘 전달 되었는지 무결성을 확보함
     - 받았는지 받지 못했는지를 체크하는 과정이 있음
 
 ![image](../../.gitbook/assets/osi7layer_img18.png)
@@ -463,4 +465,92 @@ Port
 - WEB에서 요청을 받아들이고 응답 할 때 받았던 Source Port로 다시 전달하면 사용자가 Chrome Browser를 클릭 하여 접속 했을 때 나타나는 화면이 된다.
 
 
-* 💡 서로 통신 하는 아이피가 동일 하더라도 Packet 안에 Segment를 활용 할 수 있게 된다면 동일한 IP에서 여러 어플리케이션과 통신할 수 있게된다.
+💡 서로 통신 하는 아이피가 동일 하더라도 Packet 안에 Segment를 활용 할 수 있게 된다면 동일한 IP에서 여러 어플리케이션과 통신할 수 있게된다.
+
+
+{% hint style="info" %}
+TCP Handshake
+{% endhint %}
+
+- TCP Protocol에서 통신을 수립하고 서로를 인식하는 첫 과정
+
+- 보통 Three Way Handshake로 부르며 3가지 과정으로 구분
+    - Syn(Synchronize): 첫 요청으로 사용할 것 클라이언트 Sequence Number(랜덤 숫자/CS)를 전달
+    - Syn-Ack(Synchronize-Acknowledge): Syn에 대한 응답으로 CS+1과 서버 Sequence Number(SS)를 전달
+    - ACK(Acknowledge): 마지막 단계로 연결이 수립 되었음을 알려주며 CS + 1과 SS + 1을 전달 하며 서버에서 보낸 요청을 잘 받았다고 인식 시켜줌
+
+
+> TCP Handshake를 통해 통신하는 과정
+
+![image](../../.gitbook/assets/osi7layer_img21.png)
+
+
+1. 클라이언트가 서버에게 요청을 보냄
+    - 이 때 세그먼트 정보는 Source Port(클라이언트 자신), Destination Port(대상 서버), Sequence Number(클라이언트의 임의의 수), Acknowldegement Number(서버의 임의의 수), Flags(요청 목적)
+    - 클라이언트의 Sequence Number 생성 "13"
+    - Flags 할당 "SYN": 클라이언트의 첫 요청이기 때문
+
+2. 서버가 요청을 받은 뒤 응답 함
+    - 클라이언트의 Sequence Number에서 + 1: "14" -> 요청을 잘 받았다는 의미
+    - 서버의 Sequence Number 생성 "4431"
+    - 이 때 세그먼트는 Sequence Number는 "4431", Acknowldegement Number는 "14", Flags는 "SYN, ACK"
+    - 생성된 세그먼트를 다시 클라이언트에게 응답
+
+3. 클라이언트가 응답을 확인 후 서버와 통신 종료 요청
+    - 서버가 보내준 Acknowledege Number는 기존 "13" 이었지만 서버와 통신 후 응답을 받을 땐 "14"로 1이 증가 되어있음
+    - 서버의 Sequence Number를 잘 받았다는 의미로 +1 -> "4432"
+    - Flags를 ACK로 할당 하여 세그먼트를 생성 후 전달
+
+💡 Sequence Number는 자기 자신이 보내야 할 임의의 수이며 Acknowledegement Number는 상대에게 다음 차례에 보내야 할 숫자를 가르키는 것과 같다.
+
+{% hint style="info" %}
+User Datagram Protocol(UDP)
+{% endhint %}
+
+- 빠르고 간단하게 데이터를 주고 받을 수 있는 방법을 정의
+- ConnectionLess
+    - 연결 지향(TCP)와는 달리 데이터의 무결성, 순서, 전달 여부를 체크 하지 않는 단방향 통신
+    - 즉 패킷이 순서대로 오지 않거나 중복 되거나 아예 전달 되지 않을 수 있음
+    - 결론은 빠르게 보내는 것을 목적으로 함
+
+- 주요 사례
+    - 스트리밍 서비스
+        - 스트리밍 서비스를 보다가 1프레임을 놓쳐도 사용자는 느낄정도로 민감한 정보가 아님
+    - 보이스톡
+        - 상대방과 통화 시 잠시 지지직 걸린다고 해도 다시 통화가 유지 되기 때문에 크게 민감하지 않음
+    - 온라인 게임
+
+
+> UDP Segment vs TCP Segment
+
+![image](../../.gitbook/assets/osi7layer_img22.png)
+
+
+- UDP Segment는 TCP에 비해 많은 필드들이 비어있다
+    - 패킷에 들어가는 정보는 동일 하지만 세그먼트는 내용이 훨씬 적기 때문에 용량 적으로 훨씬 효율적임
+
+- UDP 통신은 단방향이기 때문에 요청 하는 데이터를 전송 하고 그 뒤 응답을 신경 쓰지 않는다.
+    - 만약 유실 될 경우라도 **현재 요청은 마치 어쩔 수 없다는 듯 버린 뒤 다음 요청을 보냄**
+
+- UDP는 요청을 계속 보내기만 하면 되기 때문에 굉장히 효율적
+    - TCP 통신은 클라이언트와 서버가 통신 중 요청과 응답이 정상인지 결과를 기다려야 하는 시간이 매우 오래 걸림
+        - 트래픽이 2배로 증가 -> 요청과 응답
+
+    - 단, 패킷의 유실, 순서 보장 없음 등에 단점이 존재함
+
+
+> 주요 프로토콜(TCP/UDP)
+
+- TCP
+    - HTTP/HTTPS: 80, 443
+    - FTP: 20, 21
+    - SSH: 22
+    - DNS: 53
+
+- UDP
+    - DNS: 53
+    - DHCP(Dynamic Host Configuration Protocol): 67, 68
+    - VoIP(Voice over IP): 5060
+
+
+## 소프트웨어 모델 계층
