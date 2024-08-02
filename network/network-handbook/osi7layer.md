@@ -11,7 +11,7 @@
 ## OSI 7 Layer Model
 
 {% hint style="info" %}
-OSI 7 Layer Model
+OSI 7 Layer Model: 1970s ~ 
 {% endhint %}
 
 * 컴퓨터 네트워크 및 통신을 7개의 레이어로 표현한 모델
@@ -554,3 +554,94 @@ User Datagram Protocol(UDP)
 
 
 ## 소프트웨어 모델 계층
+
+### Session Layer
+
+{% hint style="info" %}
+Session Layer
+{% endhint %}
+
+- 통신 주체끼리 연결을 유지 할 수 있는 방법을 정의
+- 예전의 컴퓨터 환경에서 Layer 1, 2, 3, 4 이외의 차원에서 지속적인 연결(세션)이 수립 될 수 있는 방법을 제공
+    - 예: MAC Address(Layer2)와 IP(Layer3)주소와 포트(Layer4)가 동일한 상황에서 어떻게 구분 할 것인가?
+- 현대에서도 마찬가지로 Layer4 이상의 추가적인 차원에서 지속적인 연결(세션)을 수립 할 수 있는 방법을 포함
+    - 예: HTTP Cookie
+
+        ![image](../../.gitbook/assets/osi7layer_img24.png)
+
+        - HTTP는 클라이언트의 아이피 정보가 달라지더라도 기존에 검증 된 쿠키값을 서버로 전달 하게 되면 검증된 사용자로 통신을 유지 할 수 있다.
+
+- 몇 몇 프로토콜의 경우 Session Layer 자체를 구현 하지 않음
+    - 예: FTP
+
+        ![image](../../.gitbook/assets/osi7layer_img25.png)
+
+        - FTP는 HTTP와 달리 접속 하는 아이피 정보가 달라지면 기존 검증 절차를 기억 하지 않고 다시 검증을 시도 해야한다.
+
+<br></br>
+
+
+> 지하철 타고 가면서 유튜브를 볼 때를 떠올려보면 지하철 역이 바뀌어도 유튜브는 정상 송신이 되고 있다. 왜 그럴까?
+
+![image](../../.gitbook/assets/osi7layer_img23.png)
+
+
+- 각 역 마다 중계기의 아이피는 서로 다를 것이고 유튜브 서버 입장에서는 받는 아이피가 모두 달라질 것이다. 즉, Layer 1 ~ Layer 4가 모두 달라진다.
+
+💡 자신의 통신 환경이 달라져도 지속적인 통신을 유지 할 수 있는 이유는 세션이 연결 되어 있기 때문이다.
+
+
+### Presentation Layer
+
+{% hint style="info" %}
+Presentation Layer
+{% endhint %}
+
+- 받은 데이터를 해석하는 방법을 정의
+    - 파싱, 압축 해제, 복호화 등 Application Layer에서 사용 할 수 있는 형식으로 변환을 담당
+
+        ![image](../../.gitbook/assets/osi7layer_img26.png)
+
+<br></br>
+
+> 어디까지가 Presentation Layer의 역할일까?
+
+![image](../../.gitbook/assets/osi7layer_img27.png)
+
+- 정확하게 구분 되는 것이 아니며 전달 받은 내용을 문자로 변경 하는 것
+- 문자로 받은 내용을 어떻게 전달 하는가
+
+
+💡 결론적으로 Presentation Layer는 위 내용들이 개념적으로 구현이 되어있다
+
+
+### Application Layer
+
+{% hint style="info" %}
+Application Layer
+{% endhint %}
+
+- 실제 받은 데이터를 처리하는 방법을 정의
+    - 말 그대로 데이터를 가지고 무엇을 어떻게 처리할지에 관한 레이어
+
+- 예: HTTP
+    - Method(GET/POST/PUT/DELETE/HEAD/OPTION/PATCH)
+    - Status Code
+    - Header
+        - Host
+        - User-Agent
+        - Authorization
+        - Accept-Encoding
+        - Content-Type
+
+
+실질적으로 AWS `Application Load Balancer`는 Layer 7을 이해 할 수 있는 로드 밸런서이며 HTTP의 여러가지 기능(헤더, 도메인명 등)을 이해 하고 있다.
+
+이러한 어플리케이션 로드 밸런서는 레이어 1부터 7까지 거쳐 최종적인 결과물로 의사 결정을 할 수 있다.
+
+- 예시: 대표적인 예시로 호스트 기반으로 라우팅을 하는 행위
+- 네트워크 로드밸런서(L4) 보다 많은 정보를 담고 있기 때문에 속도 측면에서는 더 느리다.
+
+
+
+
