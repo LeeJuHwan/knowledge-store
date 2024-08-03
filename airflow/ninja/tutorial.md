@@ -6,6 +6,10 @@
 
 :pencil:2024.08.03
 
+참고 블로그:
+- [Apache Airflow, 어렵지 않게 시작하기](https://gngsn.tistory.com/264)
+- [오늘의 집, 에어플로우 도입기](https://www.bucketplace.com/post/2021-04-13-%EB%B2%84%ED%82%B7%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4-airflow-%EB%8F%84%EC%9E%85%EA%B8%B0/)
+
 </details>
 
 ## Easy to start

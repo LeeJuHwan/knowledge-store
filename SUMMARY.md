@@ -9,7 +9,7 @@
 ## Airflow
 
 * [Airflow-Ninja](airflow/basic/README.md)
-    * [Introduction and Goal](airflow/ninja/)
+    * [Introduction and Goal](airflow/ninja/README.md)
     * [Tutorial](airflow/ninja/tutorial.md)
 
 
