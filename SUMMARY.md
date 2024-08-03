@@ -6,6 +6,13 @@
 
 * [AWS101](aws/aws101/README.md)
 
+## Airflow
+
+* [Airflow-Ninja](airflow/basic/README.md)
+    * [Introduction and Goal](airflow/ninja/)
+    * [Tutorial](airflow/ninja/tutorial.md)
+
+
 ## Network
 
 * [Network-Handbook](network/basic/README.md)
