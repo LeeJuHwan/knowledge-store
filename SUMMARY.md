@@ -42,4 +42,6 @@
   * [Mission1. Baseball-Unit Test](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
 
+* [ReadableCode](java/playground/README.md)
+  * [Introduction and Goal](java/readable-code/)
 ## Projects
