@@ -12,7 +12,7 @@
 ### Airflow
 
 * :point_right: **Airflow-0toNinja?**
-  * [Introduction and Goal](airflow/ninja/)
+  * [Introduction and Goal](airflow/ninja/README.md)
   * [Setting](airflow/ninja/tutorial.md)
 
 
@@ -55,5 +55,6 @@
 
 * :point_right: **java-readable-code**
   * [Introduction and Goal](java/readable-code/README.md)
+  * [Abstraction](java/readable-code/abstract.md)
 
 ### Projects

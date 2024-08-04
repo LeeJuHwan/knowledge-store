@@ -44,4 +44,6 @@
 
 * [ReadableCode](java/playground/README.md)
   * [Introduction and Goal](java/readable-code/)
+  * [Abstraction](java/readable-code/abstract.md)
+
 ## Projects
