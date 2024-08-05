@@ -94,3 +94,77 @@
 	- void 대신 충분히 반환할 만한 값이 있는지 고민해보기
 		- 반환값이 있다면 테스트가 용이함
 {% endhint %}
+
+
+### 💫 같은 패키지 내에서 추상화 레벨 맞추기
+
+{% hint style="info" %}
+책을 사러 서점에 갔다. 서점에서 책을 고르기 위해 책의 목차를 읽고 마음에 드는 책을 구매 하는데, 어느 날 보니 책들 사이에 목차가 없는 표지만 있는 책을 발견했다.
+
+이 책을 본 고객은 당황할 수 밖에 없다. 서점의 오류인듯 아닌듯 의도된듯 아닌듯 하지만 이런 시점은 일상이 아닌 코드를 작성하는 시점에서도 발생 할 수 있다는 것이다.
+
+코드를 읽다보니 추출된 메서드가 등장하고 메서드는 각자의 역할이 담겨져있다.
+어느덧 중반부 쯤 와서 메서드 사이에 뜬금없이 자리 잡은 조건문은 구현체와 가까운 코드가 작성 되어 있는데 이런 코드는 읽는 사람이 추상화 된 메서드를 읽는 도중 만난다면 혼란을 줄 수 있다.
+
+**🎓 코드를 읽는 모듈은 추상화 레벨이 동등해야한다.**
+
+{% endhint %}
+
+**Bad use case**: 
+
+```java
+public static void main(String[] args) {
+	showGameStartComments();
+	initializeGame();
+	showBoard();
+	...
+
+	if (gameStatus == 1) {  // <- 추상화 레벨이 다른 구문
+		System.out.println("게임 클리어");
+		break;
+	}
+}
+```
+
+
+**Good use case**:
+
+```java
+public static void main(String[] args) {
+	showGameStartComments();
+	initializeGame();
+	showBoard();
+	...
+
+	if (does?UserWinTheGame()) {
+		System.out.println("게임 클리어");
+		break;
+	}
+}
+```
+
+
+### 🌇 매직 넘버, 매직 스트링을 상수로 추출하기
+
+{% hint style="info" %}
+- 매직 넘버, 매직 스트링
+	- 의미를 갖고 있으나 상수로 추출되지 않은 숫자나 문자
+	- 상수 추출로 이름을 짓고 의미를 부여함으로 가독성 및 유지보수 향상 가능
+{% endhint %}
+
+**Examples:**
+
+```java
+public static final int BOARD_ROW_SIZE = 8;  
+public static final int BOARD_COL_SIZE = 10;  
+private static final String[][] BOARD = new String[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+private static final Integer[][] NEARBY_LAND_MINE_COUNTS = new Integer[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+private static final boolean[][] LAND_MINES = new boolean[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+public static final int LAND_MINE_COUNT = 10;  
+public static final String FLAG_SIGN = "⚑";  
+public static final String LAND_MINE_SIGN = "☼";  
+public static final String CLOSED_CELL_SIGN = "□";  
+public static final String OPENED_CELL_SIGN = "■";
+```
+
+예시처럼 자주 사용 되거나 의미를 갖고 있는 숫자나 문자를 뜻 함
