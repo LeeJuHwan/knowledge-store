@@ -45,5 +45,6 @@
 * [ReadableCode](java/basic/README.md)
   * [Introduction and Goal](java/readable-code/README.md)
   * [Abstraction](java/readable-code/abstract.md)
+  * [Logical-Thinking](java/readable-code/logical_thinking.md)
 
 ## Projects

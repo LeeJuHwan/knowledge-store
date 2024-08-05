@@ -57,5 +57,6 @@
 * :point_right: **java-readable-code**
   * [Introduction and Goal](java/readable-code/README.md)
   * [Abstraction](java/readable-code/abstract.md)
+  * [Logical-Thinking](java/readable-code/logical_thinking.md)
 
 ### Projects
