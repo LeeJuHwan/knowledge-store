@@ -129,6 +129,47 @@
 		- 반환값이 있다면 테스트가 용이함
 {% endhint %}
 
+**Example use case**:
+
+- :thumbsdown: **BAD!**
+	```java
+	boolean isAllOpend = true;
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 10; col++) {
+			if (board[row][col].equals("□")) {
+				isAllOpend = false;
+			}
+		}
+	}
+
+	if (isAllOpend) {
+		gameStatus = 1;
+	}
+	```
+
+- :thumbsup: **GOOD!**
+	```java
+	private static void checkIfGameIsOver() {
+        boolean isAllOpened = isAllCellOpened();
+        if (isAllOpened) {
+            gameStatus = 1;
+        }
+    }
+
+    private static boolean isAllCellOpened() {
+        boolean isAllOpened = true;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 10; col++) {
+                if (board[row][col].equals("□")) {
+                    isAllOpened = false;
+                }
+            }
+        }
+        return isAllOpened;
+    }
+
+	```
+
 
 ### 💫 같은 패키지 내에서 추상화 레벨 맞추기
 
