@@ -53,7 +53,7 @@
 - 축약 할 때 효율성을 얻을 수 있으나 얻는 것에 비해 잃는 것이 큰 경우임
 - 자제하는 것이 좋긴 하나 관용어처럼 많은 사람들이 자주 사용하는 줄임말 정도는 허용함
 
-> 은어/방업 사용하지 않기
+> 은어/방어 사용하지 않기
 
 - 농담에서 파생된 용어나 일부 팀원, 현재 의 우리팀만 아는 용어 금지
 	- 새로운 사람이 팀에 합류 했을 때 이 용어를 단번에 이해 할 수 없는 단어는 사용 하지 말아야 함
@@ -65,6 +65,40 @@
 > 좋은 코드를 보고 습득하기
 - 비슷한 상황에서 자주 사용하는 단어, 개념 습득하기
 	- 예시) pool, candidate, threshold, etc
+
+**Example use case**:
+- :thumbsdown: **BAD!**
+	```java
+		int row = Character.getNumericValue(r) - 1;
+		if (input2.equals("2")) {
+			board[row][col] = "⚑";
+			boolean open = true;
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 10; j++) {
+					if (board[i][j].equals("□")) {
+						open = false;
+					}
+				}
+			}
+		}
+	```
+
+- :thumbsup: **GOOD!**
+	```java
+		int selectedRowIndex = Character.getNumericValue(cellInputRow) - 1;
+		if (userActionInput.equals("2")) {
+			board[selectedRowIndex][selectedColIndex] = "⚑";
+			boolean isAllOpend = true;
+			for (int row = 0; row < 8; row++) {
+				for (int col = 0; col < 10; col++) {
+					if (board[row][col].equals("□")) {
+						isAllOpend = false;
+					}
+				}
+			}
+		}
+	```
+
 
 
 ### 🙋‍♂️ **한 메서드의 주제는 반드시 하나다**
@@ -110,38 +144,38 @@
 
 {% endhint %}
 
-**Bad use case**: 
+**Example use case**:
 
-```java
-public static void main(String[] args) {
-	showGameStartComments();
-	initializeGame();
-	showBoard();
-	...
+- :thumbsdown: **BAD!**
+	```java
+	public static void main(String[] args) {
+		showGameStartComments();
+		initializeGame();
+		showBoard();
+		...
 
-	if (gameStatus == 1) {  // <- 추상화 레벨이 다른 구문
-		System.out.println("게임 클리어");
-		break;
+		if (gameStatus == 1) {  // <- 추상화 레벨이 다른 구문
+			System.out.println("게임 클리어");
+			break;
+		}
 	}
-}
-```
+	```
 
 
-**Good use case**:
+- :thumbsup: **GOOD!**
+	```java
+	public static void main(String[] args) {
+		showGameStartComments();
+		initializeGame();
+		showBoard();
+		...
 
-```java
-public static void main(String[] args) {
-	showGameStartComments();
-	initializeGame();
-	showBoard();
-	...
-
-	if (does?UserWinTheGame()) {
-		System.out.println("게임 클리어");
-		break;
+		if (does?UserWinTheGame()) {
+			System.out.println("게임 클리어");
+			break;
+		}
 	}
-}
-```
+	```
 
 
 ### 🌇 매직 넘버, 매직 스트링을 상수로 추출하기
@@ -152,19 +186,28 @@ public static void main(String[] args) {
 	- 상수 추출로 이름을 짓고 의미를 부여함으로 가독성 및 유지보수 향상 가능
 {% endhint %}
 
-**Examples:**
+**Example use case**:
 
-```java
-public static final int BOARD_ROW_SIZE = 8;  
-public static final int BOARD_COL_SIZE = 10;  
-private static final String[][] BOARD = new String[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
-private static final Integer[][] NEARBY_LAND_MINE_COUNTS = new Integer[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
-private static final boolean[][] LAND_MINES = new boolean[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
-public static final int LAND_MINE_COUNT = 10;  
-public static final String FLAG_SIGN = "⚑";  
-public static final String LAND_MINE_SIGN = "☼";  
-public static final String CLOSED_CELL_SIGN = "□";  
-public static final String OPENED_CELL_SIGN = "■";
-```
+- :thumbsdown: **BAD!**
+	```java
+	private static String[][] board = new String[8][10];
+	private static Integer[][] landMineCounts = new Integer[8][10];
+	private static boolean[][] landMines = new boolean[8][10];
+	private static int gameStatus = 0;
+	```
 
-예시처럼 자주 사용 되거나 의미를 갖고 있는 숫자나 문자를 뜻 함
+- :thumbsup: **GOOD!**
+	```java
+	public static final int BOARD_ROW_SIZE = 8;  
+	public static final int BOARD_COL_SIZE = 10;  
+	private static final String[][] BOARD = new String[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+	private static final Integer[][] NEARBY_LAND_MINE_COUNTS = new Integer[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+	private static final boolean[][] LAND_MINES = new boolean[BOARD_ROW_SIZE][BOARD_COL_SIZE];  
+	public static final int LAND_MINE_COUNT = 10;  
+	public static final String FLAG_SIGN = "⚑";  
+	public static final String LAND_MINE_SIGN = "☼";  
+	public static final String CLOSED_CELL_SIGN = "□";  
+	public static final String OPENED_CELL_SIGN = "■";
+	```
+
+:point_right: 예시처럼 자주 사용 되거나 의미를 갖고 있는 숫자나 문자를 뜻 함
