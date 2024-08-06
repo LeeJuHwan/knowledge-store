@@ -211,7 +211,7 @@
 		showBoard();
 		...
 
-		if (does?UserWinTheGame()) {
+		if (doesUserWinTheGame()) {
 			System.out.println("게임 클리어");
 			break;
 		}
