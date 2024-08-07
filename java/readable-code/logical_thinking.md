@@ -141,7 +141,11 @@ if (a > 3) {
 	        for (int col = 0; col < BOARD_COL_SIZE; col++) {  
 	            if (BOARD[row][col].equals(CLOSED_CELL_SIGN)) {  
 	                isAllOpened = false;  
-	            }        }    }    return isAllOpened;  
+	            }
+			}
+		}
+
+		return isAllOpened;  
 	}
 	```
 
@@ -180,13 +184,16 @@ Stream이 일반 for loop 그리고 foreach문 보다 더 낫다는 설명이 �
 	        if (doesUserWinTheGame()) {  
 	            System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");  
 	            break;  
-	        }        if (doesUserLoseTheGame()) {  
+	        }        
+			if (doesUserLoseTheGame()) {  
 	            System.out.println("지뢰를 밟았습니다. GAME OVER!");  
 	            break;  
-	        }        String cellInput = getCellInputFromUser(scanner);  // 스캐너 사용 
+	        }        
+			String cellInput = getCellInputFromUser(scanner);  // 스캐너 사용 
 	        String userActionInput = getUserActionInputFromUser(scanner);  
 	        actionOnCell(cellInput, userActionInput);  
-	    }}
+	    }
+	}
 
 
 	private static String getUserActionInputFromUser(Scanner scanner) {  
@@ -214,13 +221,16 @@ Stream이 일반 for loop 그리고 foreach문 보다 더 낫다는 설명이 �
 	        if (doesUserWinTheGame()) {  
 	            System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");  
 	            break;  
-	        }        if (doesUserLoseTheGame()) {  
+	        }       
+			if (doesUserLoseTheGame()) {  
 	            System.out.println("지뢰를 밟았습니다. GAME OVER!");  
 	            break;  
-	        }        String cellInput = getCellInputFromUser();  
+	        }        
+			String cellInput = getCellInputFromUser();  
 	        String userActionInput = getUserActionInputFromUser();  
 	        actionOnCell(cellInput, userActionInput);  
-	    }}
+	    }
+	}
 
 	private static String getUserActionInputFromUser() {  
     System.out.println("선택한 셀에 대한 행위를 선택하세요. (1: 오픈, 2: 깃발 꽂기)");  
