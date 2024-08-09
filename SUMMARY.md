@@ -24,6 +24,7 @@
 * [Network-Handbook](network/basic/README.md)
   * [Introduction and Goal](network/network-handbook/README.md)
   * [OSI7Layer](network/network-handbook/osi7layer.md)
+  * [DNS](network/network-handbook/dns.md)
 
 ## Comupter Architecture
 
