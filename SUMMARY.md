@@ -53,4 +53,12 @@
   * [Abstraction](java/readable-code/abstract.md)
   * [Logical-Thinking](java/readable-code/logical_thinking.md)
 
+
+## Python
+
+* [Better Python Code][python/basic/README.md]
+  * [Introduction and Goal](python/better-python-code51/README.md)
+  * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy_evaluation.md)
+
+
 ## Projects
