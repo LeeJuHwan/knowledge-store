@@ -15,8 +15,8 @@
 
 ## Docker
 
-* [Docker-Story](docker/basic/README.md)
-  * [CustomRootDirectory](docker/docker_story/change_root_directory.md)
+* [Production with Docker](docker/basic/README.md)
+  * [Customizing root directory](docker/docker_story/change_root_directory.md)
 
 
 ## Network
@@ -48,7 +48,7 @@
   * [Mission1. Baseball-Unit Test](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
 
-* [ReadableCode](java/basic/README.md)
+* [Readable Code](java/basic/README.md)
   * [Introduction and Goal](java/readable-code/README.md)
   * [Abstraction](java/readable-code/abstract.md)
   * [Logical-Thinking](java/readable-code/logical_thinking.md)
@@ -56,9 +56,10 @@
 
 ## Python
 
-* [Better Python Code][python/basic/README.md]
+* [Effective Python](python/basic/README.md)
   * [Introduction and Goal](python/better-python-code51/README.md)
   * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy_evaluation.md)
+  * [Python property to getter-setter than better](python/effective-python-2nd/property.md)
 
 
 ## Projects
