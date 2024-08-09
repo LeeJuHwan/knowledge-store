@@ -28,6 +28,7 @@
 * :point\_right: **Network-Handbook**
   * [Introduction and Goal](network/network-handbook/)
   * [OSI7Layer](network/network-handbook/osi7layer.md)
+  * [DNS](network/network-handbook/dns.md)
 
 ### Comupter Architecture
 
