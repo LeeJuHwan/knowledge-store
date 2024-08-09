@@ -1,3 +1,15 @@
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2024.08.09
+
+:page_facing_up:[똑똑하게 코딩하는법 코딩의 기술 51](https://product.kyobobook.co.kr/detail/S000213798363)
+
+:paperclip: **CHAPTER 2. 동등성과 혼동성**
+</details>
+
+
 > Lazy Evaluation
 <aside>Closure Lazy Evaluation And Eager Evaluation</aside>
 

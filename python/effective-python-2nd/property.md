@@ -1,134 +1,177 @@
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2024.03.31
+
+:page_facing_up:[파이썬 코딩의 기술: 똑똑하게 코딩 하는 법 2판](https://product.kyobobook.co.kr/detail/S000001834494)
+
+:paperclip: **BETTER WAY 44**
+
+</details>
+
+
 # Introduction
 
-- 세터와 게터 메서드 대신 평범한 애트리뷰트를 사용하라
+- 애트리뷰트를 관리하는 메서드를 생성하지 않고 프로퍼티 데코레이터를 통해 애트리뷰트를 다시 정의 할 수 있다.
 
 # Goal
 
-- 파이썬에서 게터-세터를 다루는 방법을 이해하고, 공개적 애트리뷰트를 사용하여 간편한 인터페이스를 구현하자.
-
-- 프로퍼티 데코레이터를 이용한 다양한 연산을 적용한 애트리뷰트를 반환하자
-
-
+- 기존 클래스를 호출하는 코드를 전혀 바꾸지 않고 애트리뷰트의 기존 동작을 변경하는 방법
 
 
 
 <aside>Worst case</aside>
 
-> 통상적인 게터-세터를 사용한 코드이지만, 파이써닉하지 않은 코드의 예시이다.
+> 애트리뷰트를 관리하는 메서드가 예외 상황 처리에 대해 애매한 경우
 
 
 ```python
-class OldResistor:
-	def __init__(self, ohms):
-		self._ohms = ohms
 
-	def get_ohms(self):
-		return self._ohms
+# NOTE: Old versions
+class Bucket:
+	def __init__(self, period: int):
+	self.period_delta = timedelta(seconds=period)
+	self.reset_time = datetime.now()
+	self.quota = 0
 
-	def set_ohms(self, ohms):
-		return self._ohms = ohms
+	def __str__(self):
+		return f"Bucket(quota={self.quota})"
 
-if __name__ == "__main__":
-	r0 = OldResistor(50e-3)
-	print(f"이전: {r0.get_ohms()}")
+
+def fill(bucket: Bucket, amount: int):
+	"""
+	가용 용량을 소비할 때 마다 시간을 검사 하고, 주기가 달라진 경우 미사용한
+	가용 용량이 새로운 주기로 넘어오지 못하게 함
+	"""
+	now = datetime.now()
 	
-	r0.set_ohms(10e3)
-	print(f"{r0.get_hms()}")  
-```
-- get - set구조의 유틸리티 메서드는 코드를 지저분하게 한다. 하지만, 기능을 캡슐화 하는 경계를 설정하기 쉽기 때문에 자주 사용된다.
-- 파이썬에서는 위 처럼 코드를 구현할 필요가 전혀 없다.
+	if (now - bucket.reset_time) > bucket.period_delta:
+		bucket.quota = 0
+		bucket.reset_time = now
+		bucket.quota += amount
+  
 
+def deduct(bucket: Bucket, amount: int):
+	"""
+	버킷의 가용 용량에서 필요한 분량 사용하기
+	"""
+	now = datetime.now()
+
+	if (now - bucket.reset_time) > bucket.period_delta:
+		return False # NOTE: 새 주기가 시작 됐는데 아직 버킷 할당량이 재설정 되지 않음
+
+	if (bucket.quota - amount) < 0:
+		return False # NOTE: 버킷의 가용 용량이 충분하지 않음
+	else:
+		bucket.quota -= amount
+	return True # NOTE: 버킷의 가용 용량이 충분하여 필요한 분량 사용
+  
+
+def old_version_callable():
+	
+	"""
+	이 구현의 문제점:
+		1. 버킷이 시작 할때 가용 용량을 알 수 없는 것
+		2. 가용 용량을 초과해서 사용 하는 경우 가용 용량이 0인지, 사용 용량이 초과된 것인지 알 수 없음
+	
+	이 구현의 해결 방법:
+		1. 주기에 재설정 된 가용 용량 인자 추가 -> max_quota
+		2. 소비한 용량의 합계 추가 -> quota_consumed
+	
+		* 위 해결 방법을 기준으로 클래스 구조 변경
+	"""
+
+	bucket = Bucket(60)
+
+	fill(bucket, 100) # NOTE: 버킷을 사용 하기 전 필요 가용 용량 할당
+	print(bucket)
+
+	used: int = 99
+
+	if deduct(bucket, used): # NOTE: 필요한 용량 사용
+		print(f"{used} 용량 사용")
+	else:
+		print("가용 용량이 작아서 99용량을 처리 할 수 없음")
+	print(bucket)
+
+	# NOTE: 남은 가용 용량보다 더 많은 용량을 사용하려 하는 경우
+	used = 3
+	if deduct(bucket, 3):
+		print(f"{used} 용량 사용")
+	else:
+		print(f"가용 용량이 작아서 {used} 용량을 처리할 수 없음")
+	print(bucket)
+```
+- 위 버킷 클래스의 문제점은 버킷이 시작할 때 가용 용량을 알 수 없다는 것, deduct에서 관리 하게 되면 다른 모듈에서 호출 할 때 공통 비즈니스 로직을 사용 해야만 한다. 하지만, 요구사항이 달라지는 경우 조건분기가 많아지는 단점이 생긴다.
+
+- 그렇다면 생성하는 클래스에서 처리할 수 있도록 프로퍼티 데코레이터를 사용하면 원인을 해결 할 수 있을 것이다.
 
 <aside>Solution</aside>
 
 
-> 공개 애트리뷰트를 이용하기
+> 프로퍼티 데코레이터를 이용 하여 객체 내부에서 관리하기
 
 ```python
-class Resitor:
-	def __init__(self, ohms):
-		self.ohms = ohms
-		self.voltage = 0
-		self.current = 0
+class NewBucket:
+	def __init__(self, period: int):
+		self.period_delta = timedelta(seconds=period)
+		self.reset_time = datetime.now()
+		self.max_quota = 0
+		self.quota_consumed = 0
 
-if __name__ == "__main__":
-	r1 = Resistor(50e-3)
-	r1.ohms = 10e3
-	r1.ohms += 5e3
-```
-- 위 코드는 유틸리티 게터 세터를 사용하지 않은 채 공개 애트리뷰트를 이용했다. 코드가 굉장히 깔끔해지는 것을 볼 수 있다.
-- 만약, 애트리뷰트를 설정할 때 특별한 기능을 수행 해야 한다면 프로퍼티 데코레이터를 이용 할 수 있다.
-
-
-
-
-<aside><mark style='background:var(--mk-color-blue)'><span style='color:var(--mk-color-yellow)'>Best case - 1</span></mark></aside>
-
-
-> property decorator 사용 하여 기능 수행하기
-
-```python
-class VoltageResistance(Resistor):
-	def __init__(self, ohms):
-		super().__init__(ohms)
-		self._voltage = 0
+	def __str__(self):
+		return (f"NewBucket(quota={self.max_quota}), "
+				f"quota_consumed={self.quota_consumed}")
 
 	@property
-	def voltage(self):
-		return self._voltage
+	def quota(self) -> int:
+		return self.max_quota - self.quota_consumed
 
-	@voltage.setter
-	def voltage(self, voltage):
-		self._voltage = voltage
-		self.current = self._voltage / self.ohms
+	@quota.setter
+	def quota(self, amount: int):
+		delta = self.max_quota - amount
 
-if __name__ == "__main__":
-	r2 = VoltageResistance(1e3)
-	print(f"이전: {r2.current:.2f} 암페어")
+		if amount == 0: # NOTE: 새로운 주기가 되고 가용 용량을 재설정함
+			self.quota_consumed = 0
+			self.max_quota = 0
+		elif delta < 0: # NOTE: 새로운 주기가 되고 가용 용량을 추가 하는 경우
+			assert self.quota_consumed == 0
+			self.max_quota = amount
+		else: # NOTE: 주기 안에서 가용 용량을 정상적으로 소비하는 경우
+			assert self.max_quota >= self.quota_consumed
+			self.quota_consumed += delta
+  
 
-	r2.voltage = 10
-	print(f"이후: {r2.current:.2f} 암페어")
+def new_version_callable():
+	bucket = NewBucket(60)
+	print(f"최초: {bucket}")
+	
+	fill(bucket, 100)
+	print(f"보충 후: {bucket}")
+
+	used: int = 99
+
+	if deduct(bucket, used):
+		print(f"{used} 용량 사용")
+	else:
+		print(f"가용 용량이 작아서 {used} 용량을 처리할 수 없음")
+		print(f"사용 후: {bucket}")
+
+	# NOTE: 남은 가용 용량을 초과해서 사용하는 경우
+	used = 3
+	if deduct(bucket, used):
+		print(f"{used} 용량 사용")
+	else:
+		print(f"가용 용량이 작아서 {used} 용량을 처리할 수 없음")
+
+	print(f"여전히 {bucket}")
 ```
-
-
-<aside><mark style='background:var(--mk-color-blue)'><span style='color:var(--mk-color-yellow)'>Best case - 2</span></mark></aside>
-
-> Property를 활용 하여 데이터 검증하기
-> 
-```python
-class BoundedResistance(Resistor):
-	def __init__(self, ohms):
-		super().__init__(ohms)
-
-	@property
-	def ohms(self):
-		return self._ohms
-
-	@ohms.setter
-	def ohms(self, ohms):
-		if ohms <= 0:
-			raise ValueError(f"저항 > 0이어야 합니다. 실제 값: {ohms}")
-		self._ohms = ohms
-
-if __name__ == "__main__":
-	r3 = BoundedResistance(-5)
-	r3.ohms = 0
-
-# >> ValueError!
-```
-
-
-<aside><h2>Review</h2></aside>
-
-
-* 게터나 세터를 정의 할 때 가장 좋은 정책 관련이 있는 객체 상태를 `property setter`메서드 안에서만 변경 한다.
-* 더 복잡하거나 느린 연상의 경우에는 일반적인 메서드를 사용하라.
-	* I/O, DB DML
-
+- 이렇게 프로퍼티 데코레이터를 이용한 애트리뷰트는 여러 클래스가 생성 되어도 각자 요구하는 비즈니스 로직이 담길 수 있다. 공통 유틸 함수를 수정하려 할 때를 생각 해보면 굉장히 깔끔해진 것을 알 수 있다.
+- 하지만, 프로퍼티 데코레이터도 반복해서 확장 하고 있다면 클래스 구조의 단점을 감추기 위한 작업이란 것을 잊지 말아야한다. 그럴 땐 꼭 리팩터링을 고려해라.
 
 
 # Summary
 
-- 새로운 클래스 인터페이스를 정의 할 때는 간단한 공개 애트리뷰트에서 시작하고, 세터나 게터 메서드를 사용하지 말라.
-- 객체에 접근하는 애트류비트의 특정한 기능이 필요하다면 property decorator를 활용하라.
-- property decorator를 구성할 땐 메서드가 빠르게 실행 되도록 유지하라.
+- 데코레이터 프로퍼티는 실제 문제를 해결 할 때 요구사항에 맞게 처리하기 알맞은 도움을 준다. 하지만, 과한 것 중 좋은 것은 없다.
+- 프로퍼티 데코레이터 메서드를 확장하고 있다면 리팩터링 할 때다.

@@ -59,7 +59,8 @@
 * [Effective Python](python/basic/README.md)
   * [Introduction and Goal](python/better-python-code51/README.md)
   * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy_evaluation.md)
-  * [Python property to getter-setter than better](python/effective-python-2nd/property.md)
+  * [Python public attributes are better getter-setter](python/effective-python-2nd/attributes.md)
+  * [No refactoring attribute, we can use property decorator](python/effective-python-2nd/property.md)
 
 
 ## Projects
