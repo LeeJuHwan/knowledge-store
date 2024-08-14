@@ -14,6 +14,7 @@
 * :point_right: **Airflow 0 to Ninja**
   * [Introduction and Goal](airflow/ninja/README.md)
   * [Setting](airflow/ninja/tutorial.md)
+  * [Module Import, Alert](airflow/ninja/basic.md)
 
 
 ### Docker

@@ -10,7 +10,8 @@
 
 * [Airflow-Ninja](airflow/basic/README.md)
     * [Introduction and Goal](airflow/ninja/README.md)
-    * [Tutorial](airflow/ninja/tutorial.md)
+    * [Tutorial: Settings](airflow/ninja/tutorial.md)
+    * [Tutorial: Module Import, Alert](airflow/ninja/basic.md)
 
 
 ## Docker

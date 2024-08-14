@@ -124,6 +124,13 @@ echo -e "AIRFLOW_UID=$(id -u)" > .env
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     ```
 
+- Change the task instance log url
+
+    ```yaml
+    x-airflow-common:
+        AIRFLOW__WEBSERVER__BASE_URL: "http://127.0.0.1:9090"
+    ```
+
 ### Airflow proejct init
 
 ```
@@ -145,6 +152,11 @@ docker compose up airflow-init
     docker compose run airflow-worker airflow dags list
     ```
 
+- Tasks list
+    ```
+    docker compose run airflow-worker airflow tasks list <dag_id>
+    ```
+
 - Test
     ```
     docker compose run airflow-worker airflow dags test "print-context"
@@ -155,6 +167,10 @@ docker compose up airflow-init
     docker compose restart airflow-scheduler
     ```
 
+- DAG Trigger
+    ```
+    docker compose run airflow-worker airflow dags trigger <dag_id>
+    ```
 
 ### Example usage
 
