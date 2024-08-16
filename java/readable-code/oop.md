@@ -1,17 +1,22 @@
+<details>
+
+<summary>Properties</summary>
+
+:pencil:2024.08.16
+
+자료: [읽기 좋은 코드를 작성하는 사고법](https://www.inflearn.com/course/readable-code-%EC%9D%BD%EA%B8%B0%EC%A2%8B%EC%9D%80%EC%BD%94%EB%93%9C-%EC%9E%91%EC%84%B1%EC%82%AC%EA%B3%A0%EB%B2%95/dashboard): 섹션 3
+
+</details>
 
 ## 객체지향 패러다임
-
 - 비공개 필드(데이터) + 비공개 메서드(코드)의 조합을 공개 메서드로 외부 객체와 소통 하는 방식
 - 외부 객체와 소통 하는 방식 덕분에 객체의 협력과 책임이 발생
 
 
 {% hint style="info" %}
-
-### 객체가 제공 하는 것
-
+ 객체가 제공 하는 것
 - 객체의 생성은 관심사를 기준으로 하기 때문에 유지 보수의 장점 제공
 - 다양한 객체가 협력 할 때 구현하는 코드 레벨에서 소통 하는 것이 아닌 추상화 레벨에서 비즈니스 로직을 다룰 수 있는 방식 제공
-
 {% endhint %}
 
 

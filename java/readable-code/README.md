@@ -12,7 +12,7 @@
 
 |학습 자료|시작|상태|
 |:------:|:---:|:---:|
-|자바 읽기 좋은 코드를 작성하는 습관|2024.08.04|시작|
+|[읽기 좋은 코드를 작성하는 사고법](https://www.inflearn.com/course/readable-code-%EC%9D%BD%EA%B8%B0%EC%A2%8B%EC%9D%80%EC%BD%94%EB%93%9C-%EC%9E%91%EC%84%B1%EC%82%AC%EA%B3%A0%EB%B2%95/dashboard)|2024.08.04|시작|
 
 ### 학습 목적
 
