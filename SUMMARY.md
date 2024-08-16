@@ -54,6 +54,7 @@
   * [Introduction and Goal](java/readable-code/README.md)
   * [Abstraction](java/readable-code/abstract.md)
   * [Logical-Thinking](java/readable-code/logical_thinking.md)
+  * [OOP](java/readable-code/oop.md)
 
 
 ## Python
