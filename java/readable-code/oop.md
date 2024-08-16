@@ -41,6 +41,22 @@
 
 	- 외부 데이터를 이용 해야 하는 경우
 		- 단순 데이터를 업데이트 하는 네이밍 사용하기 → ex) `updateAction`
+	
+	**Example use case**:
+
+	```java
+	public class Cell {  
+		private int nearbyLandMineCount;
+		
+		private Cell(int nearbyLandMineCount) {  
+			this.nearbyLandMineCount = nearbyLandMineCount;  
+		}
+	
+		public void updateNearbyLandMineCount(int count) {  
+			this.nearbyLandMineCount = count;  
+		}
+	}
+	```
 
 3. **`getter` 메서드는 요구사항에 의해 변경되지 않는 한 초기 생성 자제, 꼭 필요한 경우만 생성**
 
@@ -68,8 +84,43 @@
 	if (person.isAgeGreaterThanOrEqualTo(19)) {
 		pass();
 	}
-
 	```
+
+	**Example use case**:
+
+	```java
+	public class Cell {  
+  
+	    private static final String FLAG_SIGN = "⚑";  
+	    private static final String LAND_MINE_SIGN = "☼";  
+	    private static final String UNCHECKED_SIGN = "□";  
+	    private static final String EMPTY_SIGN = "■";  
+	  
+	    private int nearbyLandMineCount;  
+	    private boolean isLandMine;  
+	    private boolean isFlagged;  
+	    private boolean isOpened;
+
+
+		public String getSign() {  
+		    if (isOpened) {  
+		        if (isLandMine) {  
+		            return LAND_MINE_SIGN;  
+		        } 
+		        if (hasLandMineCount()) {  
+		            return String.valueOf(nearbyLandMineCount);  
+		        }
+		        return EMPTY_SIGN;  
+		    }  
+		    if (isFlagged) {  
+		        return FLAG_SIGN;  
+		    }
+		      
+		    return UNCHECKED_SIGN;
+		    }
+	}
+	```
+
 4. **무분별한 `getter`, `setter` 대신 객체에게 메세지를 보낼 것**
 
 5. **객체가 갖고 있는 필드는 적을수록 좋다**
