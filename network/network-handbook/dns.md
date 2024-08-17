@@ -149,11 +149,11 @@
 
 1. 클라이언트 → DNS Resolver: 클라이언트가 DNS Resolver에게 `lecture.awsclassroom.kr`이 어떤 IP인지 물어봄
 	1-1. Root Hint File에서 DNS Root를 찾아 DNS Query를 처음 요청 하게 됨
-	1-2. DNS Root는 Client가 보낸 도메인 이름을 모르기 때문에 다음 계층으로 갈 수 있는 내용을 응답 하게 됨
+	1-2. DNS Root는 Client가 보낸 도메인 이름을 모르기 때문에 다음 계층(TLDs: kr)으로 갈 수 있는 내용을 응답 하게 됨
 	
     ![image](../../.gitbook/assets/dns_tld_info.png)
 
-2. DNS Resolver → TLDs(.com): DNS Resolver가 DNS Root를 통해 응답 받은 관리 주체에게 `lecture.awsclassroom.kr`이 어느 주소를 갖고 있는지 요청을 보냄
+2. DNS Resolver → TLDs(.kr): DNS Resolver가 DNS Root를 통해 응답 받은 관리 주체에게 `lecture.awsclassroom.kr`이 어느 주소를 갖고 있는지 요청을 보냄
 	2-1. 해당 계층에서도 도메인 이름의 전체적인 정보를 모르고 있기 때문에 `awsclassroom.kr`이 어떤 NS 서버에서 관리하고 있는지에 대한 정보를 알려줌
 	
     ![image](../../.gitbook/assets/dns_tlds_to_ns.png)

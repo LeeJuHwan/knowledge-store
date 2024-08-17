@@ -131,3 +131,63 @@
 
 		- 단, 시간복잡도가 큰 메서드를 제공할 때 매번 호출되는 것이 성능상 문제가 생긴다면 필드로 사전에 최초 생성하는 방식이 더 나을 수 있음
 
+
+## SOLID 원칙 알아보기
+
+### SRP: Single Responsibility Principle
+
+- 하나의 클래스는 단 한 가지의 변경 이유만을 가져야 한다.
+- 관심사의 분리
+- 높은 응집도, 낮은 결합도
+	- → ‘변경 이유’ = 책임
+- 객체가 가진 공개 메서드, 필드, 상수 등은
+- 해당 객체의 단일 책임에 의해서만 변경 되는가?
+
+{% hint style="info" %}
+쉽게 예를 든다면 아래와 같이 화면에 보여주는 동작을 하는 구현체와 가까운 코드 뭉치를 `OutputHandler` 가 관리를 하여 메서드를 추상화 시키면 메인 코드에서 쉽게 관리할 수 있고 사용자에게 출력 할 내용을 하나의 객체에서 관리할 수 있고 반대로 사용자가 입력해야 하는 구현체를 갖고 있는 객체는 `InputHandler` 에서 관리할 수 있다.
+
+이렇게 입력과 출력을 관리하는 객체는 극히 작은 예시일 뿐 이지만 비즈니스 로직을 담고 있는 코드 객체는 본인의 책임에 따른 관심사를 기준으로 잡는다면 메인 로직이나 바라보는 관점이 달라질 수 있기 때문에 항상 메서드의 시그니처를 생각 할 때 어떤 정보가 필요한지, 해당 객체에서 관리하는게 맞는 것인지 고민을 하는 습관이 필요하다.
+{% endhint %}
+	
+
+	**Example use case**:
+	```java
+	public class ConsoleOutputHandler {  
+  
+	    public void showGameStartComments() {  
+	        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
+	        System.out.println("지뢰찾기 게임 시작!");  
+	        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
+	    }  
+	    public void showBoard(GameBoard board) {  
+	        System.out.println("   a b c d e f g h i j");  
+	        for (int row = 0; row < board.getRowSize(); row++) {  
+	            System.out.printf("%d  ", row + 1);  
+	            for (int col = 0; col < board.getColSize(); col++) {  
+	                System.out.print(board.getSign(row, col) + " ");  
+	            }            System.out.println();  
+	     
+			}        System.out.println();  
+	    }
+	}
+	
+	public class ConsoleInputHandler {  
+	    public static final Scanner SCANNER = new Scanner(System.in);  
+	  
+	  
+	    public String getUserInput() {  
+	        return SCANNER.nextLine();  
+	    }
+	}
+
+	public class Minesweeper {
+		public void run() {  
+		    consoleOutputHandler.showGameStartComments();
+		}
+
+		private String getCellInputFromUser() {  
+		    consoleOutputHandler.printCommentForSelectingCell();  
+		    return consoleInputHandler.getUserInput();  
+		}
+	}
+	```
