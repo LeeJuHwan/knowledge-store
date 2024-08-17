@@ -150,7 +150,8 @@
 {% endhint %}
 	
 
-	**Example use case**:
+**Example use case**:
+
 	```java
 	public class ConsoleOutputHandler {  
   
