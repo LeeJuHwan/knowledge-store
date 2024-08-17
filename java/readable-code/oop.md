@@ -152,43 +152,43 @@
 
 **Example use case**:
 
-	```java
-	public class ConsoleOutputHandler {  
-  
-	    public void showGameStartComments() {  
-	        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
-	        System.out.println("지뢰찾기 게임 시작!");  
-	        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
-	    }  
-	    public void showBoard(GameBoard board) {  
-	        System.out.println("   a b c d e f g h i j");  
-	        for (int row = 0; row < board.getRowSize(); row++) {  
-	            System.out.printf("%d  ", row + 1);  
-	            for (int col = 0; col < board.getColSize(); col++) {  
-	                System.out.print(board.getSign(row, col) + " ");  
-	            }            System.out.println();  
-	     
-			}        System.out.println();  
-	    }
+```java
+public class ConsoleOutputHandler {  
+
+	public void showGameStartComments() {  
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
+		System.out.println("지뢰찾기 게임 시작!");  
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");  
+	}  
+	public void showBoard(GameBoard board) {  
+		System.out.println("   a b c d e f g h i j");  
+		for (int row = 0; row < board.getRowSize(); row++) {  
+			System.out.printf("%d  ", row + 1);  
+			for (int col = 0; col < board.getColSize(); col++) {  
+				System.out.print(board.getSign(row, col) + " ");  
+			}            System.out.println();  
+		
+		}        System.out.println();  
 	}
+}
+
+public class ConsoleInputHandler {  
+	public static final Scanner SCANNER = new Scanner(System.in);  
 	
-	public class ConsoleInputHandler {  
-	    public static final Scanner SCANNER = new Scanner(System.in);  
-	  
-	  
-	    public String getUserInput() {  
-	        return SCANNER.nextLine();  
-	    }
+	
+	public String getUserInput() {  
+		return SCANNER.nextLine();  
+	}
+}
+
+public class Minesweeper {
+	public void run() {  
+		consoleOutputHandler.showGameStartComments();
 	}
 
-	public class Minesweeper {
-		public void run() {  
-		    consoleOutputHandler.showGameStartComments();
-		}
-
-		private String getCellInputFromUser() {  
-		    consoleOutputHandler.printCommentForSelectingCell();  
-		    return consoleInputHandler.getUserInput();  
-		}
+	private String getCellInputFromUser() {  
+		consoleOutputHandler.printCommentForSelectingCell();  
+		return consoleInputHandler.getUserInput();  
 	}
-	```
+}
+```
