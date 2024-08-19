@@ -192,3 +192,95 @@ public class Minesweeper {
 	}
 }
 ```
+
+
+
+### OCP: Open-Closed Principle
+
+- 확장에는 열려 있고, 수정에는 닫혀 있어야 한다.
+	- → 기존 코드의 변경 없이, 시스템의 기능을 확장할 수 있어야 한다.
+
+- 추상화와 다형성을 활용해서 OCP를 지킬 수 있다
+
+{% hint style="info" %}
+현재 어플리케이션이 잘 동작하고 있는 와중에 새로운 요구사항이 들어왔다고 생각 해보자.
+
+과연 어플리케이션의 코드는 얼만큼의 수정이 일어날 것인가,  개발자가 해당 요구사항을 해결 하기 위해 쏟아야 할 피로감이 어느정도인가?
+
+이러한 고민을 조금이나마 수월하게 해결 하기 위해서 `OCP` 원칙에 따라 메인 로직은 수정되지 않으며 구현부만 수정하는 상황을 만들어낼 수 있다.
+{% endhint %}
+
+> 설명
+
+기존에 운영중이던 지뢰찾기 게임 로직이 있다고 가정 해보자. 지뢰찾기 게임은 가로 10칸, 세로 8칸의 보드판으로 이루어져있고 총 지뢰 갯 수는 10개로 고정 되어있다.
+이 때, 사용자가 매우 시시하다고 건의를 했다.
+- 난이도 조절이 가능할 것
+- 난이도는 초급, 중급, 고급으로 나타내며 난이도의 상승에 따라 보드판이 넓어지고 지뢰 갯 수가 증가함
+
+이런 요구사항을 해결 하기 위해서 SRP 원칙에 근거 하여 보드판을 다루는 기본 로직이 객체화 되어야 한다. 그 다음 어플리케이션을 실행 할 레벨에서 난이도를 조정할 수 있도록 객체를 주입 해보자.
+
+**Example use case**:
+
+변경 전
+```java
+public class GameApplication {  
+  
+    public static void main(String[] args) {  
+        Minesweeper minesweeper = new Minesweeper();
+        minesweeper.run();  
+    }  
+}
+```
+
+변경 후
+
+- 인터페이스
+	```java
+	package cleancode.minesweeper.tobe.gamelevel;  
+	  
+	public interface GameLevel {  
+	  
+	    int getRowSize();  
+	  
+	    int getColSize();  
+	  
+	    int getLandMineCount();  
+	}
+	```
+
+- 구현 객체
+	```java
+	package cleancode.minesweeper.tobe.gamelevel;  
+	  
+	public class VeryBeginner implements GameLevel{  
+	  
+	  
+	    @Override  
+	    public int getRowSize() {  
+	        return 4;  
+	    }  
+	    @Override  
+	    public int getColSize() {  
+	        return 5;  
+	    }  
+	    @Override  
+	    public int getLandMineCount() {  
+	        return 2;  
+	    }
+	}
+	```
+
+- 메인 로직
+	```java
+	public class GameApplication {  
+	  
+	    public static void main(String[] args) {  
+	        GameLevel gameLevel = new VeryBeginner();  
+	  
+	        Minesweeper minesweeper = new Minesweeper(gameLevel);  
+	        minesweeper.run();  
+	    }  
+	}
+	```
+
+이렇게 인터페이스를 이용 하면 추상화 레벨에 대한 관점이 다이렉트로 드러나기 때문에 쉽게 구현체의 코드와 상관 없이 인터페이스의 메서드만을 이용 해서 보드판을 그리고, 지뢰 갯수를 생성 하는 등 어플리케이션의 최소 실행 조건이 만족하게 된다.
