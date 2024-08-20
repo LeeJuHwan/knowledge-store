@@ -193,7 +193,7 @@ public class Minesweeper {
 }
 ```
 
-
+<br></br>
 
 ### OCP: Open-Closed Principle
 
@@ -284,3 +284,179 @@ public class GameApplication {
 	```
 
 이렇게 인터페이스를 이용 하면 추상화 레벨에 대한 관점이 다이렉트로 드러나기 때문에 쉽게 구현체의 코드와 상관 없이 인터페이스의 메서드만을 이용 해서 보드판을 그리고, 지뢰 갯수를 생성 하는 등 어플리케이션의 최소 실행 조건이 만족하게 된다.
+
+<br></br>
+
+### LSP: Liskov Substitution Principle
+
+- 상속 구조에서, 부모 클래스의 인스턴스를 자식 클래스의 인스턴스로 치환할 수 있어야 한다.
+	- → 자식 클래스는 부모 클래스의 책임을 준수하며, 부모 클래스의 행동을 변경하지 않아야 한다.
+
+- LSP를 위반하게 되는 경우
+	- 상속 클래스를 사용할 때 오동작, 예상 밖의 예외가 발생하거나 이를 방지하기 위한 불필요한 타입 체크가 동반될 수 있다.
+
+쉽게 말해, 리스코프 치환 원칙에 중점은 상속 구조에서 부모 클래스의 메서드를 자식 클래스에서 오버라이딩 하여 별도의 실행 동작을 구성하는 것을 방지하는 것을 일컫는다.
+
+아래 예시에서 자바 다형성을 통해 구현된 메서드가 LSP를 어긋난 경우에서 어떻게 동작하고, 올바르게 사용하는 방법을 거시적으로 살펴보자.
+
+**Example use case**:
+
+`BAD Case` 에서는 부모 클래스인 추상클래스의 메서드가 불필요한 내용도 포함 하고 있어 자식 클래스에서 어쩔 수 없이 오버라이딩 하여 지원하지 않는 기능이라고 명시 하고 있다.
+
+- :thumbsdown: **BAD!**
+
+	```java
+	public abstract class Cell2 {  
+	  
+	    private static final String FLAG_SIGN = "⚑";  
+	    private static final String UNCHECKED_SIGN = "□";  
+	    private static final String EMPTY_SIGN = "■";  
+	  
+	    private int nearbyLandMineCount;  
+	    protected boolean isFlagged;  
+	    protected boolean isOpened;  
+	  
+	    public abstract void turnOnLandMine();  
+	  
+	    public abstract void updateNearbyLandMineCount(int count);  
+	  
+	    public abstract boolean isLandMine();  
+	  
+	    public abstract String getSign();  
+	  
+	    public abstract boolean hasLandMineCount();  
+	  
+	    public void flag() {  
+	        this.isFlagged = true;  
+	    }  
+	    public void open() {  
+	        this.isOpened = true;  
+	    }  
+	    public boolean isOpened() {  
+	        return isOpened;  
+	    }  
+	    public boolean isChecked() {  
+	        return isFlagged || isOpened;  
+	    }  
+	}
+	```
+
+
+	```java
+	public class LandMineCell extends Cell2{  
+	  
+	    private boolean isLandMine;  
+	    private static final String LAND_MINE_SIGN = "☼";  
+	  
+	    @Override  
+	    public void turnOnLandMine() {  
+	        this.isLandMine = true;  
+	    }  
+	    @Override  
+	    public void updateNearbyLandMineCount(int count) {  
+	        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");  
+	    }  
+	    @Override  
+	    public boolean isLandMine() {  
+	        return true;  
+	    }  
+	    @Override  
+	    public boolean hasLandMineCount() {  
+	        return false;  
+	    }  
+	    @Override  
+	    public String getSign() {  
+	        if (isOpened) {  
+	            return LAND_MINE_SIGN;  
+	        }  
+	        if (isFlagged) {  
+	  
+	        }    
+	    }  
+	}
+	```
+
+	```java
+	public class NumberCell extends Cell2{  
+	  
+	    private int nearbyLandMineCount;  
+	  
+	    public NumberCell(int nearbyLandMineCount) {  
+	        this.nearbyLandMineCount = nearbyLandMineCount;  
+	    }  
+	  
+	    @Override  
+	    public void turnOnLandMine() {  
+	        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");  
+	    }  
+	    @Override  
+	    public void updateNearbyLandMineCount(int count) {  
+	        this.nearbyLandMineCount = count;  
+	    }  
+	    @Override  
+	    public boolean isLandMine() {  
+	        return false;  
+	    }  
+	    @Override  
+	    public boolean hasLandMineCount() {  
+	        return true;  
+	    }  
+	    @Override  
+	    public String getSign() {  
+	        if (isOpened) {  
+	            return String.valueOf(nearbyLandMineCount);  
+	        }  
+	        if (isFlagged) {  
+	            return FLAG_SIGN;  
+	        }  
+	        return UNCHECKED_SIGN;  
+	    }
+	}
+	```
+
+만약, 위와 같은 코드가 있다고 했을 때 아래와 같은 메서드를 사용 해야 하는 경우가 있다고 가정을 해보자.
+
+```java
+public void temp(Cell2 cell) {
+	cell.updateNearbyLandMineCount(0);
+}
+```
+
+위 메서드가 실행 되는 시점을 머릿속으로 떠올리며 어떤 문제가 있을지 생각 해 보았을 때 이런 문제가 있을 것 같다.
+
+1. Cell2의 자식 클래스 중 `NumberCell` 이 아닌 경우는 `throw` 처리가 되어 서버 에러가 발생한다.
+2. 정상 동작을 위해 해당 메서드 내부에서 기능을 지원하는 클래스로 `instance of` 타입 검사가 발생한다.
+
+그렇기 때문에 부모 클래스에서 오버라이딩 한 기능을 사용하지 않는 자식 클래스가 있다면 별도의 에러 또는 기능을 정의 하지 말고 필요한 기능만 제공 하는 것이 바람직하다. 아래 코드는 자식 클래스에서 무조건 오버라이딩 할 필요가 없는 메서드는 제외 한 추상 클래스이다.
+
+- :thumbsup: **Good!**
+
+	```java
+	public abstract class Cell {  
+	
+		protected static final String FLAG_SIGN = "⚑";  
+		protected static final String UNCHECKED_SIGN = "□";  
+	
+		protected boolean isFlagged;  
+		protected boolean isOpened;  
+	
+		public abstract boolean isLandMine();  
+	
+		public abstract String getSign();  
+	
+		public abstract boolean hasLandMineCount();  
+	
+		public void flag() {  
+			this.isFlagged = true;  
+		}  
+		public void open() {  
+			this.isOpened = true;  
+		}  
+		public boolean isOpened() {  
+			return isOpened;  
+		}  
+		public boolean isChecked() {  
+			return isFlagged || isOpened;  
+		}  
+	}
+	```
