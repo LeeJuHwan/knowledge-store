@@ -77,6 +77,7 @@
   * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy_evaluation.md)
   * [Python public attributes are better getter-setter](python/effective-python-2nd/attributes.md)
   * [No refactoring attribute, we can use property decorator](python/effective-python-2nd/property.md)
+  * [You can do it, but it means you don't have to](python/better-python-code51/chapter5.md)
 
 
 ### Projects
