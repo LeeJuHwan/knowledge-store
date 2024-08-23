@@ -49,7 +49,7 @@
   * [Introduction and Goal](java/nextstep:java-playground/README.md)
   * [Mission1. Baseball-Unit Test](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
-  * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission1-2.md)
+  * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission2-1.md)
 
 * [Readable Code](java/basic/README.md)
   * [Introduction and Goal](java/readable-code/README.md)
