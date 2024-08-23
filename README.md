@@ -61,7 +61,7 @@
   * [Introduction and Goal](java/nextstep:java-playground/)
   * [Mission1. 숫자야구게임 - 학습테스트 실습](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
-    * [Mission2. 숫자야구게임 - 게임 구현](java/nextstep:java-playground/mission1-2.md)
+  * [Mission2. 숫자야구게임 - 게임 구현](java/nextstep:java-playground/mission2-2.md)
 
 
 * :point_right: **java-readable-code**
