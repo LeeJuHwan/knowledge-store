@@ -208,8 +208,9 @@ public class BaseballApplication implements Application {
     }
 
     private void actionToGameStartByJudgement(Judgment judgment) {
-        String userInputNumber = userAction();
-        ArrayList<String> userActionResult = userReadyComplete(userInputNumber);
+        String userInputValue = userInput();
+        User user = new User(userInputValue);
+        ArrayList<String> getUserInputArrayStringNumbers = user.getUserInputNumbers();
 
         Score score = judgment.judge(userActionResult);
 
@@ -262,9 +263,9 @@ public class BaseballApplication implements Application {
 
 3. `actionToGameStartByJudgement` 를 실행
 
-- 유저가 어떠한 행동을 한다. -> 이 부분은 메서드 네이밍이 잘못되었다고 느껴지기 때문에 수정이 필요하다.
+- 유저가 숫자를 입력한다.
 
-- 유저는 게임을 시작 할 준비가 완료 됐다고 알린다. -> 이부분 또한 유저가 시작할 준비가 완료 되고 바로 판정하는 것이 어색하다. 여기도 변경이 필요하다.
+- 유저가 입력한 숫자를 심판에게 전달한다.
 
 - 심판이 판정을 내린다.
 
@@ -286,4 +287,102 @@ public class BaseballApplication implements Application {
 이렇게 긴 내용을 풀어서 해석 할 수 있다. 추상의 개념을 통해 메서드를 쉽게 이해할 수 있었으며 다소 불편한 부분도 존재 했지만 이런식으로 이해하기 쉬워진다. 만약, 게임을 다시 시작 할 것인지 고르는 부분에서 `userInput.equals(1)` 이라고 한다면 1이 무엇을 의미하고 어떤 단계인지 알기 어렵다. **이렇게 해석하기 어려운 코드는 구현부에 위치하고 해석하기 쉬운 이름들을 지어주는 행위를 추상화 레벨을 맞춰준다** 라고 표현 할 수 있다.
 
 
-### 테스트 하기
+## 테스트 하기
+
+
+### 단위 테스트와 통합 테스트 간략하게 알아보기
+
+단위 테스트는 작은 기능이 빠르게 동작하기 위해 테스트 하는 것을 목적으로 하며 비즈니스 로직의 핵심 구현부를 의존성과 상관 없이 테스트 하는 환경을 만든다.
+
+단위 테스트는 통합 테스트 보다 빠른 실행 시간을 갖고 있기 때문에 **자주 실행**을 할 수 있다는 것이 큰 장점이다.
+
+통합 테스트는 의존성과 함께 넓은 커버리지를 담당한 테스트를 목적으로 하며 이 때 단위 테스트로 구현 할 수 없던 Private Method와 Branch Coverage 등 Reflection를 사용 하지 않고 직접적인 테스트가 어려운 부분을 커버하여 테스트한다.
+
+통합 테스트는 실행 속도는 느리지만 넓은 커버리지를 맡고 있기 때문에 회귀 케이스를 예방 할 수 있도록 도움을 얻기 효과적인 것이 큰 장점이다.
+
+
+### 단위 테스트를 구현 하다
+
+게임 어플리케이션의 실행 부분은 상태 값을 보존하는 무한 루프 코드와 사용자 입력을 기다리는 코드가 존재 하기 때문에 통합 테스트는 적합하지 않다고 생각이 들었다. 그렇다면 의존성 없이 메서드를 테스트 할 수 있는 환경을 만드는 단위 테스트가 적합하다고 생각이 든다.
+
+> 어떻게 테스트 할 것인가?
+
+위에서 구현 할 때 나는 도메인을 기준으로 나누었기 때문에 서비스 계층이 도메인에 속해있다. 도메인에서 추출 할 수 있는 서비스 계층은 아무래도 검증 하는 로직, 점수 판별 등 다양하게 존재 하는데 이 것을 도메인 내부에서 모든 것을 해결했는데 아키텍처 패턴을 이렇게 사용 해본적이 처음이었다.
+
+그렇기 때문에 도메인을 테스트 할텐데 최대한 Branch Coverage를 높게 달성 하는 것을 목표로 할 것이다.
+
+:bulb: Branch Coverage란?
+
+보통 메서드 테스트는 메서드를 테스트 했는가, 안 했는가로 나뉜다면 브랜치 커버리지는 메서드 내부에 조건 분기까지 커버리지에서 측정한다. 그렇기 때문에 메서드 내부에서 일어나는 행동들을 추적할 수 있다.
+
+
+> Branch Coverage가 오르지 않았던 도메인
+
+유일하게 브랜치 커버리지가 100%가 되지 않았던 도메인은 `컴퓨터` 도메인이었는데 이 도메인의 메서드를 살펴보자.
+
+```java
+public ArrayList<String> readyToGameStart() {
+
+    if (isGenerateRandomNumberSizeEqualToLimit()) {
+        return randomNumbers;
+    }
+    String number = getRandomNumberToString();
+
+    if (doesNotDuplicate(number)) {
+        randomNumbers.add(number);
+    }
+    return readyToGameStart();
+}
+```
+
+
+```java
+class ComputerTest {
+
+    @DisplayName("컴퓨터 플레이어의 난수 생성 메서드는 3개여야한다")
+    @Test
+    void 길이_검증() {
+        // Given
+        Computer computer = new Computer();
+
+        // When
+        int randomNumberGeneratorSize = computer.readyToGameStart().size();
+
+        // Then
+        assertThat(randomNumberGeneratorSize).isEqualTo(3);
+    }
+
+    @DisplayName("컴퓨터 플레이어의 난수 생성 메서드는 중복을 포함할 수 없다")
+    @Test
+    void 요소_중복_검사() {
+        // Given
+        Computer computer = new Computer();
+        ArrayList<String> fixture = computer.readyToGameStart();
+
+        // When
+        int randomNumberGeneratorSize = (int) fixture.stream()
+                .distinct()
+                .count();
+
+        // Then
+        assertThat(randomNumberGeneratorSize).isEqualTo(3);
+    }
+
+}
+
+```
+
+![image](../../.gitbook/assets/branch_coverage.png)
+
+- 해당 도메인의 브랜치 커버리지는 83%이다.
+
+> 브랜치 커버리지 원인 분석
+
+![image](../../.gitbook/assets/branch_coverage_reason.png)
+
+
+중복을 검사 하는 메서드에서 실패 케이스가 검증 되고 있지 않다. 그렇다면 스스로에게 질문 해볼 수 있다. **Random을 어떻게 테스트 할 것인가?**
+
+### `Random` 은 어떻게 테스트 할 것인가?
+
+- Mocking 내용 추가
