@@ -212,7 +212,7 @@ public class BaseballApplication implements Application {
         User user = new User(userInputValue);
         ArrayList<String> getUserInputArrayStringNumbers = user.getUserInputNumbers();
 
-        Score score = judgment.judge(userActionResult);
+        Score score = judgment.judge(getUserInputArrayStringNumbers);
 
         String scoreResultMessage = score.getScoreRecordResult();
         outputHandler.printMessage(scoreResultMessage);
