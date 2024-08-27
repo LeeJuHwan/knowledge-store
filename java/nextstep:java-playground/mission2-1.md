@@ -385,4 +385,57 @@ class ComputerTest {
 
 ### `Random` 은 어떻게 테스트 할 것인가?
 
-- Mocking 내용 추가
+[> 참고 블로그](https://yonghwankim-dev.tistory.com/576)
+
+`Mocking` 을 이용 하여 `Random` 모듈의 반환 값을 테스트 할 예정이다. 아무래도 알 수 없는 임의의 값을 테스트 하는 것은 의미가 없으니 알고 있는 값을 테스트 한다면 기능 동작에 대한 단위 테스트 검증이 가능하기 때문이다.
+
+테스트를 하다보면 이미 구현 되어있던 객체가 수정되어야  테스트가 가능해지는 경우가 종종 발생 하는데 이번 컴퓨터 도메인은 그런 케이스에 해당한다.
+
+> 테스트 하기 위한 컴퓨터 도메인 수정하기
+
+```java
+public class Computer {
+
+    public static final int BOUND = 9;
+    private final RandomGenerator randomGenerator;
+    private final ArrayList<String> randomNumbers = new ArrayList<>();
+
+    public Computer(RandomGenerator randomGenerator) {
+        this.randomGenerator = randomGenerator;
+    }
+}
+
+기존에는 합성을 사용해서 `Random` 클래스를 직접 생성 하고 있었다면 현재는 외부에서 주입하는 방식으로 변경 하였다. 그렇게 하여금 테스트 할 때 컴퓨터 객체를 생성 하기 위해 클래스를 주입 하면 되는데, 이 때 `Mocking` 을 이용하여 값을 예상 할 수 있다.
+```
+
+> 모킹을 이용한 테스트 케이스 만들기
+
+```java
+    @DisplayName("컴퓨터 플레이어의 난수 생성 메서드는 중복을 포함할 수 없다")
+    @Test
+    void 요소_중복_검사() {
+        // Given by Mocking
+        RandomGenerator mockRandom = Mockito.mock(RandomGenerator.class);
+        Mockito.when(mockRandom.getRandomNumberToString(9))
+                .thenReturn("1", "1", "2", "3");
+
+        Computer computer = new Computer(mockRandom);
+
+        // When
+        ArrayList<String> fixture = computer.readyToGameStart();
+        System.out.println("fixture = " + fixture);
+        int randomNumberGeneratorSize = (int) fixture.stream()
+                .distinct()
+                .count();
+
+        // Then
+        assertThat(randomNumberGeneratorSize).isEqualTo(3);
+        assertThat(fixture).containsExactly("1", "2", "3");
+    }
+```
+
+![image](../../.gitbook/assets/branch_coverage_result.png)
+
+결과적으로 브랜치 커버리지가 총 83%까지 올랐고 문제가 되었던 컴퓨터 도메인의 브랜치 커버리지가 100%가 되었다. 이렇게 테스트를 위한 환경을 구성 하면서 객체가 수정 되는 일도 발생 하고, 모킹을 이용 해야 하는 경우도 있다. 하지만 알아두어야 할 것은 그 사용이 적재적소에 잘 사용 되고 있는지를 점검 해봐야 한다.
+
+만약, 테스트를 하는 데 프라이빗 메서드가 퍼블릭 메서드에서 호출 되는게 너무 많고 그 내용이 제대로 테스트 되지 않을 땐 리팩터링을 고려 해봐야한다. 그 외에도 의존성이 실버뷸렛이 되지 않기 때문에 테스트를 어떠한 관점에서 하는지, 어떤 로직이 핵심적으로 테스트가 되어야 하는지, 단위 테스트를 해야 하는지 아니면 통합 테스트로 넓게 회귀 케이스를 방지 해야하는지 등 상황에 맞게 잘 활용 하는 것이 핵심이다.
