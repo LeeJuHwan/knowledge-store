@@ -477,3 +477,106 @@ public void temp(Cell2 cell) {
 
 그래서 불 필요한 메서드를 갖고 있는 인터페이스 한 개를 여러 클래스에서 구현하지 말고 **필요한 인터페이스만 유지될 수 있도록 잘게 쪼개고, 필요한 것을 다중으로 구현 하는 것이 핵심이다.**
 
+
+### DIP: Dependency Inversion Principle
+
+- 상위 수준의 모듈은 하위 수준의 모듈에 의존해서는 안 된다.
+
+- 둘 모두 추상화에 의존해야 한다.
+
+	- 저수준 모듈이 변경되어도, 고수준 모듈에는 영향이 가지 않는다.
+
+
+{% hint style="info" %}
+
+고수준 모듈: 구현 되어있는 모듈을 사용 하여 추상화 된 메서드를 제공 하는 모듈
+
+저수준 모듈: 객체 내부에서 실제 코드 레벨을 구현 하는 모듈
+
+의존성: A객체가 B객체의 메서드를 사용 해야 하는 경우 "의존성"이 있다고 판단 함
+
+의존성의 순방향: 고수준 모듈이 저수준 모듈을 참조하는 것
+
+의존성의 역방향: 고수준, 저수준 모듈이 **모두 추상화에 의존**하는 것
+
+{% endhint %}
+
+![image](../../.gitbook/assets/dip.png)
+
+> 왜 DIP 개념이 필요할까?
+
+의존성을 띈다는 것은 참조 당하고 있는 객체의 메서드가 수정 될 때 참조 하고 있는 객체의 실행 결과가 달라질 수 있다. 그렇다면 매번 수정이 일어날 때 마다 A객체, B객체 전부 수정 하는 것은 개발자의 코스트를 많이 빼앗는 행위가 되는 것이 아닐까란 생각이든다.
+
+그렇게 DIP 개념이 사용 되는데, 이는 추상화 된 모듈에서 스펙만 제공 하고, 구현체는 내부에서 어떤 행동을 하든 언제든 갈아끼워질 수 있다. 갈아 끼워진 코드는 참조 하고 있는 객체에서 스펙을 사용하고 있기 때문에 전혀 문제 될 것이 없다.
+
+**Example use case**:
+
+사용자의 입력, 출력을 담당하는 객체는 현재 콘솔로만 국한 되어있다. 만약 요구사항에 의해 콘솔도 사용 하지만 앞으로는 웹도 사용 된다고 해보자.
+
+웹은 콘솔에서 사용 하는 프린트문을 쓸 수 없기 때문에 직접적으로 참조 하고 있는 객체는 당연히 메서드 실행 결과가 나타나지 않을 것이다.
+
+간략하게 DIP 예시 코드를 살펴보자면 인터페이스로 스펙을 정의하고 구현체에서 스펙을 구현하고 메인 로직에서 스펙을 사용 한다고 보면 된다.
+
+**인터페이스 스펙 정의**
+
+```java
+public interface InputHandler {
+
+    String getUserInput();
+
+}
+```
+
+
+**인터페이스 스펙 구현**
+
+```java
+public class ConsoleInputHandler implements InputHandler {
+    public static final Scanner SCANNER = new Scanner(System.in);
+
+    @Override
+    public String getUserInput() {
+        return SCANNER.nextLine();
+    }
+}
+```
+
+**인터페이스 스펙 사용**
+```java
+public class Minesweeper implements GameInitializable, GameRunnable {
+
+    private final GameBoard gameBoard;
+    private final InputHandler inputHandler;
+    private final OutputHandler outputHandler;
+
+    public Minesweeper(GameLevel gameLevel, InputHandler inputHandler, OutputHandler outputHandler) {
+        gameBoard = new GameBoard(gameLevel);
+        this.inputHandler = inputHandler;
+        this.outputHandler = outputHandler;
+    }
+    private String getUserActionInputFromUser() {
+        outputHandler.showCommentForUserAction();
+        return inputHandler.getUserInput();
+    }
+}
+
+```
+
+**컴파일 단계에서 인터페이스의 구현체 의존성 주입**
+
+```java
+public class GameApplication {
+
+    public static void main(String[] args) {
+        GameLevel gameLevel = new VeryBeginner();
+        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
+        ConsoleOutputHandler consoleOutputHandler = new ConsoleOutputHandler();
+
+        Minesweeper minesweeper = new Minesweeper(gameLevel, consoleInputHandler, consoleOutputHandler);
+        minesweeper.initialize();
+        minesweeper.run();
+    }
+}
+```
+
+위 단계별로 코드를 읽고 나면 대충 짐작이 된다. 의존성 역전 원칙은 저수준 모듈을 직접 참조하여 변경사항이 있을 때 마다 서로 수정을 발생 시키는 것이 아니라 추상화 된 스펙을 고수준 모듈에서 참조 하여 저수준 모듈이 비교적 쉽게 코드를 수정 할 수 있도록 해야한다.
