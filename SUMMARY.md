@@ -5,6 +5,7 @@
 ## AWS
 
 * [AWS101](aws/aws101/README.md)
+    * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
 
 ## Airflow
 

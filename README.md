@@ -7,6 +7,7 @@
 ### AWS
 
 * :point\_right: **AWS101**
+  * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
 
 
 ### Airflow
