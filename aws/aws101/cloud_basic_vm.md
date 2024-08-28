@@ -72,6 +72,8 @@
 - 하드웨어에서 직접 가상화를 지원
 - 직접 Guest-OS가 하드웨어와 통신 -> 빠른 통신(near bare-metal)
 
+![image](../../.gitbook/assets/hvm.png)
+
 
 ### 가상화와 클라우드의 연관성
 
