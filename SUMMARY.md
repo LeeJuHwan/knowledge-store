@@ -6,6 +6,7 @@
 
 * [AWS101](aws/aws101/README.md)
     * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
+    * [AWS account and free-tier](aws/aws101/account_freetier.md)
 
 ## Airflow
 
