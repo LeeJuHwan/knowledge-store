@@ -6,7 +6,7 @@
 
 :pencil:2024.08.28
 
-:page_facing_up: - [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
+:page_facing_up: [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
 
 :paperclip: [가상화 참고 블로그](https://suyeon96.tistory.com/53#%EC%--%--%EC%-B%-C%EB%A-%-C%--Para%--Virtualization%--%EC%-D%B-%ED%--%B-%ED%--%--%EA%B-%B-)
 

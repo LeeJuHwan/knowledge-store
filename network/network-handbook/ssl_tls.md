@@ -6,7 +6,7 @@
 
 :pencil:2024.08.29
 
-:page_facing_up: - [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
+:page_facing_up: [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
 
 </details>
 
@@ -74,6 +74,19 @@
 ![image](../../.gitbook/assets/encryption_asy.png)
 
 위 사진 처럼 데이터를 도중에 탈취 하기 위해 감청 하는 사람이 공개 키를 얻었다고 복호화 할 수 있는 것이 아니다. 하지만, 서버와 클라이언트는 비밀 키를 알고 있기 때문에 비밀 키를 통해 복호화가 가능한 암호화 방식이다.
+
+
+{% hint style="info" %}
+
+:bulb: 비대칭키 암호화만 사용 하면 모든 데이터에 대해 보안 걱정은 없지 않을까?
+
+비대칭키 암호화는 연산 속도가 비교적 느리기 때문에 모든 데이터에 대해 적용 하게 된다면 우리의 웹 페이지에서 데이터를 보낼 때 마다 기다리는 시간이 증가 할 것이다.
+
+그렇기 때문에 비대칭키 암호화는 중요한 키 파일 이라든가 중요한 정보를 보낼 때만 사용 되고 그 외에는 비교적 연산이 빠른 대칭키 암호화로 중간에 데이터가 탈취 당하지 않도록 암호화가 적용 된다. 
+
+그 대표적 예로 HTTPS 통신이 그러한 방식으로 데이터를 전송한다.
+
+{% endhint %}
 
 
 ### 암호화 서명(Signing)

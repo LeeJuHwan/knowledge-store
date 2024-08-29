@@ -6,7 +6,7 @@
 
 :pencil:2024.08.29
 
-:page_facing_up: - [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
+:page_facing_up: [AWS 강의실](https://www.inflearn.com/course/%EC%89%BD%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%98%EB%8A%94-aws-%EA%B8%B0%EC%B4%88/dashboard)
 
 :paperclip: [LCU 참고 공식문서](https://aws.amazon.com/ko/elasticloadbalancing/pricing/)
 
