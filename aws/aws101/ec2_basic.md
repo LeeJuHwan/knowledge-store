@@ -12,7 +12,7 @@
 
 ## Amazon EC2
 
-### EC2의 인스턴스
+### EC2 인스턴스
 
 ![image](../../.gitbook/assets/ec2_structure.png)
 
