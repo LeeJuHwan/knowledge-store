@@ -85,7 +85,8 @@
 
 > 그럼에도 불구하고 `Getter` 를 사용 할 수 밖에 없었던 이유
 
-**User Domain**
+
+{% code title="User.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
 public class User {
@@ -101,9 +102,12 @@ public class User {
 }
 ```
 
+{% endcode %}
+
 지극히 개인적인 생각으로 유저 객체가 갖고 있는 숫자는 정답과 비교해야 하기 때문에 게터를 안 쓸 수가 없었다. 게터를 보호하고 싶다면 해당 객체에게 정중하게 물어봐야한다. 그렇다면 유저에게 정답을 묻는 것이 올바른 행동일까 라는 생각이 들었는데, 유저는 문제를 맞추는 사람인데 정답을 알고있다? 굉장히 모순적인 것 같았다. 그렇기 때문에 유저는 어쩔 수 없이 게터를 사용했다.
 
-**Score Domain**
+
+{% code title="Score.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
 public class Score {
@@ -135,12 +139,15 @@ public class Score {
 }
 ```
 
+{% endcode %}
+
 스코어 객체에서도 결과를 게터를 통해 가져오고 있다. 앞서 도메인을 추출하는 과정에서 `심판`이 `스코어` 객체를 통해 점수를 산출하고 결과를 받아오는데 이 때 필요한 게터 역할이었다. 만약 여기서도 게터를 보호해야 한다면 어떤 방향으로 흘러갔을까? 게터가 없었다면 결과를 출력하기 위해 `스코어` 객체의 공개 메서드를 통해 결과를 출력 해줬어야 했다. 스코어 객체는 점수를 기록하고 반환하면 되는 객체로 활용 되는데 출력을 담당하는 객체와 또 협력을 맺어야 할 필요가 있을까란 생각이 들어 출력을 빼고 스코어 객체의 속성 값을 가공하여 반환 하기로 변경 하였다.
 
 
 > `Getter`를 사용하지 않고 외부와 소통한 경우
 
-**Judgement Domain**
+
+{% code title="Judgement.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
 public class Judgment {
@@ -165,6 +172,8 @@ public class Judgment {
 }
 ```
 
+{% endcode %}
+
 `심판`은 점수를 산정한 후 `스코어` 객체를 반환한다. 심판이 점수를 산정 했으니 `getScore`를 통해 점수를 반환 했더라면 `Getter`를 사용하게 되는 경우에 속하게 되는데, 위 메서드에서 내부 상태를 변경하고 그 객체 자체를 반환 하고있다. 이렇게 반환 된 객체는 객체의 메서드를 통해 결과를 받아올 수 있어 캡슐화를 지키고 있다고 생각이 들었다. 
 
 
@@ -175,6 +184,8 @@ public class Judgment {
 그 중, 추상화 레벨을 동등하게 유지하여 "컴퓨터" 라고 작성하던 코드에서 갑자기 "명령어 처리 기계" 라고 하지 않는 습관을 들이기 위해 의도적인 연습을 하고있다.
 
 지금까지 추출한 도메인 내부는 추상적인 메서드를 사용하기 위해 만들어 놓은 구현부이다. 지금 확인 해볼 위치는 `Application` 의 게임 실행 부분인데, 이 때 뜬금 없이 구현 코드가 등장하지는 않는지 메서드명은 이해하기 쉬운 내용인지를 고민 해보면 좋다.
+
+{% code title="BaseballApplication.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
 
@@ -238,6 +249,8 @@ public class BaseballApplication implements Application {
     ...
 }
 ```
+
+{% endcode %}
 
 가장 대표적으로 확인 해볼 수 있는건 게임을 시작하는 로직인데 위 작성된 코드를 살펴보면서 어떤 내용을 의도적인 수련을 하고자 했던건지 알아보려고 한다. 일단 코드를 위에서 부터 아래로 읽으면서 내려오면 이러한 해석이 가능하다.
 
@@ -320,6 +333,8 @@ public class BaseballApplication implements Application {
 
 유일하게 브랜치 커버리지가 100%가 되지 않았던 도메인은 `컴퓨터` 도메인이었는데 이 도메인의 메서드를 살펴보자.
 
+{% code title="BaseballApplication.java" overflow="wrap" lineNumbers="true" %}
+
 ```java
 public ArrayList<String> readyToGameStart() {
 
@@ -335,6 +350,9 @@ public ArrayList<String> readyToGameStart() {
 }
 ```
 
+{% endcode %}
+
+{% code title="ComputerTest.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
 class ComputerTest {
@@ -372,6 +390,8 @@ class ComputerTest {
 
 ```
 
+{% endcode %}
+
 ![image](../../.gitbook/assets/branch_coverage.png)
 
 - 해당 도메인의 브랜치 커버리지는 83%이다.
@@ -393,6 +413,8 @@ class ComputerTest {
 
 > 테스트 하기 위한 컴퓨터 도메인 수정하기
 
+{% code title="Computer.java" overflow="wrap" lineNumbers="true" %}
+
 ```java
 public class Computer {
 
@@ -406,10 +428,14 @@ public class Computer {
 }
 ```
 
+{% endcode %}
+
 기존에는 합성을 사용해서 `Random` 클래스를 직접 생성 하고 있었다면 현재는 외부에서 주입하는 방식으로 변경 하였다. 그렇게 하여금 테스트 할 때 컴퓨터 객체를 생성 하기 위해 클래스를 주입 하면 되는데, 이 때 `Mocking` 을 이용하여 값을 예상 할 수 있다.
 
 
 > 모킹을 이용한 테스트 케이스 만들기
+
+{% code title="ComputerTest.java" overflow="wrap" lineNumbers="true" %}
 
 ```java
     @DisplayName("컴퓨터 플레이어의 난수 생성 메서드는 중복을 포함할 수 없다")
@@ -434,6 +460,8 @@ public class Computer {
         assertThat(fixture).containsExactly("1", "2", "3");
     }
 ```
+
+{% endcode %}
 
 ![image](../../.gitbook/assets/branch_coverage_result.png)
 
