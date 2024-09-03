@@ -178,8 +178,7 @@ EC2는 사용자에 의해 실행, 중지, 종료 등 다양한 액션을 제공
 
 {% hint style="info" %}
 
-"탄력적 네트워크 인터페이스는 VPC에서 가상 네트워크 카드를 나타내는 논리적 네트워킹 구성 요소입니다."
-- AWS
+"탄력적 네트워크 인터페이스는 VPC에서 가상 네트워크 카드를 나타내는 논리적 네트워킹 구성 요소입니다." - AWS
 
 {% endhint %}
 
@@ -214,13 +213,103 @@ EC2는 사용자에 의해 실행, 중지, 종료 등 다양한 액션을 제공
 ![image](../../.gitbook/assets/eip.png)
 
 
+### Userdata and Metadata
+
+> EC2 User Data
+
+![image](../../.gitbook/assets/ec2_userdata.png)
+
+- EC2 인스턴스의 최초 실행 시 지정한 스크립트를 실행 하도록 설정 가능
+    - 별도 설정을 통해서 재부팅 마다 실행 하도록 설정 가능
+
+- 두가지 모드
+    - Shell Script
+    - cloud-init: 리눅스 이미지의 부트스트래핑을 위한 오픈소스 어플리케이션
+
+- 주요 사용 사례
+    - EC2인스턴스 설정(보안 설정, 인스턴스 설정 등)
+
+    - 외부 패키지 다운로드
+
+    - 설치되어 있는 어플리케이션 실행
+
+    - 기타 EC2 실행시 필요한 동작들
+
+
+> EC2 Instance Meatadata
+
+{% hint style="info" %}
+
+"인스턴스 메타데이터는 실행 중인 인스턴스를 구성 또는 관리하는 데 사용될 수 있는 인스턴스 관련 데이터입니다. 인스턴스 메타데이터는 호스트 이름, 이벤트 및 보안 그룹과 같은 범주로 분류됩니다." - AWS
+
+{% endhint %}
+
+- EC2 인스턴스의 속성 및 정보 데이터
+    - AMI ID. IPv4/IPv6 주소, EBS 맵핑, 보안 그룹 연동 상황, IAM 역할 연동 등 다양한 정보가 존재
+
+- 실행중인 EC2 인스턴스의 메타데이터 IMDS(Instance Meatadata Service)로 조회 가능
+    - HTTP Endpoint로 메타데이터를 조회 할 수 있음
+
+    - HTTP Endpoint IP 주소, 해당 주소는 고정 아이피로 외워두면 좋음
+        - 169.254.169.254(IPv4)
+        - fd00:ec2::254(IPv6)
+    
+    - 두가지 버전 지원
+        - IMDS v1: Request/Response 기반의 HTTP 통신
+        - IMDS v2: 세션 기반 (기본 값으로 설정 되어있음)
+    
+    - 주요 사용 사례
+        - 인스턴스 별 설정, IAM 임시 자격증명 조회 등(AWS CLI, SDK 등 내부적으로 활용)
+
+- EC2 실행시 "고급 설정" 탭에서 메타데이터 액세스 가능 여부 설정 가능
+    - 기본 값으로 "활성화"로 설정 됨
+    - IMDS의 버전을 명시 할 수 있음
+    - 비용 발생 X
+
+
+**IMDS v1**
+
+버전 1은 별도의 인증이 필요 없는 HTTP Response/Request 방식으로 메타데이터를 주고 받으며, Link Local IP(169.254.169.254)는 고정적이지만 호출 하는 인스턴스의 주소에 따라 값이 변동 됨
+
+하지만, 별도의 인증이 없기 때문에 보안적으로 취약할 수 있기 때문에 이 점을 보완 하기 위해 버전 2가 릴리즈 되었음
+
+IMDS v1 사용 예시: 인스턴스 이름 가져오기
+
+
+{% code title="bash" overflow="wrap" lineNumbers="true" %}
+
+```bash
+curl http://169.254.169.254/latest/meta-data/tags/instance/Name
+```
+
+{% endcode %}
+
+
+**IMDS v2**
+
+보안 토큰을 발급 받아 토큰 정보를 기반으로 인증하는 세션 방식이며 토큰의 유효기간은 1초에서 최대 6시간 까지 설정이 가능하다.
+
+IMDS v1보다 더 높은 보안 수준을 제공 하고 IAM 정책 등을 활용 하여 EC2 인스턴스가 오직 IMDS v2만 사용 하도록 강제 설정이 가능함
+
+
+IMDS v2 사용 예시: 인스턴스 이름 가져오기
+
+{% code title="bash" overflow="wrap" lineNumbers="true" %}
+
+```bash
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/tags/instance/Name
+```
+
+{% endcode %}
+
+
+
 ## Amazon EBS
 
 {% hint style="info" %}
 
-"Amazon Elastic Block Store(EBS)는 AWS 클라우드의 Amazon EC2 인스턴스에 사용 할 영구 블록 스토리지 볼륨을 제공합니다. 각 Amazon EBS 볼륨은 가용 영역 내에 자동으로 복제되어 구성 요소 장애로 부터 보호 해주고, 고가용성 및 내구성을 제공 합니다."
-
-- AWS 공식문서
+"Amazon Elastic Block Store(EBS)는 AWS 클라우드의 Amazon EC2 인스턴스에 사용 할 영구 블록 스토리지 볼륨을 제공합니다. 각 Amazon EBS 볼륨은 가용 영역 내에 자동으로 복제되어 구성 요소 장애로 부터 보호 해주고, 고가용성 및 내구성을 제공 합니다." - AWS 공식문서
 
 {% endhint %}
 
