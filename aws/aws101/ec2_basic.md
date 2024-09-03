@@ -213,7 +213,7 @@ EC2는 사용자에 의해 실행, 중지, 종료 등 다양한 액션을 제공
 ![image](../../.gitbook/assets/eip.png)
 
 
-### Userdata and Metadata
+### EC2 Userdata and Metadata
 
 > EC2 User Data
 
@@ -303,6 +303,28 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta
 
 {% endcode %}
 
+
+### EC2 권한 설정
+
+> **IAM 자격 증명을 AWS Credential로 등록 하는 경우**
+
+- IAM 사용자를 생성하고 IAM 자격증명을 발급 받아 EC2에 등록
+
+- AWS Configure(AWS CLI)를 통해 등록 -> ~/aws/.credentials
+
+- AWS Configure를 통해 손 쉽게 자격 증명을 등록 할 수 있지만 여러 계정을 관리 하려면 매 번 자격 증명을 등록하기 위한 인스턴스 여러 대에 직접 접근하여 수정하는 불상사가 있어 관리가 어려움
+
+
+> **IAM 역할을 프로파일링 하여 EC2에 제공하는 경우**
+
+- 권한이 부여된 IAM 역할을 만들고 EC2에 부여함
+
+- 관리가 쉽고 역할만 변경 하면 되기 때문에 교체가 쉬움
+
+- 내부적으로 지속적인 자격 증명을 변경 할 수 있으며 AWS Credentail 방식은 EC2에 접근이 가능하면 누구나 탈취 가능한 정보이지만 IAM 역할은 탈취 당하더라도 권한을 막으면 되기 때문에 보안성이 뛰어남
+
+
+![image](../../.gitbook/assets/ec2_iam_role.png)
 
 
 ## Amazon EBS
