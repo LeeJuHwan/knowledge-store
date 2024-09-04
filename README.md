@@ -12,7 +12,7 @@
   * [AWS IAM Basic](aws/aws101/iam_basic.md)
   * [AWS EC2 Basic](aws/aws101/ec2_basic.md)
   * [AWS Elastic Block Storage](aws/aws101/ebs.md)
-  * [AWS EC2 Auto Scaling](aws/aws101/ec2_autoscaling.md)
+  * [AWS EC2 Auto Scaling](aws/aws101/autoscaling.md)
 
 
 ### Airflow
