@@ -46,4 +46,4 @@
 
 - 연결하지 않아도 보유하기만 해도 비용 발생(IPv4 비용 발생)
 
-![image](../../.gitbook/assets/eip.png)
+![image](../../../.gitbook/assets/eip.png)

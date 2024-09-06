@@ -26,7 +26,7 @@ ELB는 주로 Auto Scaling과 자주 사용되며 고가용성에 대한 장애 
 
 그래서, 클라이언트 사이드는 인스턴스와 직접적으로 통신을 이루는 것이 아닌 앞단에서 트래픽을 분산 처리 해줄 수 있는 ELB의 도메인을 기준으로 통신을 이루면서 ELB가 인스턴스들에게 통신을 분산 처리 해주는 구조가 나오게 된다.
 
-![image](../../.gitbook/assets/elb_why_use.png)
+![image](../../../.gitbook/assets/elb_why_use.png)
 
 
 ### ELB란?
@@ -79,7 +79,7 @@ OSI 3계층이며 트래픽을 가장 먼저 체크하는 로드밸런서로 가
 
 **ELB + Auto Scaling**
 
-![image](../../.gitbook/assets/elb_auto.png)
+![image](../../../.gitbook/assets/elb_auto.png)
 
 - Auto Scaling을 통해 EC2 인스턴스 숫자를 관리
 
@@ -92,7 +92,7 @@ OSI 3계층이며 트래픽을 가장 먼저 체크하는 로드밸런서로 가
 
 ### 대상 그룹(Target Group)
 
-![image](../../.gitbook/assets/target_group.png)
+![image](../../../.gitbook/assets/target_group.png)
 
 **Target Group이란?**
 
@@ -115,7 +115,7 @@ OSI 3계층이며 트래픽을 가장 먼저 체크하는 로드밸런서로 가
 
 ### 리스너
 
-![image](../../.gitbook/assets/listner.png)
+![image](../../../.gitbook/assets/listner.png)
 
 - ALB로 들어오는 요청을 처리하는 주체
     - 들어오는 트래픽의 프로토콜 + 포트 단위

@@ -18,7 +18,7 @@
 
 {% endhint %}
 
-![image](../../.gitbook/assets/aws_autoscaling_list.png)
+![image](../../../.gitbook/assets/aws_autoscaling_list.png)
 
 
 
@@ -94,4 +94,4 @@
 - Lambda를 활용해서 더욱 더 견고한 커스텀 정책 적용 가능
 
 
-![image](../../.gitbook/assets/ec2_autoscaling_run.png)
+![image](../../../.gitbook/assets/ec2_autoscaling_run.png)

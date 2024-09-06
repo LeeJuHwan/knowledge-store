@@ -70,7 +70,7 @@
 </details>
 
 
-![image](../../.gitbook/assets/ebs.png)
+![image](../../../.gitbook/assets/ebs.png)
 
 
 ### EBS의 유형
@@ -131,7 +131,7 @@
     - Public으로 사용 하는 경우는 만약 인스턴스를 생성 할 AMI를 모두가 같은 환경에서 사용 해야 한다면 이에 해당 할 수 있음 -> 예를 들어 AWS 실습을 위한 강의와 같은 경우
 
 
-![image](../../.gitbook/assets/ami.png)
+![image](../../../.gitbook/assets/ami.png)
 
 
 > 인스턴스 저장 유형에 따른 AMI의 생성 방법

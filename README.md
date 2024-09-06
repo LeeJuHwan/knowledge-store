@@ -10,11 +10,11 @@
   * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
   * [AWS account and free-tier](aws/aws101/account_freetier.md)
   * [AWS IAM Basic](aws/aws101/iam_basic.md)
-  * [AWS EC2 Basic](aws/aws101/ec2_basic.md)
-  * [AWS ENI and EIP](aws/aws101/eni_eip.md)
-  * [AWS Elastic Block Storage](aws/aws101/ebs.md)
-  * [AWS Auto Scaling](aws/aws101/autoscaling.md)
-  * [AWS Elastic Load Balancer](aws/aws101/elb.md)
+  * [AWS EC2 Basic](aws/aws101/ec2/ec2_basic.md)
+  * [AWS ENI and EIP](aws/aws101/ec2/eni_eip.md)
+  * [AWS Elastic Block Storage](aws/aws101/ec2/ebs.md)
+  * [AWS Auto Scaling](aws/aws101/ec2/autoscaling.md)
+  * [AWS Elastic Load Balancer](aws/aws101/ec2/elb.md)
 
 
 ### Airflow
