@@ -35,4 +35,101 @@
 
 유지보수 하는 개발자 입장에서 부모 클래스의 메서드 하나를 수정하기 위해 굉장히 많은 작업을 반복해야 하기 때문에 유연한 조합 설계 구조로 왠만한 문제는 풀어나갈 수 있다.
 
-**상속 구조는 조합 구조로 해결이 가능하다**
+**Example use case**:
+
+{% code title="상속을 이용하는 경우" overflow="wrap" lineNumbers="true" %}
+
+```java
+public class EmptyCell extends Cell {
+
+    private static final String EMPTY_SIGN = "■";
+
+    @Override
+    public boolean isLandMine() {
+        return false;
+    }
+
+    @Override
+    public boolean hasLandMineCount() {
+        return false;
+    }
+
+    @Override
+    public String getSign() {
+        if (isOpened) {  // 부모 메서드
+            return EMPTY_SIGN;
+        }
+
+        if (isFlagged) {  // 부모 메서드
+            return FLAG_SIGN;
+        }
+
+        return UNCHECKED_SIGN;
+    }
+}
+```
+
+{% endcode %}
+
+위 처럼 상속을 이용하는 경우 `isOpened`와 `isFlagged` 가 수정이 발생 했다고 가정 했을 때 과연 `getSign` 메서드는 의도한 조건에 맞게 실행 되고 있는지 테스트가 필요하다.
+
+또한, 자식 클래스가 부모 클래스의 캡슐화 된 데이터를 모든 정보를 다 알고있다. 이 경우는 캡슐화도 깨진 경우이기 때문에 조합을 이용해서 캡슐화를 지키고 유지보수 측면에서 유연한 설계를 보자면 아래와 같다.
+
+
+{% code title="조합을 이용하는 경우" overflow="wrap" lineNumbers="true" %}
+
+```java
+public class EmptyCell implements Cell {
+
+    private static final String EMPTY_SIGN = "■";
+
+    private final CellState cellState = CellState.initialize();
+
+    @Override
+    public boolean isLandMine() {
+        return false;
+    }
+
+    @Override
+    public boolean hasLandMineCount() {
+        return false;
+    }
+
+    @Override
+    public void flag() {
+        cellState.flag();
+    }
+
+    @Override
+    public void open() {
+        cellState.open();
+    }
+
+    @Override
+    public boolean isOpened() {
+        return cellState.isOpened();
+    }
+
+    @Override
+    public boolean isChecked() {
+        return cellState.isChecked();
+    }
+
+    @Override
+    public String getSign() {
+        if (cellState.isOpened()) {
+            return EMPTY_SIGN;
+        }
+
+        if (cellState.isFlagged()) {
+            return FLAG_SIGN;
+        }
+
+        return UNCHECKED_SIGN;
+    }
+}
+```
+
+{% endcode %}
+
+위 코드는 조합과 인터페이스를 활용 한 경우이며 물론 상속 보다는 반복되는 코드 구조가 발생 하는 것은 사실이다. 하지만, `cell`과 관련 된 데이터 내부는 캡슐화 된 다른 객체로 대체 되었고 외부 객체와 협력하고 있다. 또한 인터페이스를 물려 받아 구현한 메서드들은 해당 객체의 고유한 행동을 나타낼 수 있기 때문에 수정 되더라도 메인 로직의 변함은 없다.
