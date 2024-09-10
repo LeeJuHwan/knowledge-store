@@ -78,7 +78,7 @@
   * [Abstraction](java/readable-code/abstract.md)
   * [Logical-Thinking](java/readable-code/logical_thinking.md)
   * [OOP](java/readable-code/oop.md)
-
+  * [OOP: Apply to code](java/readable-code/oop-code.md)
 
 ### Python
 
