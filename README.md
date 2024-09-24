@@ -66,13 +66,6 @@
 
 ### Java
 
-* :point\_right: **nextstep: java-playground**
-  * [Introduction and Goal](java/nextstep:java-playground/)
-  * [Mission1. 숫자야구게임 - 학습테스트 실습](java/nextstep:java-playground/mission1-1.md)
-  * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
-  * [Mission2. 숫자야구게임 - 게임 구현](java/nextstep:java-playground/mission2-1.md)
-
-
 * :point_right: **java-readable-code**
   * [Introduction and Goal](java/readable-code/README.md)
   * [Abstraction](java/readable-code/abstract.md)
@@ -89,5 +82,17 @@
   * [No refactoring attribute, we can use property decorator](python/effective-python-2nd/property.md)
   * [You can do it, but it means you don't have to](python/better-python-code51/chapter5.md)
 
+
+### Playgrounds
+
+* :point\_right: **nextstep: java-playground**
+  * [Introduction and Goal](java/nextstep:java-playground/)
+  * [Mission1. 숫자야구게임 - 학습테스트 실습](java/nextstep:java-playground/mission1-1.md)
+  * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
+  * [Mission2. 숫자야구게임 - 게임 구현](java/nextstep:java-playground/mission2-1.md)
+
+* :point_right: **infra-workshop**
+  * [Introduction and Goal](infra-playground/)
+  * [그럴듯하게 인프라 만들기 - 지하철 노선도 1주차](infra-playground/1week.md)
 
 ### Projects
