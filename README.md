@@ -93,6 +93,7 @@
 
 * :point_right: **infra-workshop**
   * [Introduction and Goal](infra-playground/)
+  * [사전 학습 - 망 구성하기](infra-playground/pre-activity-topology)
   * [그럴듯하게 인프라 만들기 - 지하철 노선도 1주차](infra-playground/1week.md)
 
 ### Projects

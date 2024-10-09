@@ -85,4 +85,5 @@
   * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission2-1.md)
 
 * [Infra Playground](infra-playground/README.md)
-  * [그럴듯하게 인프라 만들기 - 지하철 노선도 1주차](infra-playground/1week.md)
+  * [pre-knowledege: VPC](infra-playground/pre-activity-topology)
+  * [subwaymap-1week](infra-playground/1week.md)

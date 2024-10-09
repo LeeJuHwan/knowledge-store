@@ -193,13 +193,13 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 ![image](../.gitbook/assets/subway_map_rt_sb.png)
 
-- [x] 외부망 전용 Route
-- 0.0.0.0/0: Internet Gateway 연결 (내부 <-> 외부 양방향 통신)
-- 서브넷 연결: admin-subway-map-01, external-subway-map-subnet-01, external-subway-map-subnet-02
+- 외부망 전용 Route
+    - [x] 0.0.0.0/0: Internet Gateway 연결 (내부 <-> 외부 양방향 통신)
+    - [x] 서브넷 연결: admin-subway-map-01, external-subway-map-subnet-01, external-subway-map-subnet-02
 
-- [-] 내부망 전용 Route
-- 0.0.0.0/0: NAT Gateway (내부 -> 외부 단방향 통신)
-- ❌ 서브넷 연결 : internal-subway-map-subnet-01
+- 내부망 전용 Route
+    - ❌ 0.0.0.0/0: NAT Gateway (내부 -> 외부 단방향 통신)
+    - ❌ 서브넷 연결 : internal-subway-map-subnet-01
 
 #### Security Groups
 
