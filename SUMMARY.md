@@ -85,5 +85,5 @@
   * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission2-1.md)
 
 * [Infra Playground](infra-playground/README.md)
-  * [pre-knowledege: VPC](infra-playground/pre-activity-topology)
+  * [pre-knowledege: VPC](infra-playground/pre-activity-topology.md)
   * [subwaymap-1week](infra-playground/1week.md)
