@@ -133,3 +133,90 @@ public class EmptyCell implements Cell {
 {% endcode %}
 
 위 코드는 조합과 인터페이스를 활용 한 경우이며 물론 상속 보다는 반복되는 코드 구조가 발생 하는 것은 사실이다. 하지만, `cell`과 관련 된 데이터 내부는 캡슐화 된 다른 객체로 대체 되었고 외부 객체와 협력하고 있다. 또한 인터페이스를 물려 받아 구현한 메서드들은 해당 객체의 고유한 행동을 나타낼 수 있기 때문에 수정 되더라도 메인 로직의 변함은 없다.
+
+### Value Object(VO)
+
+{% hint style="info" %}
+
+<mark style="color:orange;background-color:purple;">Value Object</mark>
+
+- 도메인의 어떤 개념을 추상화하여 표현한 값 객체
+
+- 값으로 취급하기 위해서, 불변성, 동등성, 유효성 검증 등을 보장해야 한다.
+  - 불변성: final 필드, setter 금지
+  - 동등성: 서로 다른 인스턴스여도(Object ID가 달라도), 내부의 값이 같으면 같은 값 객체로 취급한다. `equals()` & `hashCode()` 재정의 필요
+
+- 유효성 검증: 객체가 생성되는 시점에 값에 대한 유효성을 보장하기 
+
+{% endhint %}
+
+**Example use case**:
+
+{% code title="Money 예시" overflow="wrap" lineNumbers="true" %}
+
+```java
+public class Money {
+  private final long amount;
+  
+  public Money(long amount){
+    if (amount < 0) {
+      throw new IllegalArgumentException("금액은 0원 이상이어야 합니다.);
+    }
+    this.amount = amount;
+  }
+  
+  // equals() && hashCode() 재정의
+}
+
+/*
+
+Money money1 = new Money(1_000L);
+Money money2 = new Money(1_000:);
+
+assertThat(money1 == money2).isFalse();
+assertThat(money1.equals(money2)).isTrue();
+*/
+
+```
+
+
+#### VO vs Entity
+
+
+{% tabs %}
+
+{% tab title="Entity" %}
+
+```java
+class UserAccount {
+  private String userId; // 식별자
+  private String 이름;
+  private String 생년월일;
+  private Address 집주소;
+}
+```
+
+{% endtab %}
+
+{% tab title="VO" %}
+
+```java
+class Address {
+  private String 시도;
+  private String 시군구;
+  private String 도로명;
+  private String 건물번호;
+}
+```
+ 
+{% endtab %}
+
+{% endtabs %}
+
+- Entity는 **식별자**가 존재한다. 식별자가 아닌 필드의 값이 달라도 식별자가 같으면 동등한 객체로 취급한다.
+  - `equals()` & `hashCode()`도 식별자 필드만 가지고 재정의 할 수 있다.
+  - 식별자가 같은데 식별자가 아닌 필드의 값이 서로 다른 두 인스턴스가 있다면 같은 Entity가 시간이 지남에 따라 값이 수정된 것으로 이해 할 수 있다.
+
+- VO는 식별자 없이 **내부의 모든 값이 다 같아야 동등한 객체로 취급한다**
+  - 개념적으로 전체 필드가 다 같이 식별자 역할을 한다고 생각해도 된다.
+
