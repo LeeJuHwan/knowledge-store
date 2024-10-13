@@ -219,3 +219,50 @@ class Address {
 - VO는 식별자 없이 **내부의 모든 값이 다 같아야 동등한 객체로 취급한다**
   - 개념적으로 전체 필드가 다 같이 식별자 역할을 한다고 생각해도 된다.
 
+
+### 일급 컬렉션
+
+- 컬렉션을 포장하면서 컬렉션만을 유일하게 필드로 가지는 객체
+  - 컬렉션을 다른 객체와 동등한 레벨로 다루기 위함
+  - 단 하나의 컬렉션 필드만을 가진다
+
+- 컬렉션을 추상화하며 의미를 담을 수 있고 흩어져 있던 가공 로직을 객체 내부로 옮길 수 있다.
+  - 가공 로직에 대한 테스트도 가능
+
+- 만약 `getter`로 컬렉션을 반환 할 일이 생긴다면 포장 된 컬렉션을 반환 하지 말 것!
+  - Private attribute를 외부에 그대로 제공 했을 때 컬렉션이기 때문에 조작이 가능 함
+    - 조작을 하게 되면 동일한 메모리 주소를 갖고 있어 내부 로직에 영향을 받을 수 있음
+  - 그렇기 때문에 외부 조작을 피하기 위해 **꼭 새로운 컬렉션으로 만들어서 반환 해주자**
+
+#### 일급 시민
+
+- 다른 요소에게 사용 가능한 모든 연산을 지원하는 요소
+  - 변수로 할당 될 수 있음
+  - 파라미터로 전달 될 수 있음
+  - 함수의 결과로 반환 될 수 있음
+
+{% hint style="info" %}
+**examples** 일급 함수
+- 함수형 프로그래밍 언어에서, 함수는 일급 시민이다.
+- 함수는 변수에 할당 되거나 인자로 전달 되거나 함수의 결과로 함수가 반환 될 수 있다.
+{% endhint %}
+
+**Example use case**:
+
+{% code title="예시 코드" overflow="wrap" lineNumbers="true" %}
+
+```java
+public class Money {
+  private final List<CreditCard> cards;
+
+  // 생성자
+
+  public List<CreditCard> findValidCards() {
+    return this.cards.stream()
+        .filter(CreditCard::isValid)
+        .toList();
+  }
+}
+```
+
+{% endcode %}
