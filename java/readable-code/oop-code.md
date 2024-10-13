@@ -169,16 +169,15 @@ public class Money {
 }
 
 /*
-
 Money money1 = new Money(1_000L);
 Money money2 = new Money(1_000:);
 
 assertThat(money1 == money2).isFalse();
 assertThat(money1.equals(money2)).isTrue();
 */
-
 ```
 
+{% endcode %}
 
 #### VO vs Entity
 
