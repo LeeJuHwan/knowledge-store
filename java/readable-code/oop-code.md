@@ -286,7 +286,7 @@ public class Money {
 
 {% tabs %}
 
-{% tab title="Enum 클래스 구성하기" %}
+{% tab title="Enum 클래스 구성" %}
 
 ```java
 public enum UserAction {
@@ -305,7 +305,7 @@ public enum UserAction {
 
 {% endtab %}
 
-{% tab title="Enum 클래스 사용하기" %}
+{% tab title="Enum 클래스 반환" %}
 
 ```java
   public UserAction getUserActionFromUser() {
@@ -321,6 +321,38 @@ public enum UserAction {
 
       return UserAction.UNKNOWN;
   }
+```
+ 
+{% endtab %}
+
+{% tab title="Enum 클래스 사용" %}
+
+```java
+private String decideCellSignFrom(CellSnapshot snapshot) {
+    CellSnapshotStatus status = snapshot.getStatus();
+
+    if (status == CellSnapshotStatus.EMPTY) {
+        return EMPTY_SIGN;
+    }
+
+    if (status == CellSnapshotStatus.FLAG) {
+        return FLAG_SIGN;
+    }
+
+    if (status == CellSnapshotStatus.LAND_MINE) {
+        return LAND_MINE_SIGN;
+    }
+
+    if (status == CellSnapshotStatus.NUMBER) {
+        return String.valueOf(snapshot.getNearbyLandMineCount());
+    }
+
+    if (status == CellSnapshotStatus.UNCHECKED) {
+        return UNCHECKED_SIGN;
+    }
+
+    throw new IllegalArgumentException("확인 할 수 없는 셀 입니다.");
+}
 ```
  
 {% endtab %}
