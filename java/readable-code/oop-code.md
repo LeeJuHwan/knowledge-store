@@ -37,7 +37,9 @@
 
 **Example use case**:
 
-{% code title="상속을 이용하는 경우" overflow="wrap" lineNumbers="true" %}
+{% tabs %}
+
+{% tab title="상속을 이용하는 경우" %}
 
 ```java
 public class EmptyCell extends Cell {
@@ -69,14 +71,9 @@ public class EmptyCell extends Cell {
 }
 ```
 
-{% endcode %}
+{% endtab %}
 
-위 처럼 상속을 이용하는 경우 `isOpened`와 `isFlagged` 가 수정이 발생 했다고 가정 했을 때 과연 `getSign` 메서드는 의도한 조건에 맞게 실행 되고 있는지 테스트가 필요하다.
-
-또한, 자식 클래스가 부모 클래스의 캡슐화 된 데이터를 모든 정보를 다 알고있다. 이 경우는 캡슐화도 깨진 경우이기 때문에 조합을 이용해서 캡슐화를 지키고 유지보수 측면에서 유연한 설계를 보자면 아래와 같다.
-
-
-{% code title="조합을 이용하는 경우" overflow="wrap" lineNumbers="true" %}
+{% tab title="조합을 이용하는 경우" %}
 
 ```java
 public class EmptyCell implements Cell {
@@ -130,9 +127,21 @@ public class EmptyCell implements Cell {
 }
 ```
 
-{% endcode %}
+{% endtab %}
 
-위 코드는 조합과 인터페이스를 활용 한 경우이며 물론 상속 보다는 반복되는 코드 구조가 발생 하는 것은 사실이다. 하지만, `cell`과 관련 된 데이터 내부는 캡슐화 된 다른 객체로 대체 되었고 외부 객체와 협력하고 있다. 또한 인터페이스를 물려 받아 구현한 메서드들은 해당 객체의 고유한 행동을 나타낼 수 있기 때문에 수정 되더라도 메인 로직의 변함은 없다.
+{% endtabs %}
+
+{% hint style="info" %}
+
+**상속**
+상속을 이용하는 경우 `isOpened`와 `isFlagged` 가 수정이 발생 했다고 가정 했을 때 과연 `getSign` 메서드는 의도한 조건에 맞게 실행 되고 있는지 테스트가 필요하다.
+
+또한, 자식 클래스가 부모 클래스의 캡슐화 된 데이터를 모든 정보를 다 알고있다. 이 경우는 캡슐화도 깨진 경우이기 때문에 조합을 이용해서 캡슐화를 지키고 유지보수 측면에서 유연한 설계를 보자면 아래와 같다.
+
+**조합**
+조합과 인터페이스를 활용 한 경우이며 물론 상속 보다는 반복되는 코드 구조가 발생 하는 것은 사실이다. 하지만, `cell`과 관련 된 데이터 내부는 캡슐화 된 다른 객체로 대체 되었고 외부 객체와 협력하고 있다. 또한 인터페이스를 물려 받아 구현한 메서드들은 해당 객체의 고유한 행동을 나타낼 수 있기 때문에 수정 되더라도 메인 로직의 변함은 없다.
+
+{% endhint %}
 
 ### Value Object(VO)
 
@@ -289,17 +298,20 @@ public class Money {
 {% tab title="Enum 클래스 구성" %}
 
 ```java
-public enum UserAction {
+public enum CellSnapshotStatus {
 
-    OPEN("셀 열기"),
-    FLAG("깃발 꽂기"),
-    UNKNOWN( "알 수 없음");
+    EMPTY("비어있는 셀"),
+    FLAG("깃발"),
+    LAND_MINE("지뢰"),
+    NUMBER("숫자"),
+    UNCHECKED("확인 전");
 
-    UserAction(String description) {
+    private final String description;
+
+    CellSnapshotStatus(String description) {
         this.description = description;
     }
 
-    private final String description;
 }
 ```
 
@@ -308,19 +320,42 @@ public enum UserAction {
 {% tab title="Enum 클래스 반환" %}
 
 ```java
-  public UserAction getUserActionFromUser() {
-      String userInput = SCANNER.nextLine();
+    private CellSnapshot(CellSnapshotStatus status, int nearbyLandMineCount) {
+        this.status = status;
+        this.nearbyLandMineCount = nearbyLandMineCount;
+    }
 
-      if ("1".equals(userInput)) {
-          return UserAction.OPEN;
-      }
+    public static CellSnapshot of(CellSnapshotStatus status, int nearbyLandMineCount) {
+        return new CellSnapshot(status, nearbyLandMineCount);
+    }
 
-      if ("2".equals(userInput)) {
-          return UserAction.FLAG;
-      }
+    public static CellSnapshot ofEmpty() {
+        return of(CellSnapshotStatus.EMPTY, 0);
+    }
 
-      return UserAction.UNKNOWN;
-  }
+    public static CellSnapshot ofFlag() {
+        return of(CellSnapshotStatus.FLAG, 0);
+    }
+
+    public static CellSnapshot ofLandMine() {
+        return of(CellSnapshotStatus.LAND_MINE, 0);
+    }
+
+    public static CellSnapshot ofNumber(int nearbyLandMineCount) {
+        return of(CellSnapshotStatus.NUMBER, nearbyLandMineCount);
+    }
+
+    public static CellSnapshot ofUnchecked() {
+        return of(CellSnapshotStatus.UNCHECKED, 0);
+    }
+
+    public CellSnapshotStatus getStatus() {
+        return status;
+    }
+
+    public int getNearbyLandMineCount() {
+        return nearbyLandMineCount;
+    }
 ```
  
 {% endtab %}
