@@ -393,3 +393,154 @@ private String decideCellSignFrom(CellSnapshot snapshot) {
 {% endtab %}
 
 {% endtabs %}
+
+
+### 다형성 활용하기
+
+Enum의 특성 활용하기에서 확인 했던 Enum의 사용하기 예시에 문제점이 있다. 상태에 따른 조건문이 굉장히 많다는 것이고, 상태가 늘어날 때 마다 조건이 추가 되는 매우 큰 코드 덩어리를 만들고 있다는 것이다.
+
+#### <mark style="color:orange;background-color:purple;">변하는 것과 변하지 않는 것을 분리하여 추상화 하고, OCP를 지키는 구조</mark>
+
+> "반복적인 if문을 단순하게 만들 수 없을까?"
+
+어떤 조건을 만족 하면, 어떠한 행위를 수행하는 것은 반복적인 if문을 만들어낸다.
+
+- 변화 하는 것: **구체**
+
+- 변하지 않는 것: **추상**
+
+![image](../../.gitbook/assets/poly.png)
+
+
+**다형성을 위한 인터페이스 구현**:
+
+{% code title="예시 코드" overflow="wrap" lineNumbers="true" %}
+
+```java
+public interface CellSignProvidable {
+
+    boolean supports(CellSnapshot cellSnapshot);
+
+    String provide(CellSnapshot cellSnapshot);
+}
+```
+
+{% endcode %}
+
+**Example use case**:
+
+{% tabs %}
+
+{% tab title="List로 상태를 관리할 때" %}
+
+```java
+public class CellSignFinder {
+
+    private static final List<CellSignProvidable> CELL_SIGN_PROVIDERS = List.of(
+            new EmptyCellSignProvider(),
+            new FlagSignProvider(),
+            new LandMineCellSignProvider(),
+            new NumberCellSignProvider(),
+            new UncheckedCellSignProvider()
+    );
+
+    public String findCellSignFrom(CellSnapshot snapshot) {
+
+        return CELL_SIGN_PROVIDERS.stream()
+                .filter(provider -> provider.supports(snapshot))
+                .findFirst()
+                .map(provider -> provider.provide(snapshot))
+                .orElseThrow(() -> new IllegalArgumentException("확인 할 수 없는 셀 입니다."));
+    }
+```
+
+{% endtab %}
+
+{% tab title="Enum 활용" %}
+
+```java
+public enum CellSignProvider implements CellSignProvidable{
+
+    EMPTY(CellSnapshotStatus.EMPTY) {
+        @Override
+        public String provide(CellSnapshot cellSnapshot) {
+            return EMPTY_SIGN;
+        }
+    },
+    FLAG(CellSnapshotStatus.FLAG) {
+        @Override
+        public String provide (CellSnapshot cellSnapshot) {
+            return FLAG_SIGN;
+        }
+    },
+    LAND_MINE(CellSnapshotStatus.LAND_MINE) {
+        @Override
+        public String provide (CellSnapshot cellSnapshot) {
+            return LAND_MINE_SIGN;
+        }
+    },
+    NUMBER(CellSnapshotStatus.NUMBER) {
+        @Override
+        public String provide (CellSnapshot cellSnapshot) {
+            return String.valueOf(cellSnapshot.getNearbyLandMineCount());
+        }
+    },
+    UNCHECKED(CellSnapshotStatus.UNCHECKED) {
+        @Override
+        public String provide (CellSnapshot cellSnapshot) {
+            return UNCHECKED_SIGN;
+        }
+    };
+
+    private static final String EMPTY_SIGN = "■";
+    private static final String FLAG_SIGN = "⚑";
+    private static final String LAND_MINE_SIGN = "☼";
+    private static final String UNCHECKED_SIGN = "□";
+
+
+    private final CellSnapshotStatus status;
+
+    CellSignProvider(CellSnapshotStatus cellSnapshotStatus) {
+        this.status = cellSnapshotStatus;
+    }
+
+    @Override
+    public boolean supports(CellSnapshot cellSnapshot) {
+        return cellSnapshot.isSameStatus(status);
+    }
+
+    public static String findCellSignFrom(CellSnapshot snapshot) {
+        CellSignProvider cellSignProvider = findBy(snapshot);
+        return cellSignProvider.provide(snapshot);
+    }
+
+    private static CellSignProvider findBy(CellSnapshot snapshot) {
+        return Arrays.stream(values())
+                 .filter(provider -> provider.supports(snapshot))
+                 .findFirst()
+                 .orElseThrow(() -> new IllegalArgumentException("확인할 수 없는 셀입니다."));
+    }
+}
+```
+
+{% endtab %}
+
+{% endtabs %}
+
+{% hint style="info" %}
+
+**List로 관리 할 때**
+List로 관리 했을 때 상태가 늘어나게되면 해당 List 요소에 상태가 추가 되어야 하는 것은 물론이며 그 상태에 따른 `Provider` 객체가 같이 생성 되어야 한다. 상태의 갯 수가 적을 땐 이해할 수 있지만 많아졌을 땐 굉장히 많은 파일이 생성 되기 때문에 좋은 선택지가 아니다.
+
+
+![image](../../.gitbook/assets/list_poly.png)
+
+
+**Enum을 활용 할 때**
+Enum은 List로 관리했을 때의 문제점인 파일이 무수히 많이 증가하는 부분을 개선 할 수 있다. 내부 소스코드에서 상태 값에 대한 정의, 인터페이스에 대한 구현 내용만 정의 해준다면 하나의 파일에서 상태에 대한 행동을 관리 할 수 있는 장점이 있기 때문에 좋은 선택지가 된다.
+
+
+![image](../../.gitbook/assets/enum_poly.png)
+
+
+{% endhint %}
