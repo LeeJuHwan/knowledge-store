@@ -266,3 +266,63 @@ public class Money {
 ```
 
 {% endcode %}
+
+
+### Enum의 특성과 활용
+
+- Enum은 상수의 집합이며, 상수와 관련된 로직을 담을 수 있는 공간이다.
+  - 상태와 행위를 한 곳에서 관리할 수 있는 추상화된 객체
+
+- 특정 도메인 개념에 대해 그 종류와 기능을 명시적으로 표현 해줄 수 있다.
+
+- 만약, 변경이 정말 잦은 개념은 Enum 클래스 보다 DB로 관리하는 것이 나을 수 있다.
+
+> Tips
+
+- Enum을 만들 때 제3자가 읽을 때 해석 하는 데 도움을 줄 설명을 한글로 작성 한다.
+
+
+**Example use case**:
+
+{% tabs %}
+
+{% tab title="Enum 클래스 구성하기" %}
+
+```java
+public enum UserAction {
+
+    OPEN("셀 열기"),
+    FLAG("깃발 꽂기"),
+    UNKNOWN( "알 수 없음");
+
+    UserAction(String description) {
+        this.description = description;
+    }
+
+    private final String description;
+}
+```
+
+{% endtab %}
+
+{% tab title="Enum 클래스 사용하기" %}
+
+```java
+  public UserAction getUserActionFromUser() {
+      String userInput = SCANNER.nextLine();
+
+      if ("1".equals(userInput)) {
+          return UserAction.OPEN;
+      }
+
+      if ("2".equals(userInput)) {
+          return UserAction.FLAG;
+      }
+
+      return UserAction.UNKNOWN;
+  }
+```
+ 
+{% endtab %}
+
+{% endtabs %}
