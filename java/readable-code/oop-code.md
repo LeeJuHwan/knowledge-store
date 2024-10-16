@@ -565,6 +565,50 @@ Enum은 List로 관리했을 때의 문제점인 파일이 무수히 많이 증�
 {% endhint %}
 
 
+**Example use case**:
+
+{% tabs %}
+
+{% tab title="before" %}
+
+```java
+public class GameApplication {
+
+    public static void main(String[] args) {
+        GameLevel gameLevel = new VeryBeginner();
+        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
+        ConsoleOutputHandler consoleOutputHandler = new ConsoleOutputHandler();
+        Minesweeper minesweeper = new Minesweeper(gameLevel, consoleInputHandler, consoleOutputHandler);
+        minesweeper.initialize();
+        minesweeper.run();
+    }
+```
+
+{% endtab %}
+
+{% tab title="after" %}
+
+```java
+public class GameApplication {
+
+    public static void main(String[] args) {
+        GameConfig gameConfig = new GameConfig(
+                new VeryBeginner(),
+                new ConsoleInputHandler(),
+                new ConsoleOutputHandler()
+        );
+
+        Minesweeper minesweeper = new Minesweeper(gameConfig);
+        minesweeper.initialize();
+        minesweeper.run();
+    }
+```
+
+{% endtab %}
+
+{% endtabs %}
+
+
 ## 요약
 
 #### [ **상속과 조합** ]
