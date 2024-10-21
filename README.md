@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # README
 
 " Welcome to the knowledge store, I hope to make learning a way of life. :fire: "
@@ -7,30 +11,26 @@
 ### AWS
 
 * :point\_right: **AWS101**
-  * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
-  * [AWS account and free-tier](aws/aws101/account_freetier.md)
-  * [AWS IAM Basic](aws/aws101/iam_basic.md)
-  * [AWS EC2 Basic](aws/aws101/ec2/ec2_basic.md)
-  * [AWS ENI and EIP](aws/aws101/ec2/eni_eip.md)
+  * [Virtualization and the AWS structures](aws/aws101/cloud\_basic\_vm.md)
+  * [AWS account and free-tier](aws/aws101/account\_freetier.md)
+  * [AWS IAM Basic](aws/aws101/iam\_basic.md)
+  * [AWS EC2 Basic](aws/aws101/ec2/ec2\_basic.md)
+  * [AWS ENI and EIP](aws/aws101/ec2/eni\_eip.md)
   * [AWS Elastic Block Storage](aws/aws101/ec2/ebs.md)
   * [AWS Auto Scaling](aws/aws101/ec2/autoscaling.md)
   * [AWS Elastic Load Balancer](aws/aws101/ec2/elb.md)
 
-
 ### Airflow
 
-* :point_right: **Airflow 0 to Ninja**
-  * [Introduction and Goal](airflow/ninja/README.md)
+* :point\_right: **Airflow 0 to Ninja**
+  * [Introduction and Goal](airflow/ninja/)
   * [Setting](airflow/ninja/tutorial.md)
   * [Module Import, Alert](airflow/ninja/basic.md)
 
-
 ### Docker
 
-* :point_right: **Docker Notes**
-  * [Change the root directory](docker/docker_story/change_root_directory.md)
-
-
+* :point\_right: **Docker Notes**
+  * [Change the root directory](docker/docker\_story/change\_root\_directory.md)
 
 ### Network
 
@@ -38,7 +38,7 @@
   * [Introduction and Goal](network/network-handbook/)
   * [OSI7Layer](network/network-handbook/osi7layer.md)
   * [DNS](network/network-handbook/dns.md)
-  * [SSL/TLS](network/network-handbook/ssl_tls.md)
+  * [SSL/TLS](network/network-handbook/ssl\_tls.md)
 
 ### Comupter Architecture
 
@@ -66,22 +66,21 @@
 
 ### Java
 
-* :point_right: **java-readable-code**
-  * [Introduction and Goal](java/readable-code/README.md)
+* :point\_right: **java-readable-code**
+  * [Introduction and Goal](java/readable-code/)
   * [Abstraction](java/readable-code/abstract.md)
-  * [Logical-Thinking](java/readable-code/logical_thinking.md)
+  * [Logical-Thinking](java/readable-code/logical\_thinking.md)
   * [OOP](java/readable-code/oop.md)
   * [OOP: Apply to code](java/readable-code/oop-code.md)
 
 ### Python
 
-* :point_right: **Effective Python**
-  * [Introduction and Goal](python/better-python-code51/README.md)
-  * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy_evaluation.md)
+* :point\_right: **Effective Python**
+  * [Introduction and Goal](python/better-python-code51/)
+  * [Closure: Lazy Evaluation And Eager Evaluation](python/better-python-code51/lazy\_evaluation.md)
   * [Python public attributes are better getter-setter](python/effective-python-2nd/attributes.md)
   * [No refactoring attribute, we can use property decorator](python/effective-python-2nd/property.md)
   * [You can do it, but it means you don't have to](python/better-python-code51/chapter5.md)
-
 
 ### Playgrounds
 
@@ -90,8 +89,7 @@
   * [Mission1. 숫자야구게임 - 학습테스트 실습](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. 숫자야구게임 - 문자열 계산기](java/nextstep:java-playground/mission1-2.md)
   * [Mission2. 숫자야구게임 - 게임 구현](java/nextstep:java-playground/mission2-1.md)
-
-* :point_right: **infra-workshop**
+* :point\_right: **infra-workshop**
   * [Introduction and Goal](infra-playground/)
   * [사전 학습 - 망 구성하기](infra-playground/pre-activity-topology.md)
   * [그럴듯하게 인프라 만들기 - 지하철 노선도 1주차](infra-playground/1week.md)
