@@ -77,6 +77,7 @@
   * [Mission1. Baseball-Unit Test](java/nextstep:java-playground/mission1-1.md)
   * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
   * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission2-1.md)
+  * [Mission1. Baseball - Refactor](playgrounds/playground/mission1.-baseball-refactor.md)
 * [Infra Playground](infra-playground/README.md)
   * [pre-knowledege: VPC](infra-playground/pre-activity-topology.md)
   * [subwaymap-1week](infra-playground/1week.md)
