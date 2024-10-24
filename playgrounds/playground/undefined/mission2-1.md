@@ -1,4 +1,4 @@
-# Mission1. Baseball - Game Implementation
+# 숫자 야구 게임 구현
 
 <details>
 
@@ -339,13 +339,13 @@ class ComputerTest {
 ```
 {% endcode %}
 
-![image](../../.gitbook/assets/branch\_coverage.png)
+![image](../../../.gitbook/assets/branch\_coverage.png)
 
 * 해당 도메인의 브랜치 커버리지는 83%이다.
 
 > 브랜치 커버리지 원인 분석
 
-![image](../../.gitbook/assets/branch\_coverage\_reason.png)
+![image](../../../.gitbook/assets/branch\_coverage\_reason.png)
 
 중복을 검사 하는 메서드에서 실패 케이스가 검증 되고 있지 않다. 그렇다면 스스로에게 질문 해볼 수 있다. **Random을 어떻게 테스트 할 것인가?**
 
@@ -404,7 +404,7 @@ public class Computer {
 ```
 {% endcode %}
 
-![image](../../.gitbook/assets/branch\_coverage\_result.png)
+![image](../../../.gitbook/assets/branch\_coverage\_result.png)
 
 결과적으로 브랜치 커버리지가 총 83%까지 올랐고 문제가 되었던 컴퓨터 도메인의 브랜치 커버리지가 100%가 되었다. 이렇게 테스트를 위한 환경을 구성 하면서 객체가 수정 되는 일도 발생 하고, 모킹을 이용 해야 하는 경우도 있다. 하지만 알아두어야 할 것은 그 사용이 적재적소에 잘 사용 되고 있는지를 점검 해봐야 한다.
 

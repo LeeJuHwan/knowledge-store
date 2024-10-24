@@ -74,11 +74,12 @@
 ## Playgrounds
 
 * [Java Playground](java/playground/README.md)
-  * [Introduction and Goal](java/nextstep:java-playground/README.md)
-  * [Mission1. Baseball-Unit Test](java/nextstep:java-playground/mission1-1.md)
-  * [Mission1. Baseball-String Calculator](java/nextstep:java-playground/mission1-2.md)
-  * [Mission1. Baseball - Game Implementation](java/nextstep:java-playground/mission2-1.md)
-  * [Mission1. Baseball - Refactor](playgrounds/playground/mission1.-baseball-refactor.md)
+  * [학습 목적](java/nextstep:java-playground/README.md)
+  * [숫자 야구 게임](playgrounds/playground/undefined/README.md)
+    * [학습 테스트](playgrounds/playground/undefined/mission1-1.md)
+    * [문자열 계산기](playgrounds/playground/undefined/mission1-2.md)
+    * [숫자 야구 게임 구현](playgrounds/playground/undefined/mission2-1.md)
+    * [숫자 야구 게임 다시 구현하기](playgrounds/playground/undefined/undefined.md)
 * [Infra Playground](infra-playground/README.md)
   * [pre-knowledege: VPC](infra-playground/pre-activity-topology.md)
   * [subwaymap-1week](infra-playground/1week.md)
