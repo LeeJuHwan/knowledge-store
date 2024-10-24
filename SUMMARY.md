@@ -55,11 +55,12 @@
 ## Java
 
 * [Readable Code](java/basic/README.md)
-  * [Introduction and Goal](java/readable-code/README.md)
-  * [Abstraction](java/readable-code/abstract.md)
-  * [Logical-Thinking](java/readable-code/logical\_thinking.md)
-  * [OOP](java/readable-code/oop.md)
-  * [OOP: Apply to code](java/readable-code/oop-code.md)
+  * [학습 목적](java/readable-code/README.md)
+  * [추상화](java/readable-code/abstract.md)
+  * [논리적 사고 흐름](java/readable-code/logical\_thinking.md)
+  * [객체지향 이론](java/readable-code/oop.md)
+  * [객체지향 코드 적용하기](java/readable-code/oop-code.md)
+  * [코드 다듬기](java/basic/undefined.md)
 
 ## Python
 
