@@ -80,6 +80,8 @@
     * [문자열 계산기](playgrounds/playground/undefined/mission1-2.md)
     * [숫자 야구 게임 구현](playgrounds/playground/undefined/mission2-1.md)
     * [숫자 야구 게임 다시 구현하기](playgrounds/playground/undefined/undefined.md)
+  * [자동차 경주](playgrounds/playground/undefined-1/README.md)
+    * [문자열 덧셈 계산기](playgrounds/playground/undefined-1/undefined.md)
 * [Infra Playground](infra-playground/README.md)
   * [pre-knowledege: VPC](infra-playground/pre-activity-topology.md)
   * [subwaymap-1week](infra-playground/1week.md)
