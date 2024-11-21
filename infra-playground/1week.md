@@ -179,52 +179,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 
 
-#### SSM Session manager: Bastion Hosts
-
-"인프라를 구성 할 때 Bastion host먼저 제거 할 것"
-
-인스턴스를 프로비저닝 한 Bastion host는 우선 서버 유지 비용, 이중화(HA) 되지 않은 유일한 접근 통로이다. 서버가 급하게 다운 되어 들어가야 할 문이 잠겼다면 모든 개발자들은 문이 열릴 때 까지 기다려야 할까?
-
-그렇게 외부 감사 로깅을 하며 보안을 신경 쓴 서버에 이중화 작업과 적절한 스펙을 부여 해야한다. 또한, 접근 하려 하는 모든 개발자들에게 Pem키 파일을 전달 해야 하고 이 파일이 외부에 유출 되었을 때 일괄적으로 변경 해야 한다.
-
-간략한 단점 몇 가지만으로 Bastion host가 인스턴스로 구축 되어있을 때 불편함을 알아볼 수 있는데 이 것을 대체 하기 위해 AWS에서 **Sesion Manager**를 제공한다.
-
-
-
-Session Manager는 IAM Role 기반으로 접근을 허용하고 블럭 할 수 있다. 또한, 감사 로깅도 CloudWatch + S3로 관리가 가능하며 세션에 접근한 유저의 기록을 JSON 데이터로 보관 하고 있다.&#x20;
-
-Bastion 서버에서 직접 구축한 로깅만큼 이쁘게 나오진 않지만 사용자의 커맨드와 결과를 직접 확인 할 수 있는 장점이 있다.
-
-여기서 더 해보자면, Session Manager는 EC2 프로비저닝 해서 할당 받은 리소스의 비용을 받지 않는다.
-
-그렇다면 Session Manager가 정상적으로 작동하기 위해 EC2가 갖춰야 할 Policy는 무엇일까?
-
-1. [AmazonSSMManagedInstanceCore](https://us-east-1.console.aws.amazon.com/iam/home?region=ap-northeast-2#/policies/details/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAmazonSSMManagedInstanceCore)
-2. [CloudWatchLogsFullAccess](https://us-east-1.console.aws.amazon.com/iam/home?region=ap-northeast-2#/policies/details/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FCloudWatchLogsFullAccess)
-
-프로덕션 서버에 SSM Agent가 설치 되어있으며, 관리자 작업 컴퓨터에 AWS shell이 설치 되어있다고 가정 한다.
-
-위 두 가지의 정책이 적용 된 EC를 프로비저닝 했을 때 관리자는 아래와 같은 명령어로 접근 할 수 있다.
-
-```
-aws ssm start-session --target "{InstanceId}"
-```
-
-<details>
-
-<summary>Session history</summary>
-
-<img src="../.gitbook/assets/image (5).png" alt="" data-size="original">
-
-</details>
-
-<details>
-
-<summary>CloudWatch Logs</summary>
-
-![](<../.gitbook/assets/image (6).png>)
-
-</details>
+####
 
 
 

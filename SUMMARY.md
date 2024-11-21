@@ -84,7 +84,8 @@
     * [문자열 덧셈 계산기](playgrounds/playground/undefined-1/undefined.md)
     * [자동차 경주 미션 구현](playgrounds/playground/undefined-1/undefined-1.md)
 * [Infra Playground](infra-playground/README.md)
-  * [pre-knowledege: VPC](infra-playground/pre-activity-topology.md)
+  * [VPC: 망분리 그리고 테스트](infra-playground/pre-activity-topology.md)
+  * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)
   * [subwaymap-1week](infra-playground/1week.md)
 
 ## Tools
