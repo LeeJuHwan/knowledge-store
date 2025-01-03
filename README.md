@@ -1,10 +1,6 @@
----
-description: $who am i
----
-
 # INTRO
 
-> " Welcome to the knowledge store, I hope to make learning a way of life. :fire: "
+> _" Welcome to the knowledge store, I hope to make learning a way of life._ :fire: "
 
 {% hint style="info" %}
 **나의 첫 개발** 고등학교 1학년 때 [Pawn-Lang](https://github.com/pawn-lang) 으로 이루어진 해외 GTA 멀티 플레이 모드를 수정 하는 것이 첫 개발의 시작이었다.\
