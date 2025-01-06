@@ -139,3 +139,99 @@ terraform apply
 
 
 
+### Basic Terraform Structure Settings
+
+***
+
+{% stepper %}
+{% step %}
+### AWS VPC 기본 구성하기&#x20;
+
+{% tabs %}
+{% tab title="providers.tf" %}
+```hcl
+provider "aws" {
+  region = "ap-northeast-2"
+}
+
+terraform {
+  required_version = "= 1.9.5"
+}
+```
+{% endtab %}
+
+{% tab title="main.tf" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "oimarket-apne2"
+  }
+}
+```
+
+resource의 `main`은 코드 레벨에서 참조하는 명칭이며 AWS에서 사용하는 이름은 `tags`의 `Name`을 이용해야한다.
+
+Name 컨벤션은 다양하게 이용할 수 있지만 현재 단계에선 "회사명칭-리전" 으로 사용한다.
+{% endtab %}
+{% endtabs %}
+{% endstep %}
+
+{% step %}
+### Terraform Init
+
+```sh
+terraform init
+```
+
+<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+
+위 이론에서 학습 했듯이 AWS 프로바이더를 어디로 설정 하는지, 상태를 어디에 저장할 것인지 초기 작업을 진행 하고 테라폼이 수행 되기 위한 숨김 파일을 생성한다.
+
+
+{% endstep %}
+
+{% step %}
+### Terraform Plan
+
+```shell
+terraform plan
+```
+
+<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+
+AWS ACCESS KEY, SECRET ACCESS KEY를 환경 변수에 등록 되어 있다면 위 처럼 정상적으로 어떤 리소스를 생성할 것인지 또는 어떤 작업을 수행하는지에 대한 내용이 나온다.
+{% endstep %}
+
+{% step %}
+### Terraform Apply
+
+```sh
+terraform apply
+```
+
+<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+
+{% step %}
+### AWS Console
+
+Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성된 VPC를 확인할 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+{% endstepper %}
+
+<details>
+
+<summary>Summary</summary>
+
+* `providers.tf` 파일에 인프라 리소스가 구성 될 환경을 정의한다.
+* `main.tf` 파일에 구성 하고자 하는 인프라 리소스를 정의 한다.
+* 테라폼 워크플로우인 `terraform init` -> `terraform plan` -> `terraofrm apply` 의 순서대로 진행한다.
+
+</details>
+
+
+
