@@ -139,7 +139,7 @@ terraform apply
 
 
 
-### Basic Terraform Structure Settings
+### Basic Terraform Structure Hands-On
 
 ***
 
@@ -158,6 +158,8 @@ terraform {
   required_version = "= 1.9.5"
 }
 ```
+
+`region` 과 같이 중요한 정보는 하드코딩 하는 것이 아닌 환경 변수를 이용하는 것을 권장한다.
 {% endtab %}
 
 {% tab title="main.tf" %}
@@ -234,4 +236,10 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 </details>
 
 
+
+### Use HCL Variables Syntax
+
+***
+
+writing...
 
