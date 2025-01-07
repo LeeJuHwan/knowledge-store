@@ -25,6 +25,17 @@ tfenv install 1.9.5
 tfenv use 1.9.5 
 ```
 
+#### **Optional**
+
+* **JetBrains IDE Plugin Install**&#x20;
+  * **Plugins - "Terraform and HCL" Install**
+* **Git repository ignore**&#x20;
+  * **"intellij", "Terraform"**
+
+{% embed url="https://www.toptal.com/developers/gitignore" %}
+
+
+
 #### Pre Setting
 
 ***
@@ -248,6 +259,8 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 
 </details>
 
+
+
 ### Use HCL Variables Syntax
 
 ***
@@ -331,8 +344,6 @@ output "vpc_id" {
 }
 ```
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
-
 {% hint style="info" %}
 `main.tf` 에 위치한 `resource` 명칭과 코드 레벨에서 참조하는 명칭을 `output`의 값으로 할당하게 되면 해당 리소스가 참조 되어 필요한 값을 출력할 수 있다.
 {% endhint %}
@@ -343,8 +354,9 @@ output "vpc_id" {
 
 <summary>Hands-On</summary>
 
+<img src="../../.gitbook/assets/image.png" alt="" data-size="original">
+
 * [ ] &#x20;위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
-*
 
 </details>
 
@@ -359,11 +371,13 @@ output "vpc_id" {
 
 ***
 
+
+
 #### Resoucre Dependency
 
 <figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-VPC 의 기본 골조를 갖췄으니 인터넷 망과 통신할 수 있는 IGW를 생성 하면서 사전에 만들어진 VPC가 먼저 생성 되어 있어야 하는 상황인 의존성을 알아봅니다.
+VPC 의 기본 골조를 갖췄으니 인터넷 망과 통신할 수 있는 IGW를 생성 하면서 사전에 만들어진 VPC가 먼저 생성 되어 있어야 하는 상황에서 의존성을 기반으로 리소스를 생성한다.
 
 {% tabs %}
 {% tab title="AS-IS(main.tf)" %}
@@ -398,6 +412,8 @@ resource "aws_internet_gateway" "main" {
 ```
 {% endtab %}
 {% endtabs %}
+
+
 
 > _**"암시적 의존성 vs 명시적 의존성"**_
 
@@ -460,7 +476,7 @@ resource "aws_internet_gateway" "main" {
 
 
 
-학습한 의존성을 바탕으로 VPC 대역에대 할당할 수 있는 IP 서브넷팅을 위한 외부망 서브넷을 생성 합니다.
+학습한 의존성을 바탕으로 VPC 대역에대 할당할 수 있는 IP 서브넷팅을 위한 외부망 서브넷을 생성 한다.
 
 | AZ              | Host/Network |
 | --------------- | ------------ |
