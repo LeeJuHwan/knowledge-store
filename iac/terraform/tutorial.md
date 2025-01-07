@@ -4,7 +4,7 @@ description: Terraform tutorial
 
 # Tutorial
 
-## 테라폼 시작하기
+테라폼 시작하기
 
 테라폼을 시작하기에 앞서 해당 챕터에서는 이런 내용을 다룹니다.
 
@@ -231,6 +231,15 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 
 <details>
 
+<summary>Hands-On</summary>
+
+* [ ] 튜토리얼에 사용 될 기본 VPC를 테라폼 코드를 이용 하여 생성하기
+* [ ] AWS Console에서 제대로 생성 되었는지 확인하기
+
+</details>
+
+<details>
+
 <summary>Summary</summary>
 
 * `providers.tf` 파일에 인프라 리소스가 구성 될 환경을 정의한다.
@@ -239,17 +248,17 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 
 </details>
 
-
-
 ### Use HCL Variables Syntax
 
 ***
 
 > #### _**"확장 가능한 테라폼 구성을 만드는 첫 번째 요소 "변수"**_
 
+{% hint style="info" %}
 #### Refactoring: re use resources by variables
 
-> _**"변수 값은 어디에 저장 할까?"**_
+_**"변수 값은 어디에 저장 할까?"**_
+{% endhint %}
 
 다양한 방법 중 가장 대표적으로 사용 되는 방법인 "`환경변수`", "`var`" 등을 사용하게 되면 코드로 남지 않는 단점이 존재한다.
 
@@ -295,9 +304,250 @@ cidr_block = "10.0.0.0/16"
 {% endtab %}
 {% endtabs %}
 
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] 기존 리소스에서 하드코딩 된 중요 정보를 변수화 하여 파일로 관리하기
+* [ ] 테라폼 Plan을 통해 "No Changes" 가 나오는지 확인하기
+
+</details>
+
+
+
 > #### _**"확장 가능한 테라폼 구성을 만드는 두 번째 요소 "출력"**_
 
+{% hint style="info" %}
 #### Refactoring: reference other resources
 
+**"**_**미리 정의한 리소스들의 정보를 재사용할 수 없을까?**_**"**
+{% endhint %}
+
+{% tabs %}
+{% tab title="outputs.tf" %}
+```hcl
+output "vpc_id" {
+    value = aws_vpc.main.id
+}
+```
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+`main.tf` 에 위치한 `resource` 명칭과 코드 레벨에서 참조하는 명칭을 `output`의 값으로 할당하게 되면 해당 리소스가 참조 되어 필요한 값을 출력할 수 있다.
+{% endhint %}
+{% endtab %}
+{% endtabs %}
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] &#x20;위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
+*
+
+</details>
+
+<details>
+
+<summary>Summary</summary>
+
+* output 블록을 통해서 출력을 정의할 수 있다.
+* 출력값은 향후 서로 다른 테라폼 구성 간 값을 참조할 때 유용하게 사용할 수 있다.
+
+</details>
+
+***
+
+#### Resoucre Dependency
+
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+VPC 의 기본 골조를 갖췄으니 인터넷 망과 통신할 수 있는 IGW를 생성 하면서 사전에 만들어진 VPC가 먼저 생성 되어 있어야 하는 상황인 의존성을 알아봅니다.
+
+{% tabs %}
+{% tab title="AS-IS(main.tf)" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = var.cidr_block
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE(main.tf)" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = var.cidr_block
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  tags = {
+    Name = "${var.vpc_name}=igw"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+> _**"암시적 의존성 vs 명시적 의존성"**_
+
+{% tabs %}
+{% tab title="암시적 의존성" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = var.cidr_block
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  tags = {
+    Name = "${var.vpc_name}=igw"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="명시적 의존성" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = var.cidr_block
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  depends_on = [aws_vpc.main]
+  
+  tags = {
+    Name = "${var.vpc_name}=igw"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+리소스가 자동으로 참조 하여 의존성을 띄기 때문에 실무 환경에서는 암시적 의존성을 선호 한다.
+{% endhint %}
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] 암시적 의존성 방식으로 리소스를 정의 하고 해당 VPC와 Attatch할 IGW 만들기
+* [ ] AWS Console에서 제대로 생성 되었는지 확인하기
+
+</details>
+
+
+
+학습한 의존성을 바탕으로 VPC 대역에대 할당할 수 있는 IP 서브넷팅을 위한 외부망 서브넷을 생성 합니다.
+
+| AZ              | Host/Network |
+| --------------- | ------------ |
+| ap-northeast-2a | 10.0.1.0/24  |
+| ap-northeast-2b | 10.0.2.0/24  |
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_vpc" "main" {
+  cidr_block = var.cidr_block
+
+  tags = {
+    Name = var.vpc_name
+  }
+}
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.vpc_name}-igw"
+  }
+}
+
+resource "aws_subnet" "public_a" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "ap-northeast-2a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet-a"
+  }
+}
+
+resource "aws_subnet" "public_b" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "ap-northeast-2b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet-b"
+  }
+}
+```
+
+{% hint style="info" %}
+옵션 알아보기
+
+* map\_public\_ip\_on\_lanuch: EC2를 생성할 때 자동으로 Public IP Allocate 할지 여부
+{% endhint %}
+{% endtab %}
+{% endtabs %}
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] 위 리소스 정의표에 맞춰 외부망 서브넷 2개를 서로 다른 가용영역에 생성 해보기
+* [ ] AWS Console에서 제대로 생성 되었는지 확인하기
+
+</details>
+
+<details>
+
+<summary>Summary</summary>
+
+* 서로 다른 리소스를 참조 하며 먼저 생성 된 후 리소스를 만들어야 하는 의존성을 관리할 수 있다.
+* 의존성은 대표적으로 암묵적과 명시적 의존성이 있으며 현업에서 암묵적 의존성 방식을 선호한다.
+
+</details>
+
+
+
+{% hint style="info" %}
+#### Refactoring: use loop syntax
+
+_**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 생성할 수 없을까?"**_
+{% endhint %}
+
 writing...
+
+
+
+
+
+
 
