@@ -485,8 +485,7 @@ resource "aws_internet_gateway" "main" {
 
 {% tabs %}
 {% tab title="main.tf" %}
-```hcl
-resource "aws_vpc" "main" {
+<pre class="language-hcl"><code class="lang-hcl">resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
 
   tags = {
@@ -502,8 +501,8 @@ resource "aws_internet_gateway" "main" {
   }
 }
 
-resource "aws_subnet" "public_a" {
-  vpc_id = aws_vpc.main.id
+<strong>resource "aws_subnet" "public_a" {
+</strong>  vpc_id = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "ap-northeast-2a"
   map_public_ip_on_launch = true
@@ -523,7 +522,7 @@ resource "aws_subnet" "public_b" {
     Name = "${var.vpc_name}-public-subnet-b"
   }
 }
-```
+</code></pre>
 
 {% hint style="info" %}
 옵션 알아보기
@@ -559,9 +558,49 @@ resource "aws_subnet" "public_b" {
 _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 생성할 수 없을까?"**_
 {% endhint %}
 
-writing...
+<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+
+동일한 리소스에서 가용 영역만 다른 두 서브넷이 있다. 만약 4개, 8개 등 더 많은 서브넷을 생성 해야 한다면 `main.tf`가 굉장히 길어지기 때문에 이런 경우 반복문을 활용하면 쉽게 리소스를 정의할 수 있다.
 
 
+
+> _**"변수와 Count 지시자를 활용한 반복문 사용 방법"**_
+>
+>
+
+{% tabs %}
+{% tab title="AS-IS" %}
+```hcl
+
+resource "aws_subnet" "public_a" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "ap-northeast-2a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet-a"
+  }
+}
+
+resource "aws_subnet" "public_b" {
+  vpc_id = aws_vpc.main.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = "ap-northeast-2b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet-b"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE" %}
+```hcl
+```
+{% endtab %}
+{% endtabs %}
 
 
 
