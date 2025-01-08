@@ -4,7 +4,7 @@ description: Terraform tutorial
 
 # Tutorial
 
-테라폼 시작하기
+## 테라폼 시작하기
 
 테라폼을 시작하기에 앞서 해당 챕터에서는 이런 내용을 다룹니다.
 
@@ -150,7 +150,7 @@ terraform apply
 
 
 
-### Basic Terraform Structure Hands-On
+### Basic Terraform Structure
 
 ***
 
@@ -261,15 +261,13 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 
 
 
-### Use HCL Variables Syntax
+## How to use HCL?
 
 ***
 
-> #### _**"확장 가능한 테라폼 구성을 만드는 첫 번째 요소 "변수"**_
+### Re use resources by variables
 
 {% hint style="warning" %}
-#### Refactoring: re use resources by variables
-
 _**"변수 값은 어디에 저장 할까?"**_
 {% endhint %}
 
@@ -328,12 +326,10 @@ cidr_block = "10.0.0.0/16"
 
 
 
-> #### _**"확장 가능한 테라폼 구성을 만드는 두 번째 요소 "출력"**_
+### Reference other resources
 
 {% hint style="warning" %}
-#### Refactoring: reference other resources
-
-**"**_**미리 정의한 리소스들의 정보를 재사용할 수 없을까?**_**"**
+#### _"미리 정의한 리소스들의 정보를 재사용할 수 없을까?"_
 {% endhint %}
 
 {% tabs %}
@@ -373,7 +369,7 @@ output "vpc_id" {
 
 
 
-#### Resoucre Dependency
+### Resoucre Dependency
 
 <figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
@@ -552,9 +548,9 @@ resource "aws_subnet" "public_b" {
 
 
 
-{% hint style="warning" %}
-#### Refactoring: use loop syntax
+### Use loop syntax
 
+{% hint style="warning" %}
 _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 생성할 수 없을까?"**_
 {% endhint %}
 
@@ -682,11 +678,9 @@ _**테라폼 구성 리팩터링 과정에서 발생할 수 있는 가장 흔한
 
 
 
-
+### State file control
 
 {% hint style="warning" %}
-#### Refactoring: state file control
-
 _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 후 생성 하는데 어떻게 해야할까?"**_
 {% endhint %}
 
