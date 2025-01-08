@@ -267,7 +267,7 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 
 > #### _**"확장 가능한 테라폼 구성을 만드는 첫 번째 요소 "변수"**_
 
-{% hint style="info" %}
+{% hint style="warning" %}
 #### Refactoring: re use resources by variables
 
 _**"변수 값은 어디에 저장 할까?"**_
@@ -330,7 +330,7 @@ cidr_block = "10.0.0.0/16"
 
 > #### _**"확장 가능한 테라폼 구성을 만드는 두 번째 요소 "출력"**_
 
-{% hint style="info" %}
+{% hint style="warning" %}
 #### Refactoring: reference other resources
 
 **"**_**미리 정의한 리소스들의 정보를 재사용할 수 없을까?**_**"**
@@ -354,7 +354,7 @@ output "vpc_id" {
 
 <summary>Hands-On</summary>
 
-<img src="../../.gitbook/assets/image.png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (1).png" alt="" data-size="original">
 
 * [ ] &#x20;위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
 
@@ -375,7 +375,7 @@ output "vpc_id" {
 
 #### Resoucre Dependency
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 VPC 의 기본 골조를 갖췄으니 인터넷 망과 통신할 수 있는 IGW를 생성 하면서 사전에 만들어진 VPC가 먼저 생성 되어 있어야 하는 상황에서 의존성을 기반으로 리소스를 생성한다.
 
@@ -552,7 +552,7 @@ resource "aws_subnet" "public_b" {
 
 
 
-{% hint style="info" %}
+{% hint style="warning" %}
 #### Refactoring: use loop syntax
 
 _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 생성할 수 없을까?"**_
@@ -565,8 +565,6 @@ _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 
 
 
 > _**"변수와 Count 지시자를 활용한 반복문 사용 방법"**_
->
->
 
 {% tabs %}
 {% tab title="AS-IS" %}
@@ -598,11 +596,99 @@ resource "aws_subnet" "public_b" {
 
 {% tab title="TO-BE" %}
 ```hcl
+resource "aws_subnet" "public" {
+  vpc_id = aws_vpc.main.id
+  count = length(var.availability_zones)
+  cidr_block = cidrsubnet(var.cidr_block, 8, count.index + 1)
+  availability_zone = "ap-northeast-2${var.availability_zones[count.index]}"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.vpc_name}-public-subnet-${var.availability_zones[count.index]}"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE(variables.tf)" %}
+```hcl
+variable "cidr_block" {
+  description = "The cidr block of vpc"
+}
+
+variable "vpc_name" {
+  description = "The name of vpc"
+}
+
+variable "availability_zones" {
+  type = list(string)
+  description = "az of subnets"
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE(terraform.tfvars)" %}
+```hcl
+vpc_name = "oimarket-apne2"
+cidr_block = "10.0.0.0/16"
+availability_zones = [ "a", "b" ]
 ```
 {% endtab %}
 {% endtabs %}
 
+{% hint style="info" %}
+반복문을 사용하는 방법 중 `for_each` 도 있지만 현재 단계에서 `List(string)` 타입에 있는 변수의 개 수를 기준으로 반복 하는 방법을 사용 하였다.
 
+* 이로인해 `["a", "b"]` 는 2개의 카운트를 갖을 수 있고 `index`는 0, 1을 갖고 있다.
+
+또한, 서브넷의 CIDR Block을 할당 하기 위해 `cidr_block` 함수를 이용 하였는데 사용 방법은 이렇다.
+
+`cidrsubnet(VPC CIDR, 추가 비트, 인덱스)`
+
+* 사용 예시
+* VPC: 192.168.0.0/24 (C class)
+* subnets
+  * 192.168.0.0/26 (0 \~ 63)
+  * 192.168.0.64/26 (64 \~ 127)
+
+`cidrsubnet(var.cidr_block, 2(24 + 2 = 26), count.index + 1)`
+{% endhint %}
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] 반복문을 사용하여 외부망 서브넷 2개를 서로 다른 가용영역에 생성 해보기
+* [ ] Terraform Plan으로 리소스가 삭제 및 생성 계획인지 확인하기
+
+</details>
+
+
+
+이렇게 작성한 리소스를 AWS에 적용 하기 위해 terraform plan을 입력하는 순간 테라폼은 별도의 리소스로 확인 하고 삭제 및 생성을 한다. 기존과 같았으면 "No Changes"가 나와야 하지만 그렇지 않다는 것을 아래 이미지로 확인할 수 있다.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+_**테라폼 구성 리팩터링 과정에서 발생할 수 있는 가장 흔한 이슈**_ 중 하나인데, 이는 똑같은 리소스 코드를 정의 했지만 위 이미지 처럼 삭제하고 다시 생성하는 것이다.
+
+<details>
+
+<summary>Summary</summary>
+
+* count 지시자를 사용해서 반복문을 사용할 수 있다.
+* 반복문을 사용하면 테라폼 구성을 더 효율적으로 만들 수 있다.
+
+</details>
+
+
+
+
+
+{% hint style="warning" %}
+#### Refactoring: state file control
+
+_**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 후 생성 하는데 어떻게 해야할까?"**_
+{% endhint %}
 
 
 

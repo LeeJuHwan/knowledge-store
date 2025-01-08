@@ -26,7 +26,7 @@ TDD 방법론을 공부 하며 직접 적용 한 적은 처음이다. 그 동안
 
 #### 서비스 코드 왕따 시키기
 
-<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption><p>TDD 사이클</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption><p>TDD 사이클</p></figcaption></figure>
 
 테스트 코드를 중점으로 코드 작성을 다시 시작했다. 처음엔 여전히 버벅였지만 테스트 코드를 먼저 작성한 뒤 컴파일 에러를 해결 하고 실패 시킨 뒤 성공 하여 리팩터링을 진행 했다. 하나 둘씩 문제가 풀리니까 재밌었다.
 
