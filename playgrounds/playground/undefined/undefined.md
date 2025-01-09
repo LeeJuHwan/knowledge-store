@@ -2,7 +2,7 @@
 
 ## 미션 리팩터링 하기
 
-<figure><img src="../../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -26,7 +26,7 @@ TDD 방법론을 공부 하며 직접 적용 한 적은 처음이다. 그 동안
 
 #### 서비스 코드 왕따 시키기
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption><p>TDD 사이클</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption><p>TDD 사이클</p></figcaption></figure>
 
 테스트 코드를 중점으로 코드 작성을 다시 시작했다. 처음엔 여전히 버벅였지만 테스트 코드를 먼저 작성한 뒤 컴파일 에러를 해결 하고 실패 시킨 뒤 성공 하여 리팩터링을 진행 했다. 하나 둘씩 문제가 풀리니까 재밌었다.
 
@@ -52,6 +52,6 @@ TDD 방법론을 공부 하며 직접 적용 한 적은 처음이다. 그 동안
 * 테스트코드의 중복이 너무 많았다. 아무래도 하나의 기능에 대한 다양한 테스트 케이스를 모두 테스트 하다보니, 중복으로 호출 하는 경우가 많았는데 적절한 Fixture 사용이나 필요 없는 검증이 포함 되지 않았는지 판단 하는 것이 필요하다고 느꼈다.
 *   테스트 브랜치 커버리지 개선이 필요하다. 못 해도 90% 이상은 채웠어야 했었는데, VO 객체에 대한 동등성 검증이 대부분 안 이루어져서 커버리지가 많이 낮아졌다.
 
-    <figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+    <figure><img src="../../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 * I/O Handler, Application 코드의 부재도 크다. 사실 비즈니스 로직만 구현 하면 될 것이라고 생각하고 작성 하긴 했지만 TDD 방법으로 개발 하다보면 MVC 구조에서 뷰와 컨트롤러는 제외하고 모델에 대한 도메인 로직을 검증 했는데 모든 힘을 다 쏟았다.
 

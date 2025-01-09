@@ -6,7 +6,7 @@
 
 ### TDD 몸풀기
 
-<figure><img src="../../../.gitbook/assets/image (4).png" alt=""><figcaption><p>용어 정리</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (1).png" alt=""><figcaption><p>용어 정리</p></figcaption></figure>
 
 미션 챕터가 바뀌었다. 메인 미션을 해결 하기 전 웜업 미션으로 문제 해결 능력을 예열 시키고 있다.
 

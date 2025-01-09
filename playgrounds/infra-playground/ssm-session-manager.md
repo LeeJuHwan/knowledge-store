@@ -44,21 +44,19 @@ Bastion 서버에서 직접 구축한 로깅만큼 이쁘게 나오진 않지만
 
 <summary>SSM Agent 사전 설치 된 AMI 목록</summary>
 
-[공식문서](https://docs.aws.amazon.com/ko\_kr/systems-manager/latest/userguide/ami-preinstalled-agent.html)
+[공식문서](https://docs.aws.amazon.com/ko_kr/systems-manager/latest/userguide/ami-preinstalled-agent.html)
 
 * 2017년 9월 이후의 Amazon Linux 1 Base AMI
 
-<!---->
-
-* Amazon Linux 2
-* Amazon Linux 2 ECS 최적화 기본 AMIs
-* Amazon Linux 2023(AL2023)
-* Amazon EKS 최적화 Amazon Linux AMIs
-* macOS 10.14.x(Mojave), 10.15.x(Catalina), 11.x(Big Sur), 12.x(Monterey), 13.x(Ventura), 14.x(Sonoma)
-* SUSE Linux Enterprise Server(SLES) 12 및 15
-* Ubuntu Server 16.04, 18.04, 20.04 및 22.04
-* Windows Server 2008-2012 R2 AMIs는 2016년 11월 이후에 게시되었습니다.
-* Windows Server 2016, 2019 및 2022(Nano 버전 제외)
+- Amazon Linux 2
+- Amazon Linux 2 ECS 최적화 기본 AMIs
+- Amazon Linux 2023(AL2023)
+- Amazon EKS 최적화 Amazon Linux AMIs
+- macOS 10.14.x(Mojave), 10.15.x(Catalina), 11.x(Big Sur), 12.x(Monterey), 13.x(Ventura), 14.x(Sonoma)
+- SUSE Linux Enterprise Server(SLES) 12 및 15
+- Ubuntu Server 16.04, 18.04, 20.04 및 22.04
+- Windows Server 2008-2012 R2 AMIs는 2016년 11월 이후에 게시되었습니다.
+- Windows Server 2016, 2019 및 2022(Nano 버전 제외)
 
 </details>
 
@@ -74,7 +72,7 @@ aws ssm start-session --target "{InstanceId}"
 
 <summary>Session history</summary>
 
-<img src="../../.gitbook/assets/image (5).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (5) (1).png" alt="" data-size="original">
 
 </details>
 
@@ -82,6 +80,6 @@ aws ssm start-session --target "{InstanceId}"
 
 <summary>CloudWatch Logs</summary>
 
-![](<../../.gitbook/assets/image (6).png>)
+![](<../../.gitbook/assets/image (6) (1).png>)
 
 </details>
