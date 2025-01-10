@@ -72,7 +72,7 @@ aws ssm start-session --target "{InstanceId}"
 
 <summary>Session history</summary>
 
-<img src="../../.gitbook/assets/image (5) (1).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (20).png" alt="" data-size="original">
 
 </details>
 
@@ -80,6 +80,6 @@ aws ssm start-session --target "{InstanceId}"
 
 <summary>CloudWatch Logs</summary>
 
-![](<../../.gitbook/assets/image (6) (1).png>)
+![](<../../.gitbook/assets/image (21).png>)
 
 </details>

@@ -61,7 +61,7 @@ public class ExamplePolicy {
 
 
 
-<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
 
 * 객체는 협력을 위한 존재이기 때문에 객체와 협력 하는 존재에게 드러낼 정보를 가장 상단에 위치하는 것을 선호하는 편이다.
 

@@ -59,7 +59,7 @@ export AWS_SECRET_ACCESS_KEY={secret}
 
 #### Files
 
-<figure><img src="../../.gitbook/assets/image (7) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **인프라 리소스가 구성될 환경**
@@ -89,7 +89,7 @@ export AWS_SECRET_ACCESS_KEY={secret}
 
 #### Workflows
 
-<figure><img src="../../.gitbook/assets/image (8) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **Write | Init**
@@ -202,7 +202,7 @@ Name 컨벤션은 다양하게 이용할 수 있지만 현재 단계에선 "회�
 terraform init
 ```
 
-<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
 
 위 이론에서 학습 했듯이 AWS 프로바이더를 어디로 설정 하는지, 상태를 어디에 저장할 것인지 초기 작업을 진행 하고 테라폼이 수행 되기 위한 숨김 파일을 생성한다.
 
@@ -216,7 +216,7 @@ terraform init
 terraform plan
 ```
 
-<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
 
 AWS ACCESS KEY, SECRET ACCESS KEY를 환경 변수에 등록 되어 있다면 위 처럼 정상적으로 어떤 리소스를 생성할 것인지 또는 어떤 작업을 수행하는지에 대한 내용이 나온다.
 {% endstep %}
@@ -228,7 +228,7 @@ AWS ACCESS KEY, SECRET ACCESS KEY를 환경 변수에 등록 되어 있다면 �
 terraform apply
 ```
 
-<figure><img src="../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (28).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
@@ -236,7 +236,7 @@ terraform apply
 
 Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성된 VPC를 확인할 수 있다.
 
-<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (27).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
 
@@ -350,7 +350,7 @@ output "vpc_id" {
 
 <summary>Hands-On</summary>
 
-<img src="../../.gitbook/assets/image (1) (1).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (13).png" alt="" data-size="original">
 
 * [ ] &#x20;위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
 
@@ -371,7 +371,7 @@ output "vpc_id" {
 
 ### Resoucre Dependency
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
 
 VPC 의 기본 골조를 갖췄으니 인터넷 망과 통신할 수 있는 IGW를 생성 하면서 사전에 만들어진 VPC가 먼저 생성 되어 있어야 하는 상황에서 의존성을 기반으로 리소스를 생성한다.
 
@@ -554,7 +554,7 @@ resource "aws_subnet" "public_b" {
 _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 생성할 수 없을까?"**_
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (29).png" alt=""><figcaption></figcaption></figure>
 
 동일한 리소스에서 가용 영역만 다른 두 서브넷이 있다. 만약 4개, 8개 등 더 많은 서브넷을 생성 해야 한다면 `main.tf`가 굉장히 길어지기 때문에 이런 경우 반복문을 활용하면 쉽게 리소스를 정의할 수 있다.
 
@@ -663,7 +663,7 @@ availability_zones = [ "a", "b" ]
 
 이렇게 작성한 리소스를 AWS에 적용 하기 위해 <mark style="color:purple;">**`terraform plan`**</mark>을 입력하는 순간 테라폼은 별도의 리소스로 확인 하고 삭제 및 생성을 한다. 기존과 같았으면 "No Changes"가 나와야 하지만 그렇지 않다는 것을 아래 이미지로 확인할 수 있다.
 
-<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
 
 _**테라폼 구성 리팩터링 과정에서 발생할 수 있는 가장 흔한 이슈**_ 중 하나인데, 이는 똑같은 리소스 코드를 정의 했지만 위 이미지 처럼 삭제하고 다시 생성하는 것이다.
 
@@ -690,11 +690,11 @@ _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 �
 
 <summary>Console</summary>
 
-![](<../../.gitbook/assets/image (1).png>)
+![](<../../.gitbook/assets/image (4).png>)
 
 </details>
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 이렇게 바뀐 이유는 서브넷을 생성 하는 코드에서 명시적으로 `public_a`, `public_b` 를 정의 했지만 리팩터링 단계에서 이를 반복문으로 교체하며 배열의 인덱스로 참조 했기 때문이다. 관련 코드는 해당 페이지의 ["Use loop syntax"](https://1eejuhwany.gitbook.io/studylog/iac/terraform/tutorial#use-loop-syntax) 의 코드 블럭을 확인 해보면 된다.
 
@@ -719,21 +719,21 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 {% tab title="AS-IS" %}
 <mark style="color:purple;">**`terraform state list`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 <mark style="color:purple;">**`terraform state show aws_subnet.public_a`**</mark>&#x20;
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
 {% tab title="TO-BE" %}
 <mark style="color:purple;">**`terraform state plan`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
 
 <mark style="color:purple;">**`terraform state list`**</mark>&#x20;
 
-<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 {% endtabs %}
 
@@ -760,7 +760,7 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 terraform state rm aws_subnet.public\[1\]
 ```
 
-<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **상태파일 제거**
@@ -782,7 +782,7 @@ terraform state rm aws_subnet.public\[1\]
 terraform import aws_subnet.public\[1\] subnet-05dba3eb205ad6dd6
 ```
 
-<figure><img src="../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 상태파일 가져오기
@@ -808,6 +808,219 @@ terraform import aws_subnet.public\[1\] subnet-05dba3eb205ad6dd6
   * 코드 구성을 리팩터링 하면서 테라폼 구성 내에서 이름이 바뀌는 경우 많이 사용된다
 * `terraform state rm` 명령을 사용해서 더이상 테라폼으로 리소스를 관리하지 않게 제거할 수 있다.
 * `terraform import` 명령을 사용해서 리소스의 상태 정보를 테라폼 상태파일로 가져올 수 있다.
+
+</details>
+
+
+
+### Data types
+
+{% hint style="warning" %}
+_**"복잡한 타입의 변수를 사용 해서 효율적으로 리소스를 관리하고 싶은데?"**_
+{% endhint %}
+
+| Type       | Description           |
+| ---------- | --------------------- |
+| string     | string                |
+| number     | integer               |
+| bool       | true / false          |
+| list       | arrays                |
+| set        | unique value in array |
+| map/object | key:value             |
+
+_HCL도 코드의 영역이기 때문에 <mark style="color:red;">**가독성을 향상**</mark> 시키는 방법 중 다양한 자료구조를 활용해서 알고리즘과 같은 형식을 단순 변수 사용으로 변경 하는 과정_
+
+
+
+> **list(object) type**&#x20;
+>
+> * <mark style="color:red;">**순서가 매우 중요한 자료형**</mark>
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_subnet" "public" {
+  vpc_id = aws_vpc.main.id
+  count = length(var.public_subnets)
+  cidr_block = var.public_subnets[count.index].cidr_block
+  availability_zone = var.public_subnets[count.index].availability_zone
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = var.public_subnets[count.index].name
+  }
+}
+```
+{% endtab %}
+
+{% tab title="variables.tf" %}
+```hcl
+variable "public_subnets" {
+  type = list(object({
+    name = string
+    availability_zone = string
+    cidr_block = string
+  }))
+}
+```
+{% endtab %}
+
+{% tab title="terraform.tfvars" %}
+```hcl
+public_subnets = [
+  {
+    name = "oimarket-apne2-public-subnet-a"
+    availability_zone = "ap-northeast-2a"
+    cidr_block = "10.0.1.0/24"
+  },
+  {
+    name = "oimarket-apne2-public-subnet-b"
+    availability_zone = "ap-northeast-2b"
+    cidr_block = "10.0.2.0/24"
+  }
+]
+```
+{% endtab %}
+{% endtabs %}
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] <mark style="color:green;">**`List[object] type`**</mark>의 변수를 활용 하여 서브넷 리소스의 코드 가독성을 향상 시키기
+* [ ] <mark style="color:purple;">`plan`</mark>에서 변경사항 없음이 제대로 나오는지 확인하기
+
+</details>
+
+{% hint style="danger" %}
+**List type의 치명적인 단점**
+
+_아래와 같이 서브넷의 순서가 변경 되었다면 테라폼은 변경이 있음을 알아 차리고 <mark style="color:purple;">`Plan`</mark>에서 삭제 후 재생성이 발생한다._
+
+이유는 0번 인덱스에 있는 리소스가 "b"로 변경 되었기 때문에 상태 파일과 달라서 발생하는 상황이다.
+
+```hcl
+public_subnets = [
+  {
+    name = "oimarket-apne2-public-subnet-b"
+    availability_zone = "ap-northeast-2b"
+    cidr_block = "10.0.2.0/24"
+  },
+  {
+    name = "oimarket-apne2-public-subnet-a"
+    availability_zone = "ap-northeast-2a"
+    cidr_block = "10.0.1.0/24"
+  }
+]
+```
+
+![](../../.gitbook/assets/image.png)
+{% endhint %}
+
+`List`의 치명적 단점으로 중요한 리소스는 `List`가 아닌 `Map`으로 관리하는 것이 안정적이다.
+
+
+
+> **map(object) type**
+>
+> * <mark style="color:red;">**count 반복 형식에서 for\_each 반복 형식을 활용**</mark>
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_subnet" "public" {
+  vpc_id = aws_vpc.main.id
+  for_each = var.public_subnets
+  cidr_block = each.value.cidr_block
+  availability_zone = each.value.availability_zone
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = each.key
+  }
+}
+```
+{% endtab %}
+
+{% tab title="variables.tf" %}
+```hcl
+variable "public_subnets" {
+  type = map(object({
+    availability_zone = string
+    cidr_block = string
+  }))
+}
+```
+{% endtab %}
+
+{% tab title="terraform.tfvars" %}
+```hcl
+public_subnets = {
+  "oimarket-apne2-public-subnet-a" = {
+    availability_zone = "ap-northeast-2a"
+    cidr_block = "10.0.1.0/24"
+  },
+  "oimarket-apne2-public-subnet-b" = {
+    availability_zone = "ap-northeast-2b"
+    cidr_block = "10.0.2.0/24"
+  }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+코드를 수정하고 다시 한 번 terraform plan을 입력 해보면 삭제 후 재생성 하는 이슈를 다시 만날 수 있다.
+
+이에 대한 이유는 기존 List자료형은 상태 파일을 저장할 때 <mark style="color:red;">`aws_subnet_public[0]`</mark> 이런식으로 인덱스를 기반으로 해서 상태파일이 저장 되었었다.
+
+하지만, Map은 Key를 기준으로 상태파일을 생성하기 때문에 <mark style="color:green;">`aws_subnet.public["oimarket-apne2-public-subnet-a"]`</mark> 로 변경 되어 리소스를 삭제 후 재생성한다.
+
+이러한 이슈를 해결하는 방법을 우린 위에서 이미 배웠기 때문에 당황하지 않고 상태를 관리하면 된다.
+
+```sh
+terraform state mv aws_subnet.public\[0\] aws_subnet.public\[\"oimarket-apne2-public-subnet-a\"\]
+terraform state mv aws_subnet.public\[1\] aws_subnet.public\[\"oimarket-apne2-public-subnet-b\"\]
+```
+
+상태파일을 변경했다면 <mark style="color:purple;">**Plan**</mark>을 확인 해보면 성공적으로 리팩터링이 완료된 것을 알 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+> _**"그렇다면 변수에 선언한 값의 순서를 바꿔도 동일할까?"**_
+
+```hcl
+public_subnets = {
+  "oimarket-apne2-public-subnet-b" = {
+    availability_zone = "ap-northeast-2b"
+    cidr_block = "10.0.2.0/24"
+  },
+  "oimarket-apne2-public-subnet-a" = {
+    availability_zone = "ap-northeast-2a"
+    cidr_block = "10.0.1.0/24"
+  }
+
+}
+```
+
+:bulb: <mark style="color:blue;">**당연히**</mark>**&#x20;**<mark style="color:green;">**`Map[object]`**</mark><mark style="color:blue;">**의 Key 값으로 접근하기 때문에 동일하다.**</mark>
+
+<details>
+
+<summary>Hands-On</summary>
+
+* [ ] <mark style="color:green;">**Map\[object] type**</mark> 의 변수를 활용 하여 서브넷 리소스의 순서와 관계 없이 항상 일정한 리소스를 생성하도록 수정하기
+* [ ] 상태파일을 관리 하여  <mark style="color:purple;">`plan`</mark>에서 변경사항 없음이 제대로 나오는지 확인하기
+
+</details>
+
+<details>
+
+<summary>Summary</summary>
+
+* 테라폼은 string, number, bool, list, set, map 등 다양한 타입의 변수를 지원한다
+* <mark style="color:green;">list(object)</mark>는 반복문을 사용할 때 <mark style="color:purple;">`count`</mark> 로 사용하며 인덱스로 접근하기 때문에 순서가 매우 중요하다
+* <mark style="color:green;">map(object)</mark>는 반복문을 사용할 때 <mark style="color:purple;">`for_each`</mark>로 사용하며 순서에 영향을 받지 않는다
 
 </details>
 
