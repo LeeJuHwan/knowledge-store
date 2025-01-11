@@ -29,6 +29,10 @@ tfenv use 1.9.5
 
 * **JetBrains IDE Plugin Install**&#x20;
   * **Plugins - "Terraform and HCL" Install**
+* **Visual Studio Code Plugin Install&#x20;**<mark style="color:green;">**`recommend 👍`**</mark>
+  * **Plugins -  "Hashi Corp Terraform"**
+  * **Editor - Auto save to formatter**
+    * [follow article step](https://medium.com/nerd-for-tech/how-to-auto-format-hcl-terraform-code-in-visual-studio-code-6fa0e7afbb5e)
 * **Git repository ignore**&#x20;
   * **"intellij", "Terraform"**
 
@@ -690,11 +694,11 @@ _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 �
 
 <summary>Console</summary>
 
-![](<../../.gitbook/assets/image (4).png>)
+![](<../../.gitbook/assets/image (4) (1).png>)
 
 </details>
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 이렇게 바뀐 이유는 서브넷을 생성 하는 코드에서 명시적으로 `public_a`, `public_b` 를 정의 했지만 리팩터링 단계에서 이를 반복문으로 교체하며 배열의 인덱스로 참조 했기 때문이다. 관련 코드는 해당 페이지의 ["Use loop syntax"](https://1eejuhwany.gitbook.io/studylog/iac/terraform/tutorial#use-loop-syntax) 의 코드 블럭을 확인 해보면 된다.
 
@@ -914,7 +918,7 @@ public_subnets = [
 ]
 ```
 
-![](../../.gitbook/assets/image.png)
+![](<../../.gitbook/assets/image (4).png>)
 {% endhint %}
 
 `List`의 치명적 단점으로 중요한 리소스는 `List`가 아닌 `Map`으로 관리하는 것이 안정적이다.
@@ -985,7 +989,7 @@ terraform state mv aws_subnet.public\[1\] aws_subnet.public\[\"oimarket-apne2-pu
 
 상태파일을 변경했다면 <mark style="color:purple;">**Plan**</mark>을 확인 해보면 성공적으로 리팩터링이 완료된 것을 알 수 있다.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 > _**"그렇다면 변수에 선언한 값의 순서를 바꿔도 동일할까?"**_
 
@@ -1025,6 +1029,146 @@ public_subnets = {
 </details>
 
 
+
+### Conditional
+
+{% hint style="warning" %}
+_**"조건에 따라 다른 리소스를 생성할 수 없을까?"**_
+{% endhint %}
+
+매번 리소스를 정의할 때 한가지 상황만 가지고 정의할 수 없다. 만약, 테라폼 구성을 할 때 "개발" 환경과 "운영" 환경의 차이가 있다면 어떻게 구성을 분리하여 리소스를 정의할 수 있을지 고민하게 된다.&#x20;
+
+그럴 때 프로그래밍 단계에서의 꽃이라고 불리울 수 있는 조건을 이용한 리소스 정의 방식을 이용한다.
+
+
+
+**NAT Gateway를 조건문으로 추가하는 시나리오 만들어보기**
+
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption><p>senario</p></figcaption></figure>
+
+실제 NAT Gateway를 생성 하는 시점 이후 부터 비용이 발생한다. 그렇기 때문에 프로비저닝 하지 않고 시나리오를 통해 어떤 방식으로 조건문을 활용하는지 알아보는 방식으로 학습한다.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+> **조건문 사용 방법**
+>
+> <mark style="color:purple;">`condition ? true : false`</mark>
+
+{% tabs %}
+{% tab title="example" %}
+```hcl
+resource "aws_instance" "example" {
+    instance_type = var.environment == "prod" ? "t3.medium" : "t3.micro"
+    ami           = "ami-example12345678"
+}
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+NAT Gateway를 위 조건문을 활용해서 한 번 만들어본다면 이렇게 만들어볼 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+_**여기서 잠깐!**_
+
+> _**"Map(object) type 을 접근할 때 인덱스로 접근할 수 없을까?"**_**&#x20;🤔**
+
+서브넷 아이디는 Map(object)이기 때문에 인덱스로 접근할 수 없다. 그렇다면 어떻게 NAT Gateway가 인터넷망으로 통신 할 수 있도록 외부망 서브넷과 연결할 수 있을까? 아래 테라폼 공식문서에서 제시하는 방향대로 특정 함수를 이용하면 된다.
+
+{% hint style="info" %}
+**Map(object) type 을 List(object) type 으로 형 변환 하기**
+
+![](<../../.gitbook/assets/image (3).png>)
+
+[테라폼 공식문서에서 확인하기](https://developer.hashicorp.com/terraform/language/functions/tolist#examples)
+{% endhint %}
+
+
+
+**Code**
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_subnet" "private" {
+  for_each                = var.private_subnets
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = each.value.cidr_block
+  availability_zone       = each.value.availability_zone
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = each.key
+  }
+}
+
+resource "aws_eip" "nat_ips" {
+  count = var.private_subnets != {} ? length(var.private_subnets) : 0
+}
+
+resource "aws_nat_gateway" "gateways" {
+  count = var.private_subnets != {} ? length(var.private_subnets) : 0
+
+  allocation_id = aws_eip.nat_ips[count.index].id
+  subnet_id     = tolist(values(aws_subnet.public))[count.index].id
+}
+```
+{% endtab %}
+
+{% tab title="variables.tf" %}
+```hcl
+variable "private_subnets" {
+    type = map(object({
+    availability_zone = string
+    cidr_block = string
+  }))
+}
+```
+{% endtab %}
+
+{% tab title="terraform.tfvars" %}
+```hcl
+private_subnets = {
+  "oimarket-apne2-private-subnet-b" = {
+    availability_zone = "ap-northeast-2b"
+    cidr_block = "10.0.11.0/24"
+  },
+  "oimarket-apne2-private-subnet-a" = {
+    availability_zone = "ap-northeast-2a"
+    cidr_block = "10.0.2.0/24"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+내부망에 정의된 서브넷이 없다면 NAT Gateway를 생성 하지 않고 있다면 생성하는 내용이다. 이렇게 특정 상황일 때 조건문을 통해 리소스를 정의하면 테라폼 구성을 관리하기 편리하다.
+
+위에 있듯이 NAT Gateway를 사용하기 위해서 공용 IP가 필요하다. NAT가 외부망으로 나가기 위해 공용 IP로 나가야 하며, 이 때 SNAT를 통해 나가기 때문이다.
+
+* [SNAT 와 DNAT 개념 더 알아보기](https://zigispace.net/1121)
+
+
+
+위 코드를 작성 했다면 <mark style="color:purple;">**`Plan`**</mark>을 살펴보자. 그렇다면 생성 항목이 6개가 나온다면 정상이다. 하지만, 이 코드를 AWS에 반영하여 프로비저닝 하진 않고 실행 계획에서 어떤 리소스가 생성 되는지만 살펴볼 것이다.
+
+{% hint style="info" %}
+**생성 리소스 대상**
+
+* Elastic IP: 2 개
+* NAT Gateway: 2 개
+* Private subnet 2 개
+{% endhint %}
+
+<details>
+
+<summary>Summary</summary>
+
+* 테라폼에서 조건문은 <mark style="color:purple;">**`condition ? true : false`**</mark> 형태로 사용할 수 있다.
+
+</details>
 
 
 
