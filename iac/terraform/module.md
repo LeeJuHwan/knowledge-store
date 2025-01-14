@@ -122,7 +122,7 @@ terraform console
 > local.private_subnets
 ```
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 그래서 현재 테라폼 구성을 살펴보면 서브넷이 하나의 그룹으로 통합 되어 있고 지역 변수로 내부망 서브넷을 별도로 분리 해두었다.
 
@@ -190,9 +190,275 @@ resource "aws_nat_gateway" "gateways" {
 
 
 
+### Routing table
+
+{% hint style="warning" %}
+_**"VPC 구성의 종착지인 라우팅 테이블을 구성하다"**_
+{% endhint %}
+
+기존 Public subnet 은 IGW를 통해 인터넷 통신을 이루고 Private subnet은 NAT Gateway를 통해 인터넷 통신을 이루도록 리스소를 정의했다.
+
+이렇게 서브넷을 분리 시켰지만 별도의 라우팅 테이블을 만들지 않는다면 AWS VPC 정책에 의해 기본적으로 모두 로컬 라우팅 테이블에 포함되어 인터넷을 사용할 수 있게 된다.&#x20;
+
+그렇기 때문에 라우팅 테이블을 별도로 생성 하여 특정 서브넷에 대한 제어를 하도록 만든다.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+**라우팅 테이블을 만들기 위해 필요한 세 개의 리소스**
+
+1. route\_table: 라우팅 룰을 담고 있는 테이블
+2. route: 라우팅 룰, 주로 어떤 라우트 테이블에 속해 있으며 어떤 게이트웨이를 사용 하여 통신할지 정의
+3. route\_table\_association: 라우팅 룰에 포함 될 서브넷들
+{% endhint %}
 
 
 
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_route_table" "route_tables" {
+  for_each = var.subnets
+  vpc_id   = aws_vpc.main.id
+
+  tags = {
+    Name = "${each.key}-route-table"
+  }
+}
+
+resource "aws_route" "routes" {
+  for_each = var.subnets
+
+  route_table_id         = aws_route_table.route_tables[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+
+  gateway_id     = lookup(each.value, "nat_gateway_subnet", null) == null ? aws_internet_gateway.main.id : null
+  nat_gateway_id = lookup(each.value, "nat_gateway_subnet", null) != null ? aws_nat_gateway.gateways[each.key].id : null
+}
+
+resource "aws_route_table_association" "associations" {
+  for_each = var.subnets
+
+  subnet_id      = aws_subnet.subnets[each.key].id
+  route_table_id = aws_route_table.route_tables[each.key].id
+}
+
+```
+{% endtab %}
+{% endtabs %}
+
+<details>
+
+<summary>Summary</summary>
+
+* <mark style="color:purple;">**lookup()**</mark> 함수와 조건문을 조합해서 Private subnet, Public subnet일 때 게이트웨이를 다르게 설정할 수 있다.
+
+</details>
 
 
+
+### Dynamic block with SG
+
+{% hint style="warning" %}
+_**"리소스 설정 중 유연하게 추가 또는 삭제를 해야할 때 어떻게 해야할까?"**_
+{% endhint %}
+
+동적 블럭을 활용하기 위해서 보안 그룹 규칙을 생성할 때 사용 하며 <mark style="color:green;">map(object) type</mark>, <mark style="color:purple;">for\_each</mark>, <mark style="color:purple;">dynamic</mark> 등을 활용한다
+
+
+
+> _**"만약 동적 블럭을 구성하지 않고 보안 그룹을 생성하면 어떻게 될까?"**_
+
+동적 블럭 없이 리소스를 정의 하면 리소스 정의 코드가 길어지며 그에 걸맞는 다양한 변수를 사용해야한다.
+
+{% tabs %}
+{% tab title="Example" %}
+```hcl
+resource "aws_security_group" "permit_ssh_access" {
+
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Permit SSH from anywhere"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic"
+  }
+
+  tags = {
+    Name = "permit_ssh_sg"
+  }
+
+}
+
+
+resource "aws_security_group" "permit_http_" {
+
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Permit HTTP from anywhere"
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Permit HTTP from anywhere"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic"
+  }
+
+  tags = {
+    Name = "permit_http_sg"
+  }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+두 코드는 거의 비슷하며 지금 단 두개의 보안 그룹 규칙을 생성했다. 만약, 4개, 5개 일 때 이와 같이 구성할 수 있겠는가? 이러한 비효율적인 코드를 줄이고 가독성을 높히는 것이 목적이기 때문에 동적 블럭을 활용하여 이 코드를 간소화할 수 있다.
+
+
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_security_group" "groups" {
+  for_each = var.security_groups
+
+  name   = each.key
+  vpc_id = aws_vpc.main.id
+
+  dynamic "ingress" {
+    for_each = each.value.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
+
+  dynamic "egress" {
+    for_each = each.value.egress_rules
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+    }
+  }
+
+  tags = {
+    Name : each.key
+  }
+}
+```
+{% endtab %}
+
+{% tab title="variables.tf" %}
+```hcl
+variable "security_groups" {
+  description = "Map of security groups with rules"
+
+  type = map(object({
+    ingress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+    egress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+  }))
+
+}
+
+```
+{% endtab %}
+
+{% tab title="terraform.tfvars" %}
+```hcl
+security_groups = {
+  "oimarket-apne2-permit-ssh-security-group" = {
+    ingress_rules = [
+      {
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 22
+        protocol    = "tcp"
+        to_port     = 22
+      }
+    ]
+
+    egress_rules = [{
+      cidr_blocks = ["0.0.0.0/0"]
+      from_port   = 0
+      protocol    = "-1"
+      to_port     = 0
+    }]
+  },
+
+  "oimarket-apne2-permit-http-security-group" = {
+    ingress_rules = [
+      {
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 80
+        protocol    = "tcp"
+        to_port     = 80
+      },
+      {
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 443
+        protocol    = "tcp"
+        to_port     = 443
+      }
+    ]
+
+    egress_rules = [{
+      cidr_blocks = ["0.0.0.0/0"]
+      from_port   = 0
+      protocol    = "-1"
+      to_port     = 0
+    }]
+  }
+}
+
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+<details>
+
+<summary>Summary</summary>
+
+* <mark style="color:purple;">**dynamic**</mark> 지시자와 <mark style="color:purple;">**for\_each**</mark>를 조합해서 동적 블럭을 생성 하면 불필요한 코드를 효율적으로 리팩터링 할 수 있다.
+
+</details>
 
