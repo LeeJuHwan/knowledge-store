@@ -452,8 +452,6 @@ security_groups = {
 {% endtab %}
 {% endtabs %}
 
-
-
 <details>
 
 <summary>Summary</summary>
@@ -461,4 +459,293 @@ security_groups = {
 * <mark style="color:purple;">**dynamic**</mark> 지시자와 <mark style="color:purple;">**for\_each**</mark>를 조합해서 동적 블럭을 생성 하면 불필요한 코드를 효율적으로 리팩터링 할 수 있다.
 
 </details>
+
+
+
+### Module
+
+{% hint style="warning" %}
+_**"하나 이상의 리소스와 관련된 코드 블록을 재사용 가능하게 만든 템플릿"**_
+{% endhint %}
+
+> _**"모듈은 언제 사용할까?"**_
+
+여러 리전에 걸쳐 위에서 만든 VPC를 재사용해야 한다고 하면 이런 시나리오를 만들어낼 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
+
+위 코드를 Copy & Paste 로 사용할 경우 추후 변경되는 리소스에 대한 동기화를 위해 각 리전에서 정의 된 변수 파일을 탐색 하며 수정해야한다. 이 때 휴먼에러가 발생할 확률이 굉장히 높기 때문에 코드화 하는 의미가 많이 퇴색된다.
+
+
+
+바람직하게 모듈을 이용하여 미리 정의된 리소스를 참조 하도록 만들기 위해서 아래와 같이 구성할 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
+
+> **"모듈을 참조하는 방법"**
+
+기존 변수를 담고 있던 terraform.tfvars 파일은 이제 필요가 없어졌다. 정의된 리소스에 맞게 변수에 값을 할당 하는 것은 해당 모듈을 참조하는 main.tf로 책임을 넘겼기 때문이다. 그래서 아래 모듈 코드를 보면 변수를 길게 설정해둔 것을 볼 수 있다.
+
+{% tabs %}
+{% tab title="vpc/main.tf" %}
+```hcl
+module "vpc" {
+  source = "../../modules/vpc"
+
+  vpc_name           = "oimarket-apne2"
+  cidr_block         = "10.0.0.0/16"
+  availability_zones = ["a", "b"]
+
+  subnets = {
+    "oimarket-apne2-public-subnet-a" = {
+      availability_zone = "ap-northeast-2a"
+      cidr_block        = "10.0.1.0/24"
+    },
+    "oimarket-apne2-public-subnet-b" = {
+      availability_zone = "ap-northeast-2b"
+      cidr_block        = "10.0.2.0/24"
+    },
+    "oimarket-apne2-private-subnet-a" = {
+      availability_zone  = "ap-northeast-2a"
+      cidr_block         = "10.0.11.0/24"
+      nat_gateway_subnet = "oimarket-apne2-public-subnet-a"
+    }
+    "oimarket-apne2-private-subnet-b" = {
+      availability_zone  = "ap-northeast-2b"
+      cidr_block         = "10.0.12.0/24"
+      nat_gateway_subnet = "oimarket-apne2-public-subnet-b"
+    },
+  }
+
+  security_groups = {
+    "oimarket-apne2-permit-ssh-security-group" = {
+      ingress_rules = [
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 22
+          protocol    = "tcp"
+          to_port     = 22
+        }
+      ]
+
+      egress_rules = [{
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 0
+        protocol    = "-1"
+        to_port     = 0
+      }]
+    },
+
+    "oimarket-apne2-permit-http-security-group" = {
+      ingress_rules = [
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 80
+          protocol    = "tcp"
+          to_port     = 80
+        },
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 443
+          protocol    = "tcp"
+          to_port     = 443
+        }
+      ]
+
+      egress_rules = [{
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 0
+        protocol    = "-1"
+        to_port     = 0
+      }]
+    }
+  }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+위 모듈은 하위 모듈 파일을 참조하도록 선언하고, 해당 모듈이 사용하는 변수를 그대로 선언하여 사용한다.
+
+이렇게 기존 리소스 구성에서 모듈화를 진행 하면 테라폼을 사용할 준비를 다시 해야하기 때문에 워크플로우를 익혀보자면아래와 같다.
+
+
+
+{% stepper %}
+{% step %}
+### 모듈 참조 구성 및 Terraform init
+
+기존 리소스에서 사용하던 상태 파일은 모듈로 넘어가있기 때문에 참조된 곳에 테라폼을 사용하기 위한 준비를 마친다.
+{% endstep %}
+
+{% step %}
+### Terraform plan
+
+이 때, 실행 계획을 살펴보면 기존에 만들어둔 리소스가 모두 삭제되고 새롭게 재생성 되는 것을 볼 수 있는데 이러한 이유는 기존에는 모듈에서 참조하지 않았기 때문에 "aws\_vpc.main"이었다면 모듈에 참조된 후 "module.aws\_vpc.main"이 되어 상태파일에 변경이 생긴다.
+{% endstep %}
+
+{% step %}
+### Terraform state mv
+
+{% code overflow="wrap" %}
+```sh
+terraform show -json | jq -r ".values.root_module.resources[] | .address" | awk '{gsub(/"/, "\\\"");print "terraform state mv "$1" module.vpc."$1}' | /bin/bash
+```
+{% endcode %}
+
+* terraform show -json: 테라폼의 상태 파일을 JSON으로 확인
+*   jq -r: JSON Pretty print로 출력하고 읽음
+
+    <figure><img src="../../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
+
+    * ".values.root\_module.resources\[] | address" : 상태 파일의 리소스 이름만 출력
+    * awk: 파일의 내용을 데이터화 하는 데 사용
+    * gsub(/"/, "\\\\\\""): " 로 시작하는 문자를 찾아 \\" 로 변경
+    * print "terraform state mv "$1": address에서 추출한 이름을 변경 대상으로 사용
+    * module.vpc."$1: module.vpc.\\"address 에서 추출한 이름으로 변경
+    * bin/bash: 실행되는 코드를 라인마다 읽어 들여 Bash 로 실행 -> 이 때 반영 됨
+{% endstep %}
+{% endstepper %}
+
+<details>
+
+<summary>Summary</summary>
+
+* 모듈을 만들면 테라폼 구성을 위한 코드 블록을 재사용할 수 있다.
+* 리팩터링을 하면 언제나 상태를 옮기는 작업이 필수적으로 수행되어야 한다.
+
+</details>
+
+
+
+### Variables In Yaml File
+
+{% hint style="warning" %}
+_**"YAML 파일을 읽어서 변수 값을 지정하여 가독성을 향상 시킨다"**_
+{% endhint %}
+
+
+
+> _**"왜 YAML 파일을 활용해야 할까?"**_
+
+<figure><img src="../../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
+
+기존 변수 파일로 관리 했을 때 변수를 선언하고 해당 변수에 대한 값을 할당 해서 사용 해야 했지만 YAML을 활용하게 되면 **테라폼을 구성하는 데이터들과 실제 테라폼 로직을 분리**할 수 있어 가독성이 좋아진다. 또한, 테라폼을 잘 모르더라도 YAML 파일만 수정하면 되는 유연함이 있다.
+
+
+
+{% tabs %}
+{% tab title="AS-IS" %}
+```hcl
+module "vpc" {
+  source = "../../modules/vpc"
+
+  vpc_name           = "oimarket-apne2"
+  cidr_block         = "10.0.0.0/16"
+  availability_zones = ["a", "b"]
+
+  subnets = {
+    "oimarket-apne2-public-subnet-a" = {
+      availability_zone = "ap-northeast-2a"
+      cidr_block        = "10.0.1.0/24"
+    },
+    "oimarket-apne2-public-subnet-b" = {
+      availability_zone = "ap-northeast-2b"
+      cidr_block        = "10.0.2.0/24"
+    },
+    "oimarket-apne2-private-subnet-a" = {
+      availability_zone  = "ap-northeast-2a"
+      cidr_block         = "10.0.11.0/24"
+      nat_gateway_subnet = "oimarket-apne2-public-subnet-a"
+    }
+    "oimarket-apne2-private-subnet-b" = {
+      availability_zone  = "ap-northeast-2b"
+      cidr_block         = "10.0.12.0/24"
+      nat_gateway_subnet = "oimarket-apne2-public-subnet-b"
+    },
+  }
+
+  security_groups = {
+    "oimarket-apne2-permit-ssh-security-group" = {
+      ingress_rules = [
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 22
+          protocol    = "tcp"
+          to_port     = 22
+        }
+      ]
+
+      egress_rules = [{
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 0
+        protocol    = "-1"
+        to_port     = 0
+      }]
+    },
+
+    "oimarket-apne2-permit-http-security-group" = {
+      ingress_rules = [
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 80
+          protocol    = "tcp"
+          to_port     = 80
+        },
+        {
+          cidr_blocks = ["0.0.0.0/0"]
+          from_port   = 443
+          protocol    = "tcp"
+          to_port     = 443
+        }
+      ]
+
+      egress_rules = [{
+        cidr_blocks = ["0.0.0.0/0"]
+        from_port   = 0
+        protocol    = "-1"
+        to_port     = 0
+      }]
+    }
+  }
+
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE" %}
+```hcl
+locals {
+  config = yamldecode(file("config.yaml"))
+}
+
+module "vpc" {
+  source = "../../modules/vpc"
+
+  vpc_name           = local.config.vpc_name
+  cidr_block         = local.config.cidr_block
+  subnets            = local.config.subnets
+  security_groups    = local.config.security_groups
+  availability_zones = local.config.availability_zones
+}
+
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+<details>
+
+<summary>Summary</summary>
+
+* 테라폼이 제공해 주는 <mark style="color:purple;">**yamldecode()**</mark> 함수를 사용하면 YAML 파일을 읽을 수 있다.
+* YAML 파일 활용하면 테라폼 구성의 가독성을 높일 수 있고 데이터와 로직을 분리할 수 있다.
+
+</details>
+
+
+
+
 
