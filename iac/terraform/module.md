@@ -122,7 +122,7 @@ terraform console
 > local.private_subnets
 ```
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 그래서 현재 테라폼 구성을 살펴보면 서브넷이 하나의 그룹으로 통합 되어 있고 지역 변수로 내부망 서브넷을 별도로 분리 해두었다.
 
@@ -202,7 +202,7 @@ _**"VPC 구성의 종착지인 라우팅 테이블을 구성하다"**_
 
 그렇기 때문에 라우팅 테이블을 별도로 생성 하여 특정 서브넷에 대한 제어를 하도록 만든다.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **라우팅 테이블을 만들기 위해 필요한 세 개의 리소스**
@@ -734,8 +734,6 @@ module "vpc" {
 {% endtab %}
 {% endtabs %}
 
-
-
 <details>
 
 <summary>Summary</summary>
@@ -744,6 +742,221 @@ module "vpc" {
 * YAML 파일 활용하면 테라폼 구성의 가독성을 높일 수 있고 데이터와 로직을 분리할 수 있다.
 
 </details>
+
+
+
+### Dynamic Syntax Optimization
+
+{% hint style="danger" %}
+_**"일부 보안그룹 규칙만 수정 했는데 전체 규칙이 변경되는 이슈가 발생 하다"**_
+
+위 과정을 실습하다보면 제대로 수정이 되었는지 확인하기 위해 보안 그룹 443을 543으로 바꾸어보면 443 보안그룹만 영향을 받는것이 아니라 그 외 다른 보안그룹에도 영향을 끼친다.
+
+이 경우 삭제 후 재생성이 되는데, 다시 재생성 되기 때문에 변화가 없다고 생각할 수 있지만 **잠깐의 다운타임으로 서비스에 장애를 만들어낼 수 있는 여지가 있는것이다.**
+{% endhint %}
+
+기존에 사용중이던 보안 그룹 규칙은 테라폼 구성의 Inline-block 으로 Ingress, Egress를 분리 했지만 이렇게 사용할 경우 공식문서에서 다음과 같은 이슈가 있다고 설명한다.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+그렇기 때문에 가장 좋은 방법은 aws\_vpc\_security\_egress\_rule 과 ingress\_rule 리소스를 사용해서 CIDR 블럭을 관리하라고 설명한다.
+
+현재 문제 상황에 가장 적합한 이슈로 이 공식문서가 가이드하는 방식대로 리소스를 새롭게 정의하여 동적 블럭에서 한 개의 리소스를 수정 했을 때 다른 리소스도 영향이 받지 않는지 확인 하는데, 이 때 기존에 사용중이던 변수 타입도 분리해야한다.
+
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+{% tabs %}
+{% tab title="AS-IS(main.tf)" %}
+```hcl
+resource "aws_security_group" "groups" {
+  for_each = var.security_groups
+
+  name   = each.key
+  vpc_id = aws_vpc.main.id
+
+  dynamic "ingress" {
+    for_each = each.value.ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
+
+  dynamic "egress" {
+    for_each = each.value.egress_rules
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+    }
+  }
+
+  tags = {
+    Name : each.key
+  }
+}
+```
+{% endtab %}
+
+{% tab title="AS-IS(variables.tf)" %}
+```hcl
+variable "security_groups" {
+  description = "Map of security groups with rules"
+
+  type = map(object({
+    ingress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+    egress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+  }))
+
+}
+
+```
+{% endtab %}
+
+{% tab title="TO-BE(main.tf)" %}
+```hcl
+resource "aws_security_group" "groups" {
+  for_each = var.security_groups
+
+  name   = each.key
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name : each.key
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "rules" {
+  for_each = var.ingress_rules
+
+  security_group_id = aws_security_group.groups[each.value.security_group_name].id
+  cidr_ipv4         = each.value.cidr_ipv4
+  from_port         = each.value.from_port
+  ip_protocol       = each.value.ip_protocol
+  to_port           = each.value.to_port
+}
+
+
+resource "aws_vpc_security_group_egress_rule" "rules" {
+  for_each = var.egress_rules
+
+  security_group_id = aws_security_group.groups[each.value.security_group_name].id
+  cidr_ipv4         = each.value.cidr_ipv4
+  from_port         = each.value.from_port
+  ip_protocol       = each.value.ip_protocol
+  to_port           = each.value.to_port
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE(variables.tf)" %}
+```hcl
+variable "security_groups" {
+  description = "Map of security groups with rules"
+
+  type = map(object({}))
+
+}
+
+variable "ingress_rules" {
+  type = map(object({
+    security_group_name = string
+    cidr_ipv4           = string
+    from_port           = optional(number)
+    ip_protocol         = string
+    to_port             = optional(number)
+  }))
+}
+
+variable "egress_rules" {
+  type = map(object({
+    security_group_name = string
+    cidr_ipv4           = string
+    from_port           = optional(number)
+    ip_protocol         = string
+    to_port             = optional(number)
+  }))
+}
+
+```
+{% endtab %}
+
+{% tab title="config.yaml" %}
+```yaml
+security_groups:
+  oimarket-apne2-permit-http-security-group: null
+  oimarket-apne2-permit-ssh-security-group: null
+ingress_rules:
+  oimarket-apne2-permit-http-security-group-allow-80:
+    security_group_name: "oimarket-apne2-permit-http-security-group"
+    cidr_ipv4: "0.0.0.0/0"
+    from_port: 80
+    ip_protocol: "tcp"
+    to_port: 80
+  oimarket-apne2-permit-http-security-group-allow-443:
+    security_group_name: "oimarket-apne2-permit-http-security-group"
+    cidr_ipv4: "0.0.0.0/0"
+    from_port: 443
+    ip_protocol: "tcp"
+    to_port: 443
+  oimarket-apne2-permit-ssh-security-group-allow-22:
+    security_group_name: "oimarket-apne2-permit-ssh-security-group"
+    cidr_ipv4: "0.0.0.0/0"
+    from_port: 22
+    ip_protocol: "tcp"
+    to_port: 22
+egress_rules:
+  oimarket-apne2-permit-http-security-group-allow-permit:
+    security_group_name: "oimarket-apne2-permit-http-security-group"
+    cidr_ipv4: "0.0.0.0/0"
+    ip_protocol: "-1"
+  oimarket-apne2-permit-ssh-security-group-allow-permit:
+    security_group_name: "oimarket-apne2-permit-ssh-security-group"
+    cidr_ipv4: "0.0.0.0/0"
+    ip_protocol: "-1"
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="danger" %}
+**AWS 리소스가 이미 존재하여 에러가 나는 경우**
+
+이후 테라폼 실행 계획을 통해 리소스 추가에 대해 확인 하고, 만약 NAT Gateway부터 미리 생성하면서 학습을 했다면 테라폼 구성에 이미 SG가 생성 되어 있어 에러가 발생한다.
+
+이 때, 테라폼 상태 파일을 프로바이더에 있는 기존 리소스에서 가져올 수 있는 terraform import 명령어를 통해 현재 변경되는 사항과 동기화 하는 과정을 거친다.
+
+_**"terraform import {테라폼 생성 명칭} {프로바이더 리소스 아이디}"**_
+
+```sh
+terraform import module.vpc.aws_vpc_security_group_ingress_rule.rules\[\"oimarket-apne2-permit-http-security-group-allow-443\"\] sgr-00baa41a10525cd7a
+```
+{% endhint %}
+
+<details>
+
+<summary>Summary</summary>
+
+* 원하는대로 동작하지 않을때는 테라폼 공식 문서를 참고해서 확인해 봅니다.
+* <mark style="color:purple;">**terraform import**</mark> 명령을 사용하면 이미 프로비저닝 되어 있는 리소스를 테라폼으로 관리할 수 있게 됩니다.
+
+</details>
+
+
+
+
 
 
 
