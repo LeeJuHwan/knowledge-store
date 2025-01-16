@@ -945,6 +945,10 @@ terraform import module.vpc.aws_vpc_security_group_ingress_rule.rules\[\"oimarke
 ```
 {% endhint %}
 
+문제가 되었던 다이나믹 블럭의 보안 그룹을 수정했을 때 다른 리소스에 영향이 가지 않는지 테스트를 한 번 해보면 정상적으로 수정된 보안 그룹 규칙만 영향을 받는 것을 알 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
+
 <details>
 
 <summary>Summary</summary>
@@ -953,8 +957,6 @@ terraform import module.vpc.aws_vpc_security_group_ingress_rule.rules\[\"oimarke
 * <mark style="color:purple;">**terraform import**</mark> 명령을 사용하면 이미 프로비저닝 되어 있는 리소스를 테라폼으로 관리할 수 있게 됩니다.
 
 </details>
-
-
 
 
 
