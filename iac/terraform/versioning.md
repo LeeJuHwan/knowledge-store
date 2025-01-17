@@ -1,2 +1,129 @@
 # Versioning
 
+## 원격 상태 파일 저장소
+
+{% hint style="info" %}
+**테라폼 상태 파일이란?**
+
+테라폼이 관리하는 인프라의 현재 상태를 저장하는 파일 <mark style="color:blue;">**terraform.tfstate**</mark>
+
+JSON 형태로 리소스 정보, 프로바이더 정보 등 여러 섹션으로 구성 되어 있으며 <mark style="color:red;">**절대 수동으로 파일을 수정하면 안되고**</mark> <mark style="color:purple;">**terraform state**</mark> 명령을 사용해서 조작해야 한다.
+
+![](<../../.gitbook/assets/image (37).png>)
+{% endhint %}
+
+
+
+### Backend Block
+
+{% hint style="warning" %}
+_**"테라폼 상태 파일을 어디에 저장하고 관리할지 설정"**_
+{% endhint %}
+
+기본적으로 백엔드 블록은 <mark style="color:red;">local</mark> 을 사용하도록 설정 되어 있고, 협업을 위해 해당 챕터에서는 <mark style="color:red;">S3</mark>를 사용한다. 테라폼 공식문서는 아래 이미지 처럼 백엔드 블록에서 어떤 저장소를 사용할 수 있는지 명시 되어있다.
+
+<div data-full-width="false"><figure><img src="../../.gitbook/assets/image (38).png" alt="" width="361"><figcaption></figcaption></figure></div>
+
+> "_**Local backend block을 사용하는 도중 작업 하는 환경이 바뀐다면?**_"
+
+집에서 개인 맥북으로 작업 하다가 맥북을 두고 외부 일정을 나가서 테라폼을 작성 한다면 모두 새로 생성하는 것 처럼 인식한다.
+
+또, 내가 아닌 다른 사람이 작업 하면 상태 파일을 Git 으로 관리하거나 파일을 전달해야 하는걸까?
+
+
+
+> _**"원격 저장소 구성의 장점"**_
+
+원격 저장소에 있는 상태 파일은 계속 동기화 되어 있기 때문에 작업자 A가 어디 까지 작업을 했는지에 대해 다른 작업자가 쉽게 알 수 있다.
+
+
+
+> _**"같은 파일을 동시에 작업한다면?"**_
+
+원격 저장소 내에 A 작업자가 SG를 작업 하고 있고 다른 작업자가 해당 SG 파일에 포트를 추가 한다거나 등 동시 작업을 수행 할 경우 충돌이 발생한다.
+
+이걸 방지하기 위해 1 명만 작업할 수 있도록 Lock이 필요하다.
+
+{% hint style="info" %}
+DynamoDB State Locking
+
+![](<../../.gitbook/assets/image (39).png>)
+{% endhint %}
+
+
+
+**Remote Backend Example**
+
+<figure><img src="../../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
+
+> _**"최초의 원격 저장소를 위한 테라폼 구성은 어디에 저장할까?"**_
+
+아래의 방식을 선호에 따라 사용하면 되며 각 조직에서 추구하는 시스템을 따르면 된다. 해당 챕터에서는 AWS에서 잘 만들어준 GUI 환경에서 생성하기 위해 콘솔 방식을 선택했다.
+
+1. 로컬 테라폼 작성
+2. 콘솔(S3, DynamoDB Table) 작업 후 공유
+
+
+
+**AWS Console 환경에서 원격 저장소 구성을 위한 리소스 생성하기**
+
+{% stepper %}
+{% step %}
+### S3 Bucket 생성
+
+S3 Bucket을 생성 할 때 원하는 <mark style="color:red;">**이름만 작성한 뒤 모두 기본값**</mark>을 사용하여 생성한다.
+
+<figure><img src="../../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+
+{% step %}
+### Dynamo DB Table 생성
+
+Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용하여 생성한다.
+
+{% hint style="info" %}
+**이 때, 테라폼 공식문서에서 안내 하듯이 Partition Key는 LockID (String) 으로 생성해야한다.**
+{% endhint %}
+
+<figure><img src="../../.gitbook/assets/image (43).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+
+{% step %}
+### Terraform Init
+
+백엔드 구성 파일이 없는 경우 기본값으로 "local"을 사용했지만 현재 S3를 사용하기 때문에 새롭게 terraform init을 통해 원격 저장소를 구성한다. 이 때, 기본 로컬 백엔드를 사용하고 있었다면 현재 구성을 변경할 것인지 물어보는데 "yes"라고 하면 정상적으로 변경이 완료된다.
+
+<figure><img src="../../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+
+{% step %}
+### Terraform Lock
+
+테스트를 위해 기본 <mark style="color:blue;">**`config.yaml`**</mark> 파일에서 SG 구성의 HTTP 허용 포트를 443 -> 543으로 변경한 후 <mark style="color:purple;">**terraform apply**</mark>를 하고 있다고 가정한다.
+
+또 다른 사용자가 위 상황을 인지하지 못한 채 새로운 리소스를 적용하여 apply를 시도한다면 아래 콘솔 에러처럼 Lock 상태임을 확인할 수 있다.
+
+<figure><img src="../../.gitbook/assets/image (45).png" alt=""><figcaption></figcaption></figure>
+{% endstep %}
+{% endstepper %}
+
+<details>
+
+<summary>Summary</summary>
+
+* <mark style="color:blue;">backend.tf</mark> 파일을 만들고 backend 블록을 만들어서 상태 파일을 어떻게 관리할지 정의할 수 있습니다.
+* 원격 저장소를 통해 상태 파일을 관리하면 다수의 인원이 협업할 때 효과적으로 할 수 있습니다.
+* 원격 저장소를 사용할 때는 동시에 상태 파일에 작업하지 않도록 상태 잠금도 필요 합니다.
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
