@@ -119,11 +119,121 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 
 
 
+### Remote Data
+
+{% hint style="warning" %}
+_**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성에서 재사용 하는 기능"**_
+{% endhint %}
+
+> _**"기존에 만든****&#x20;**<mark style="color:green;">**VPC**</mark>**에****&#x20;**<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+<mark style="color:green;">subnet id</mark>, <mark style="color:green;">security group id</mark> 의 값을 넣기 위해 아래 이미지 처럼 AWS Console에서 직접 값을 복사할 수도 있다.
+
+하지만, 기존에 만들었던 <mark style="color:green;">VPC</mark> 정보에 모두 포함되어있다. 이 것을 사용하면 되지 않을까?
+
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+<mark style="color:green;">**terraform remote staste**</mark>**&#x20;사용하기**
+
+S3 Backend 구성을 통해 원격 저장소에 상태 파일을 관리 했다면 해당 상태 파일이 출력하는 값들을 외부 모듈에서 사용할 수 있다.
+{% endhint %}
+
+{% tabs %}
+{% tab title="output.tf" %}
+```hcl
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "subnets" {
+  value = module.vpc.subnets
+}
+
+output "security_groups" {
+  value = module.vpc.security_groups
+}
+```
+
+{% hint style="info" %}
+modules 에 있는 vpc output과 vpc 디렉터리에 있는 oimarket-apne2의 output이 동일해야한다.
+{% endhint %}
+{% endtab %}
+
+{% tab title="datasources.tf" %}
+```hcl
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config = {
+    bucket = "oimarket-terraform-study-remote-state"
+    key    = "vpc/oimarket-apne2/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+<mark style="color:purple;">output</mark>을 적용 했다면 <mark style="color:purple;">terraform pla</mark>n으로 출력 부분이 변경 되었는지 확인하고 적용한다.
+
+그 후 해당 출력 값을 사용할 수 있는 리소스를 정의 해서 참조하면 되는데, 해당 챕터는 <mark style="color:green;">Bastion EC2</mark>를 생성한다.
 
 
 
+> "외부 모듈에서 원격 저장소 데이터 사용하기"
+
+EC2 Bastion을 생성하기 위해 작성한 테라폼 구성은 위 <mark style="color:blue;">datasources</mark> 값을 기준으로 작성한다.
+
+{% tabs %}
+{% tab title="main.tf" %}
+```hcl
+resource "aws_instance" "bastion" {
+  ami           = "ami-0a998385ed9f45655"
+  instance_type = "t3.micro"
+  subnet_id     = data.terraform_remote_state.vpc.outputs.subnets["oimarket-apne2-public-subnet-a"].id
+  vpc_security_group_ids = [
+    data.terraform_remote_state.vpc.outputs.security_groups["oimarket-apne2-permit-ssh-security-group"].id
+  ]
+
+  tags = {
+    Name = "oimarket-apne2-bastion"
+  }
+}
+```
+{% endtab %}
+
+{% tab title="datasources.tf" %}
+```hcl
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config = {
+    bucket = "oimarket-terraform-study-remote-state"
+    key    = "vpc/oimarket-apne2/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+<details>
+
+<summary>Summary</summary>
+
+* <mark style="color:green;">data</mark>와 <mark style="color:green;">terraform\_remote\_state</mark> 지시자를 사용해서 원격 저장소에 위치한 상태 파일의 출력들을 사용할 수 있다.
+* 이를 통해서 리소스 참조를 더 효율적으로 할 수 있습니다.
+
+</details>
 
 
 
+### Provider Version Spec
 
+{% hint style="warning" %}
+_**"버전 관리를 통해 안정성과 협업 중요시하게 여기기"**_
+{% endhint %}
 
