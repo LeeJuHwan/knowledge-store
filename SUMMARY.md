@@ -19,6 +19,7 @@
 ## IaC
 
 * [Terraform](iac/terraform/README.md)
+  * [License Change](iac/terraform/license-change.md)
   * [Tutorial](iac/terraform/tutorial.md)
   * [Module](iac/terraform/module.md)
   * [Versioning](iac/terraform/versioning.md)
@@ -97,6 +98,7 @@
 
 ## Tools
 
+* [SOPS](https://getsops.io/)
 * [Bruno](https://www.usebruno.com/)
 * [🖥️ FCK-NAT](https://fck-nat.dev/stable/)
 * [🧊 Pulumi](https://www.pulumi.com/)
