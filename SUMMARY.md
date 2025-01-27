@@ -93,6 +93,7 @@
     * [자동차 경주 미션 구현](playgrounds/playground/undefined-1/undefined-1.md)
 * [Infra Playground](infra-playground/README.md)
   * [VPC: 망분리 그리고 테스트](infra-playground/pre-activity-topology.md)
+  * [화면 성능 개선 전 학습 테스트](playgrounds/infra-playground/undefined.md)
   * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)
   * [subwaymap-1week](infra-playground/1week.md)
 
