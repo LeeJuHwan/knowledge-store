@@ -246,6 +246,238 @@ void testLocalCounter() throws Exception {
 
 
 
+{% hint style="info" %}
+_**서블릿의  필터를 활용하여 인코딩 값 검증하기**_
+
+* 서블릿이 생성 되고 HTTP로 넘어온 데이터를 파싱하고 서비스 로직을 호출하고 프로세스를 종료하는 과정들을 살펴 보며 인코딩 된 값을 어떻게 처리하는지 확인한다.
+{% endhint %}
+
+{% tabs %}
+{% tab title="CharacterEncodingFilter.java" %}
+```java
+@WebFilter("/*")
+public class CharacterEncodingFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        request.getServletContext().log("doFilter() 호출");
+        response.setCharacterEncoding("UTF-8");
+        chain.doFilter(request, response);
+    }
+```
+{% endtab %}
+{% endtabs %}
+
+왜 인코딩을 따로 설정해야 하며, 어떻게 해야 하는지 알아볼 수 있는 코드이다. 해당 공식 문서를 읽어 보면 인코딩 방법을 명시 하지 않으면 기본적으로 ISO-8859를 사용한다고 한다.&#x20;
+
+그렇다면 특정 문자에 대해서는 디코딩이 이루어지지 않아 외계어를 볼 수 있기 때문에 세계 공용인 UTF-8로 인코딩 하여 반환 값을 검증했다.
+
+* [공식문서 참고 자료](https://docs.oracle.com/javaee/7/api/javax/servlet/ServletResponse.html)
+
+
+
+### Thread
+
+***
+
+{% hint style="info" %}
+_**톰캣에서 스레드 값 설정**_
+{% endhint %}
+
+{% tabs %}
+{% tab title="ThreadAppTest.java" %}
+```java
+/**
+ * 1. ThreadApp 클래스의 애플리케이션을 실행시켜 서버를 띄운다.
+ * 2. ThreadAppTest를 실행시킨다.
+ * 3. ThreadAppTest가 아닌, ThreadApp의 콘솔에서 SampleController가 생성한 http call count 로그를 확인한다.
+ * 4. application.yml에서 설정값을 변경해보면서 어떤 차이점이 있는지 분석해본다.
+ */
+public class ThreadAppTest {
+    private static final AtomicInteger count = new AtomicInteger(0);
+
+    @Test
+    void test() throws Exception {
+        final var NUMBER_OF_THREAD = 10;
+        var threads = new Thread[NUMBER_OF_THREAD]; // Thread 10개 생성
+
+        for (int i = 0; i < NUMBER_OF_THREAD; i++) {
+            // NOTE: thread 0 번 부터 순차적으로 /test URL을 호출
+            threads[i] = new Thread(() -> incrementIfOk(TestHttpUtils.send("/test")));
+        }
+        System.out.println("threads = " + threads.length);
+
+        for (final var thread : threads) {
+            thread.start();
+            Thread.sleep(50);
+        }
+
+        for (final var thread : threads) {
+            thread.join();
+        }
+
+        assertThat(count.intValue()).isEqualTo(2);
+    }
+
+    private static void incrementIfOk(final HttpResponse<String> response) {
+        if (response.statusCode() == 200) {
+            count.incrementAndGet();
+        }
+    }
+```
+{% endtab %}
+
+{% tab title="application.yml" %}
+```yaml
+server:
+  tomcat:
+    accept-count: 100
+    max-connections: 2
+    threads:
+      max: 10
+
+```
+
+* <mark style="color:green;">**accept-count**</mark>: `max-connections`가 초과 했을 때 ThreadQueue 에 저장될 최대 개수
+* <mark style="color:green;">**max-connections**</mark>: 서버가 동시에 처리할 수 있는 연결의 개수 제한
+* <mark style="color:green;">**threads.max**</mark>: 워커 스레드의 최대 스레드 수
+{% endtab %}
+{% endtabs %}
+
+
+
+{% hint style="info" %}
+**Thread 동기화 및 Thread-Safe**
+
+1. 동기화 되지 않아 예상 개수보다 적게 생성 되는 경쟁 상태를 동기화로 풀어주기
+2. syncronized 예약어를 사용하지 않고 Thread-Safe한 코드 생성하기
+{% endhint %}
+
+{% tabs %}
+{% tab title="1. Syncronized" %}
+```java
+//TODO: 동기화를 이용해서 쓰레드 간섭을 해결해보세요.
+@Test
+void synchronizedTest() throws InterruptedException {
+    var executorService = Executors.newFixedThreadPool(3);
+    var counter = new Counter();
+
+    IntStream.range(0, 1_000).forEach(count -> executorService.submit(counter::calculate));
+
+    executorService.awaitTermination(500, TimeUnit.MILLISECONDS);
+
+    assertThat(counter.getInstanceValue()).isEqualTo(1_000);
+}
+
+synchronized public void calculate() { // 동기화 사용
+    setInstanceValue(getInstanceValue() + 1);
+}
+
+```
+{% endtab %}
+
+{% tab title="2. Thread-Safe" %}
+```java
+//TODO: synchronized 예약어를 사용하지 않고 Thread safe하게 구성해보세요
+@Test
+void synchronizedTest2() throws InterruptedException {
+    var executorService = Executors.newFixedThreadPool(3);
+    var servlet = new TestServlet();
+
+    IntStream.range(0, 1_000).forEach(count -> executorService.submit(() -> servlet.join(new User("cu"))));
+
+
+    executorService.awaitTermination(1_000, TimeUnit.MILLISECONDS);
+    assertThat(servlet.getUsers().size()).isEqualTo(1);
+}
+
+private static final class TestServlet {
+    private static final Long LATENCY = 200L;
+
+    private List<User> users = new ArrayList<>();
+
+    public void join(User user) {
+        lock.lock(); // Mutex Lock 사용
+        if (!users.contains(user)) {
+            sleep();
+            users.add(user);
+        }
+        lock.unlock();
+    }
+
+    private static void sleep() {
+        if (condition()) {
+            try {
+                Thread.sleep(LATENCY);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+{% hint style="info" %}
+_**Thread Pool에 따른 Queue 적재 방식**_
+
+1. <mark style="color:green;">**newFixedThreadPool**</mark> 이 Queue에 저장하는 쓰레드 개수 검증하기
+2. <mark style="color:green;">**newCachedThreadPool**</mark> 이 Queue에 저장하는 쓰레드 개수 검증하기
+{% endhint %}
+
+{% tabs %}
+{% tab title="newFixedThreadPool" %}
+```java
+@Test
+void newFixedThreadPoolTest() {
+    // NOTE: 2개의 고정 쓰레드를 생성
+    final var executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
+    // NOTE: 고정 쓰레드에서 2개를 할당하고 나머지 1개는 큐에 저장
+    executor.submit(log("fixed thread pools"));
+    executor.submit(log("fixed thread pools"));
+    executor.submit(log("fixed thread pools"));
+
+    final int expectedPoolSize = 2;
+    final int expectedQueueSize = 1;
+    // NOTE: 결론적으로 고정 쓰레드를 생성한만큼 할당하고 남은 만큼은 큐에 담아둔다.
+    assertThat(expectedPoolSize).isEqualTo(executor.getPoolSize());
+    assertThat(expectedQueueSize).isEqualTo(executor.getQueue().size());
+}
+```
+{% endtab %}
+
+{% tab title="newCachedThreadPool" %}
+```java
+@Test
+void newCachedThreadPoolTest() {
+    // NOTE: 캐시 쓰레드 풀을 생성
+    final var executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+
+    // NOTE: 캐시 쓰레드는 이미 사용중인 쓰레드가 있다면 새롭게 생성, 사용하지 않는다면(60초 동안) 리소스 제거
+    executor.submit(log("cached thread pools"));
+    executor.submit(log("cached thread pools"));
+    executor.submit(log("cached thread pools"));
+
+    final int expectedPoolSize = 3;
+    final int expectedQueueSize = 0; //TODO: 알맞은 값으로 변경해보세요.
+
+    // NOTE: 결론적으로 3개의 쓰레드가 새롭게 생성되서 할당되고 큐에 담기지 않음
+    assertThat(expectedPoolSize).isEqualTo(executor.getPoolSize());
+    assertThat(expectedQueueSize).isEqualTo(executor.getQueue().size());
+}
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
+
+
 
 
 [^1]: compression enable
