@@ -37,7 +37,7 @@ Bastion 서버에서 직접 구축한 로깅만큼 이쁘게 나오진 않지만
 
 1. SG-Outbound: HTTPS allows any(0.0.0.0) 443 port 허용
    * SSM Agent와 통신을 이루기 위한 보안그룹 설정
-2. Public IP enable
+2. VPC Endpoints
 3. SSM Agent가 사전 설치 된 AMI 또는 수동 설치 된 환경
 
 <details>
@@ -62,8 +62,6 @@ Bastion 서버에서 직접 구축한 로깅만큼 이쁘게 나오진 않지만
 
 
 
-
-
 ```
 aws ssm start-session --target "{InstanceId}"
 ```
@@ -83,3 +81,4 @@ aws ssm start-session --target "{InstanceId}"
 ![](<../../.gitbook/assets/image (21).png>)
 
 </details>
+
