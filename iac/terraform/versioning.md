@@ -127,13 +127,13 @@ _**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성�
 
 > _**"기존에 만든****&#x20;**<mark style="color:green;">**VPC**</mark>**에****&#x20;**<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 <mark style="color:green;">subnet id</mark>, <mark style="color:green;">security group id</mark> 의 값을 넣기 위해 아래 이미지 처럼 AWS Console에서 직접 값을 복사할 수도 있다.
 
 하지만, 기존에 만들었던 <mark style="color:green;">VPC</mark> 정보에 모두 포함되어있다. 이 것을 사용하면 되지 않을까?
 
-<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 <mark style="color:green;">**terraform remote staste**</mark>**&#x20;사용하기**
@@ -239,11 +239,11 @@ _**"버전 관리를 통해 안정성과 협업 중요시하게 여기기"**_
 
 > #### "Terraform version"
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 > #### "Provider version"
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **버전 연산자**
@@ -292,13 +292,13 @@ terraform {
 {% step %}
 ### Terraform plan
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
 ### Terraform init -uprade
 
-<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
 

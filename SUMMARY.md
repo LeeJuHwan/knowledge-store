@@ -95,7 +95,8 @@
   * [VPC: 망분리 그리고 테스트](infra-playground/pre-activity-topology.md)
   * [화면 성능 개선 전 학습 테스트](playgrounds/infra-playground/undefined.md)
   * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)
-  * [subwaymap-1week](infra-playground/1week.md)
+  * [subwaymap-1week](playgrounds/infra-playground/1week/README.md)
+    * [망 구성하기](playgrounds/infra-playground/1week/undefined.md)
 
 ## Tools
 

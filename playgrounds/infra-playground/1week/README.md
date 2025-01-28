@@ -22,13 +22,7 @@
 
 ### 망 구성하기
 
-**망 구성 카테고리**
 
-* VPC
-* Subnets
-* Security Groups
-* Internet Gateway
-* Route Tables
 
 #### VPC
 
@@ -47,7 +41,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 | B Class | 128.0.0.0 \~ 191.0.0.0 | 2^16 (65,536) | 128.12.12.12 |
 | C Class | 192.0.0.0 \~ 223.0.0.0 |   2^8 (256)   | 192.168.10.1 |
 
-![image](../.gitbook/assets/create\_vpc.png)
+![image](../../../.gitbook/assets/create_vpc.png)
 
 * [x] CIDR은 C class(x.x.x.x/24)로 생성
 
@@ -75,7 +69,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 * [x] 내부망 서브넷1 - 32개
 * [x] 내부망 서브넷2 - 32개
 
-![image](../.gitbook/assets/subway-map-subnets.png)
+![image](../../../.gitbook/assets/subway-map-subnets.png)
 
 #### Internet Gateway
 
@@ -87,7 +81,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 **인터넷 게이트웨이는 퍼블릭 IP 주소를 지닌 인스턴스를 인터넷과 연결하면 인터넷에서 들어오는 요청을 수신할 수 있도록 한다.**
 {% endhint %}
 
-![image](../.gitbook/assets/subway\_map\_igw.png)
+![image](../../../.gitbook/assets/subway_map_igw.png)
 
 * [x] Internet Gateway attatched VPC
 
@@ -103,7 +97,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 > allow Any to Internet gateway
 
-![image](../.gitbook/assets/subway\_map\_rt\_igw.png)
+![image](../../../.gitbook/assets/subway_map_rt_igw.png)
 
 * [x] Route table linked internet gateway to public topology
 
@@ -113,7 +107,7 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 > Specific subnet IPs
 
-![image](../.gitbook/assets/subway\_map\_rt\_sb.png)
+![image](../../../.gitbook/assets/subway_map_rt_sb.png)
 
 * 외부망 전용 Route
   * [x] 0.0.0.0/0: Internet Gateway 연결 (내부 <-> 외부 양방향 통신)
@@ -146,11 +140,11 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 > Inbound
 
-![image](../.gitbook/assets/external\_sg\_inbound.png)
+![image](../../../.gitbook/assets/external_sg_inbound.png)
 
 > Outbound
 
-![image](../.gitbook/assets/external\_sg\_outbound.png)
+![image](../../../.gitbook/assets/external_sg_outbound.png)
 
 **Internal SG**
 
@@ -159,11 +153,11 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 > Inbound
 
-![image](../.gitbook/assets/internal\_sg\_inbound.png)
+![image](../../../.gitbook/assets/internal_sg_inbound.png)
 
 > Outbound
 
-![image](../.gitbook/assets/internal\_sg\_outbound.png)
+![image](../../../.gitbook/assets/internal_sg_outbound.png)
 
 **Admin SG**
 
@@ -171,11 +165,11 @@ Default VPC는 B Class로 이루어져 범용적으로 사용이 가능하다. �
 
 > Inbound
 
-![image](../.gitbook/assets/admin\_sg\_inbound.png)
+![image](../../../.gitbook/assets/admin_sg_inbound.png)
 
 > Outbound
 
-![image](../.gitbook/assets/admin\_sg\_outbound.png)
+![image](../../../.gitbook/assets/admin_sg_outbound.png)
 
 
 
