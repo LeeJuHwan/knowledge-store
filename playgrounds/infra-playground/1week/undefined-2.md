@@ -1,0 +1,184 @@
+---
+description: 어플리케이션의 성능을 개선할 수 있는 요소를 찾아서 개선 해보아요
+---
+
+# 화면 성능 개선하기
+
+[미션 진행 코드](https://github.com/LeeJuHwan/infra-workshop/blob/main/subwaymap/README.md)
+
+<figure><img src="../../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+
+사용자의 경험을 위해 어플리케이션의 성능을 검사 하고 개선점을 만들어봅시다.
+
+{% hint style="success" %}
+**화면 성능 개선하기 목록**
+
+* 웹 성능 테스트
+* Reverse Proxy 개선하기
+* Tomcat 개선하기
+{% endhint %}
+
+
+
+#### 웹 성능 테스트
+
+***
+
+{% hint style="info" %}
+_**TODO**_
+
+* 페이지 성능은 우선 기본적으로 가장 많이 방문하는 페이지나 트래픽이 많이 발생할 것으로 예상되는 페이지 등 중요하다는 페이지로 웹 성능 테스트 진행 해보아요
+{% endhint %}
+
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+_<mark style="color:green;">**평가는 전체적인 점수와 각 측정 항목별 반응시간을 나타낸다.**</mark>_
+
+* **First Contentful Patin** : 첫번째 텍스트 혹은 이미지가 표시되는 시간
+* **Speed Index** : 컨텐츠가 얼마나 빨리 표시되는지 보여준다.
+* **Largest Contentfull Paint** : 최대 텍스트 혹은 이미지가 표시되는 시간
+* **Total Blocking Time** : FCP와 상호작용 시간 사이의 모든 시간의 합
+* **Cumulative Layout Shift** : 표시 영역 안에 보이는 요소의 이동을 측정
+{% endhint %}
+
+<table data-full-width="true"><thead><tr><th>사이트</th><th>FCP</th><th>SI</th><th>LCP</th><th>TBT</th><th>CLS</th></tr></thead><tbody><tr><td>지하철 노선도</td><td>3.1 s</td><td>3.2 s</td><td>3.1 s</td><td>0 ms</td><td>0</td></tr><tr><td>네이버 지도</td><td>0.7 s</td><td>3.6 s</td><td>4.0 s</td><td>1,240 ms</td><td>0.001</td></tr><tr><td>카카오 지도</td><td>0.8 s</td><td>0.9 s</td><td>0.8 s</td><td>0 ms</td><td>0</td></tr></tbody></table>
+
+
+
+
+
+#### Reverse Proxy 개선하기
+
+***
+
+{% hint style="info" %}
+_**TODO**_
+
+* gzip 압축 설정
+* cache 설정
+* HTTP/2 설정
+{% endhint %}
+
+***
+
+{% stepper %}
+{% step %}
+### Gzip 압축 설정
+
+<figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+```
+http {
+  gzip on; ## http 블록 수준에서 gzip 압축 활성화
+  gzip_comp_level 9;
+  gzip_vary on;
+  gzip_types text/plain text/css application/json application/x-javascript application/javascript text/xml application/xml application/rss+xml text/javascript image/svg+xml application/vnd.ms-fontobject application/x-font-ttf font/opentype;
+
+   ## Proxy 캐시 파일 경로, 메모리상 점유할 크기, 캐시 유지기간, 전체 캐시의 최대 크기 등 설정
+  proxy_cache_path /tmp/nginx levels=1:2 keys_zone=mycache:10m inactive=10m max_size=200M;
+
+  ## 캐시를 구분하기 위한 Key 규칙
+  proxy_cache_key "$scheme$host$request_uri $cookie_user";
+```
+{% endstep %}
+
+{% step %}
+### Cache 설정
+
+<figure><img src="../../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+
+```
+server {
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/infra.myadvent-calendar.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/infra.myadvent-calendar.com/privkey.pem;
+
+    # Disable SSL
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    # 통신과정에서 사용할 암호화 알고리즘
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
+
+    # Enable HSTS
+    # client의 browser에게 http로 어떠한 것도 load 하지 말라고 규제합니다.
+    # 이를 통해 http에서 https로 redirect 되는 request를 minimize 할 수 있습니다.
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    # SSL sessions
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # Proxy 캐시 설정 (정적 파일 요청 캐싱)
+    location ~* \.(?:css|js|gif|png|jpg|jpeg)$ {
+      proxy_pass http://app;
+
+      # 캐시 존 및 상태 정보 헤더 추가
+      proxy_cache mycache;
+      add_header X-Proxy-Cache $upstream_cache_status;
+
+      # 캐싱 조건
+      proxy_cache_valid 200 302 10m;
+      expires 1M;
+      access_log off;
+    }
+```
+{% endstep %}
+
+{% step %}
+### HTTP/2 설정
+
+<figure><img src="../../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+
+```
+server {
+    listen 443 ssl http2;  // http2 추가
+    ssl_certificate /etc/letsencrypt/live/infra.myadvent-calendar.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/infra.myadvent-calendar.com/privkey.pem;
+
+    # Disable SSL
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    # 통신과정에서 사용할 암호화 알고리즘
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
+
+    # Enable HSTS
+    # client의 browser에게 http로 어떠한 것도 load 하지 말라고 규제합니다.
+    # 이를 통해 http에서 https로 redirect 되는 request를 minimize 할 수 있습니다.
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    # SSL sessions
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # Proxy 캐시 설정 (정적 파일 요청 캐싱)
+    location ~* \.(?:css|js|gif|png|jpg|jpeg)$ {
+      proxy_pass http://app;
+
+      # 캐시 존 및 상태 정보 헤더 추가
+      proxy_cache mycache;
+      add_header X-Proxy-Cache $upstream_cache_status;
+
+      # 캐싱 조건
+      proxy_cache_valid 200 302 10m;
+      expires 1M;
+      access_log off;
+    }
+```
+{% endstep %}
+{% endstepper %}
+
+#### Tomcat 개선하기
+
+***
+
+<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+```
+server.compression.enabled: true
+server.compression.mime-types: text/html,text/plain,text/css,application/javascript,application/json
+server.compression.min-response-size: 500
+```
+

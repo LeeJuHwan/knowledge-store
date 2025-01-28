@@ -97,6 +97,8 @@
   * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)
   * [Subway-Map](playgrounds/infra-playground/1week/README.md)
     * [망 구성하기](playgrounds/infra-playground/1week/undefined.md)
+    * [서버 구성하기](playgrounds/infra-playground/1week/undefined-1.md)
+    * [화면 성능 개선하기](playgrounds/infra-playground/1week/undefined-2.md)
 
 ## Tools
 
