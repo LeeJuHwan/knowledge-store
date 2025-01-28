@@ -8,7 +8,7 @@ description: AWS에서 신규 망을 생성하여 DMZ와 INSIDE 분리
 
 <figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-**지하철 노선도** 라는 프로젝트를 상용화 하기 위해 "_**일단 프로젝트를 배포 해보기**_" 라는 섹션으로 VPC를 생성하고 외부망과 내부망을 나누며 필요한 아이피 대역을 서브넷팅 한 기본 논리적 구조를 생성합니다.
+VPC를 생성하고 외부망과 내부망을 나누며 필요한 아이피 대역을 서브넷팅 한 기본 논리적 구조를 생성합니다.
 
 {% hint style="success" %}
 **망 구성 카테고리**
