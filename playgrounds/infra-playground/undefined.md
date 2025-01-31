@@ -4,23 +4,27 @@ description: 도커 컨테이너에 대한 짧은 이야기
 
 # 컨테이너 사전 지식
 
+### 도커의 필요성
+
+과거에는 물리적인 서버에서 운영체제 버전에 맞는 소프트웨어를 설치하여 운영 하는 환경이었다. 이러한 구성을 스노우플레이크 서버 라고 불렀는데, 이렇게 구성된 서버는 다시 재현해내기 어렵다.&#x20;
+
+{% hint style="info" %}
+_**스노우 플레이크 서버**_
+
+> _**한 번 설정을 하고 다시 설정이 불가능한, "마치 눈 처럼 녹아버리는" 서버의 형태**_
+
+운영 환경에서 소프트웨어 업데이트와 설치를 반복 하며 눈이 하나씩 쌓이는 것 처럼 운영 중인 환경이 눈 처럼 쌓인다는 것 때문이다.
+
+[참고 블로그](https://bcho.tistory.com/1224)
+{% endhint %}
+
+
+
 ### 도커 컨테이너는 프로세스를 관리한다
 
-{% hint style="info" %}
-_**도커 컨테이너는 프로세스의 라이프 사이클을 관리한다**_
+> _**컨테이너는 Host OS의 시스템 커널을 사용한다.**_
 
-프로세스가 생성되고 운영되고 제거되기 까지 생애주기를 관리하는데 이 때 필요한 것은 "<mark style="color:green;">**격리**</mark>" 이다.
-{% endhint %}
-
-{% hint style="info" %}
-_**컨테이너 안의 프로세스는 제한된 자원내에서 제한된 사용자만 접근이 가능하다.**_
-{% endhint %}
-
-{% hint style="info" %}
-_**컨테이너는 Host OS의 시스템 커널을 사용한다.**_
-
-<img src="../../.gitbook/assets/image.png" alt="" data-size="original">
-{% endhint %}
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -31,12 +35,34 @@ _**컨테이너는 Host OS의 시스템 커널을 사용한다.**_
 <figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 > **가상머신**
+>
+> 기존의 가상화 기술은 하이퍼바이저를 이용해 여러 개의 운영체제를 하나의 호스트에서 생성해 사용하는 방식
+
+{% hint style="info" %}
+**하이퍼 바이저**
+
+호스트 컴퓨터에서 다수의 운영체제를 동시에 실행하기 위한 논리적 플랫폼
+{% endhint %}
 
 하이퍼 바이저가 존재하고 각각의 Guest OS 들이 리소스들을 활용하기 위해서 하이퍼 바이저를 통해 시스템 콜을 발생 시킨다.
 
-> **도커 컨테이너**
+이 때, 중요한 점은 <mark style="color:red;">**각종 시스템 자원을 가상화하고 독립된 공간을 생성하는 작업은 반드시 하이퍼바이저를 거치기 때문에 일반 Host에 비해 성능의 손실이 발생**</mark>한다는 것이다.
 
-가상 머신과 달리 도커 컨테이너는 도커 컨테이너 엔진이 별도의 프로세스로 할당 되어 실행이 되고 각각의 프로세스들을 격리해서 사용한다.
+이외에도 가상머신은 <mark style="color:red;">**GuestOS를 사용하기 위한 라이브러리, 커널 등을 전부 포함하기에 가상 머신을 배포하기 위한 이미지로 만들었을 때 이미지 크기가 커져**</mark> 가상머신 이미지를 애플리케이션으로 배포하기는 부담스럽다.
+
+> **도커 컨테이너**
+>
+> 가상 머신과 달리 도커 컨테이너는 도커 컨테이너 엔진이 별도의 프로세스로 할당 되어 실행이 되고 각각의 프로세스들을 격리해서 사용한다.
+
+* <mark style="color:purple;">**chroot**</mark>로 특정 자원만 사용하도록 제한
+* <mark style="color:purple;">**cgroup**</mark>을 사용하여 자원의 사용량을 제한
+* <mark style="color:purple;">**namespace**</mark>로 특정 유저만 자원을 볼 수 있도록 제한
+* <mark style="color:purple;">**overlay network**</mark> 등 네트워크 가상화 기술 활용
+* <mark style="color:purple;">**union file system**</mark> (AUFS, overlay2)로 이식성, 비용절감
+
+컨테이너에 필요한 커널은 호스트의 커널을 공유해 사용하고 컨테이너 안에는 애플리케이션을 구동하는데 필요한 라이브러리 및 실행 파일만 존재하기 때문에 컨테이너를 이미지로 만들었을 때 이미지의 용량 또한 가상 머신에 비해 대폭 줄어든다.
+
+<mark style="color:red;">**무엇보다 컨테이너의 내용을 수정해도 호스트 OS에 영향을 끼치지 않고 애플리케이션의 개발과 배포가 편해지며 여러 애플리케이션의 독립성과 확장성이 높아진다.**</mark>
 
 > **"하지만 파일 시스템은 다르다"**
 
@@ -80,15 +106,9 @@ _**chroot**_
 {% step %}
 ### 네트워크 인터페이스 카드 생성
 
-위에서 <mark style="color:purple;">**chroot**</mark>를 통해 독자적인 파일 시스템이 생성 된다고 했었는데, 이 때 <mark style="color:red;">**네트워크 인터페이스 카드**</mark>도 하나 생성된다.
-
-
-{% endstep %}
-
-{% step %}
-### MAC 주소와 IP 주소 할당
-
 <figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+
+위에서 <mark style="color:purple;">**chroot**</mark>를 통해 독자적인 파일 시스템이 생성 된다고 했었는데, 이 때 <mark style="color:red;">**네트워크 인터페이스 카드**</mark>도 하나 생성된다.
 
 컨테이너 내부 네트워크 상태를 확인 해보면 컨테이너에 "<mark style="color:red;">**MAC 주소와 IP가 할당 되어있음**</mark>"
 {% endstep %}
