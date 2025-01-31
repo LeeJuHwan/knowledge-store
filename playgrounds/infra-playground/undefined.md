@@ -62,7 +62,32 @@ _**스노우 플레이크 서버**_
 
 컨테이너에 필요한 커널은 호스트의 커널을 공유해 사용하고 컨테이너 안에는 애플리케이션을 구동하는데 필요한 라이브러리 및 실행 파일만 존재하기 때문에 컨테이너를 이미지로 만들었을 때 이미지의 용량 또한 가상 머신에 비해 대폭 줄어든다.
 
-<mark style="color:red;">**무엇보다 컨테이너의 내용을 수정해도 호스트 OS에 영향을 끼치지 않고 애플리케이션의 개발과 배포가 편해지며 여러 애플리케이션의 독립성과 확장성이 높아진다.**</mark>
+<mark style="color:red;">**무엇보다 컨테이너의 내용을 수정해도 호스트 OS에 영향을 끼치지 않고 애플리케이션의 개발과 배포가 편해지며 여러 애플리케이션의 독립성과 확장성이 높아진다.**</mark>\
+
+
+> 도커 데몬
+
+사용자가 명령어를 입력하면 **`docker.sock`**&#xC744; 통해 도커 데몬의 API 를 호출한다. 도커 데몬에서 발생한 이벤트는 docker events 를 통해 확인할 수 있다.
+
+
+
+**"docker 명령어가 dockerd라는 도커 데몬과 docker.sock을 참조하고 있음을 확인할 수 있다"**
+
+{% code overflow="wrap" %}
+```
+sudo lsof -c docker
+dockerd     880 root  txt       REG              202,1 102066512      55737 /usr/bin/dockerd
+dockerd     880 root    6u     unix 0xffff953085804400       0t0      18324 /var/run/docker.sock type=STREAM
+```
+{% endcode %}
+
+<mark style="color:purple;">**docker stat**</mark> 과 <mark style="color:purple;">**docker system df**</mark> 를 통해 도칵 현재 Host의 자원을 얼마나 사용중인지 확인할 수 있다.
+
+> "_**도커 데몬은 크게, 컨테이너 이미지 빌드, 관리, 공유, 실행 및 컨테이너 인스턴스 관리 등의 기능을 하며, 앞에서 살펴봤듯 모든 컨테이너를 자식 프로세스로 하는데 이에 따른 문제점은 없을까?**_"
+
+:point\_right: 도커의 문제점은 해당 [아티클](https://www.samsungsds.com/kr/insights/docker.html)에서 읽어볼 수 있습니다.
+
+
 
 > **"하지만 파일 시스템은 다르다"**
 
@@ -83,8 +108,6 @@ _**chroot**_
 > **그래서 컨테이너 내에선 자기가 첫번째 프로세스로 할당된다.**
 
 <figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
-
-
 
 > _**"Host OS는 컨테이너를 어떻게 바라볼까?"**_
 
