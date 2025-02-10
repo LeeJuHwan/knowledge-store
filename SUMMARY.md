@@ -69,6 +69,8 @@
   * [객체지향 이론](java/readable-code/oop.md)
   * [객체지향 코드 적용하기](java/readable-code/oop-code.md)
   * [코드 다듬기](java/basic/undefined.md)
+* [Practical Testing](java/practical-testing/README.md)
+  * [단위 테스트](java/practical-testing/undefined.md)
 
 ## Python
 
