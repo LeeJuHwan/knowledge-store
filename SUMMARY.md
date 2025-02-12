@@ -71,6 +71,7 @@
   * [코드 다듬기](java/basic/undefined.md)
 * [Practical Testing](java/practical-testing/README.md)
   * [테스트 사전 지식](java/practical-testing/undefined.md)
+  * [스프링 레이어드 아키텍처 테스트하기](java/practical-testing/undefined-1.md)
 
 ## Python
 

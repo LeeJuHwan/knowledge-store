@@ -4,28 +4,6 @@ description: 테스트 코드를 작성하기 전 기본 개념 이해하기
 
 # 테스트 사전 지식
 
-### Project settings
-
-***
-
-{% hint style="success" %}
-#### Core
-
-* [x] Java 21
-* [x] Spring Boot 3.4.2
-
-
-
-#### Dependency
-
-* [x] spring boot web
-* [x] spring data JPA
-* [x] H2 Database
-* [x] Lombok
-{% endhint %}
-
-
-
 ### <mark style="color:blue;">TDD</mark>, Red - Green - Refactor
 
 ***
