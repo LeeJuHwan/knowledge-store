@@ -133,7 +133,7 @@ _**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성�
 
 하지만, 기존에 만들었던 <mark style="color:green;">VPC</mark> 정보에 모두 포함되어있다. 이 것을 사용하면 되지 않을까?
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 <mark style="color:green;">**terraform remote staste**</mark>**&#x20;사용하기**
@@ -243,7 +243,7 @@ _**"버전 관리를 통해 안정성과 협업 중요시하게 여기기"**_
 
 > #### "Provider version"
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **버전 연산자**
@@ -292,7 +292,7 @@ terraform {
 {% step %}
 ### Terraform plan
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
