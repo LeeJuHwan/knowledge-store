@@ -69,6 +69,7 @@
   * [객체지향 이론](java/readable-code/oop.md)
   * [객체지향 코드 적용하기](java/readable-code/oop-code.md)
   * [코드 다듬기](java/basic/undefined.md)
+  * [읽기 좋은 코드를 도와줄 조언들](java/basic/undefined-1.md)
 * [Practical Testing](java/practical-testing/README.md)
   * [테스트 사전 지식](java/practical-testing/undefined.md)
   * [스프링 레이어드 아키텍처 테스트하기](java/practical-testing/undefined-1/README.md)
