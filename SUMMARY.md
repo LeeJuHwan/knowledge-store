@@ -101,10 +101,15 @@
   * [컨테이너 사전 지식](playgrounds/infra-playground/undefined.md)
   * [화면 성능 개선 전 학습 테스트](playgrounds/infra-playground/undefined-1.md)
   * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)
+  * [SQL, 이 정도는 알아야지 😎](playgrounds/infra-playground/sql.md)
   * [Subway-Map](playgrounds/infra-playground/1week/README.md)
     * [망 구성하기](playgrounds/infra-playground/1week/undefined.md)
     * [서버 구성하기](playgrounds/infra-playground/1week/undefined-1.md)
     * [화면 성능 개선하기](playgrounds/infra-playground/1week/undefined-2.md)
+  * [Conference Platform](playgrounds/infra-playground/1week-1/README.md)
+    * [망 구성하기](playgrounds/infra-playground/1week-1/undefined.md)
+    * [서버 구성하기](playgrounds/infra-playground/1week-1/undefined-1.md)
+    * [화면 성능 개선하기](playgrounds/infra-playground/1week-1/undefined-2.md)
 
 ## Tools
 
