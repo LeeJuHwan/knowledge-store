@@ -70,10 +70,15 @@
   * [객체지향 코드 적용하기](java/readable-code/oop-code.md)
   * [코드 다듬기](java/basic/undefined.md)
   * [읽기 좋은 코드를 도와줄 조언들](java/basic/undefined-1.md)
-* [Practical Testing](java/practical-testing/README.md)
-  * [테스트 사전 지식](java/practical-testing/undefined.md)
-  * [스프링 레이어드 아키텍처 테스트하기](java/practical-testing/undefined-1/README.md)
-    * [Persistence Layer](java/practical-testing/undefined-1/persistence-layer.md)
+
+## Spring Boot
+
+* [Practical Testing](spring-boot/practical-testing/README.md)
+  * [테스트 사전 지식](spring-boot/practical-testing/undefined.md)
+  * [스프링 레이어드 아키텍처 테스트하기](spring-boot/practical-testing/undefined-1/README.md)
+    * [Persistence Layer](spring-boot/practical-testing/undefined-1/persistence-layer.md)
+* [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
+  * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
 
 ## Python
 
