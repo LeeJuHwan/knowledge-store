@@ -79,6 +79,7 @@
     * [Persistence Layer](spring-boot/practical-testing/undefined-1/persistence-layer.md)
 * [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
   * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
+  * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1.md)
 
 ## Python
 
