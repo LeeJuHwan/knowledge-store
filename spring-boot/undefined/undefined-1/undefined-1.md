@@ -1,4 +1,4 @@
-# 새로운 기능 개발하기
+# 객체 지향 원리 적용
 
 {% hint style="info" %}
 앞서 만들어두었던 예제에서 간단한 주문시스템과 VIP 고객일 경우 고정 금액 1,000 원을 할인 해주는 정책을 적용하였다.
@@ -133,6 +133,12 @@ public class OrderServiceImpl implements OrderService {
 :bulb: **할인 정책을 바꾸는 순간 서비스 계층의 참조 객체를 변경 하며 코드가 수정된다. 이 때 OCP 또한 위반된다.**
 {% endhint %}
 
+> _**이러한 설계는 마치 이런 상황과도 같다.**_
+>
+> "공연" 에서 배역을 맡을 배우를 정하는데, 공연 기획자가 배우를 정하는 것이 아닌 남자 주연 배우가 자신에게 맞는 여자 주연 배우를 고르는 격과 같다.&#x20;
+>
+> 이러한 문제를 해결하기 위해서 남자 주연 배우와, 여자 주연 배우를 섭외 하는 담당자인 "공연 기획자" 즉, 서비스의 구현 객체가 아닌 다른 객체가 이 책임을 맡아야 한다.
+
 
 
 #### 해결방안
@@ -174,4 +180,92 @@ public class OrderServiceImpl implements OrderService {
 이렇게 설계된 코드가 위에서 말했던 문제점을 상쇄시킬 수 있다. 하지만, 이 코드에서 해당 인터페이스에 대한 구현체를 할당하지 않으면 이 코드는 NPE 가 발생한다.
 
 > :white\_check\_mark: 이 문제를 해결하려면, 누군가 클라이언트인 OrderServiceImpl 에 DiscountPolicy 의 구현 객체를 대신 생성하고 주입 해주어야한다.
+
+
+
+**관심사 분리 - App Config 등장**
+
+구현 객체를 생성하고, 연결 하는 책임을 갖는 별도의 설정 클래스를 만들어서 구현체가 인터페이스만 의존할 수 있도록 문제를 해결 해보자.
+
+
+
+<figure><img src="../../../.gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
+
+{% tabs %}
+{% tab title="AppConfig.java" %}
+```java
+package hello.core;
+
+import hello.core.discount.DiscountPolicy;
+import hello.core.discount.FixDiscountPolicy;
+import hello.core.member.MemberRepository;
+import hello.core.member.MemberService;
+import hello.core.member.MemberServiceImpl;
+import hello.core.member.MemoryMemberRepository;
+import hello.core.order.OrderService;
+import hello.core.order.OrderServiceImpl;
+
+public class AppConfig {
+
+    public MemberService memberService() {
+        return new MemberServiceImpl(memberRepository());
+    }
+
+    public OrderService orderService() {
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    public MemberRepository memberRepository() {
+        return new MemoryMemberRepository();
+    }
+
+    public DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
+    }
+}
+
+```
+{% endtab %}
+
+{% tab title="OrderServiceImpl.java" %}
+```java
+package hello.core.order;
+
+import hello.core.discount.DiscountPolicy;
+import hello.core.member.Member;
+import hello.core.member.MemberRepository;
+
+public class OrderServiceImpl implements OrderService {
+
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+
+    @Override
+    public Order createOrder(Long memberId, String itemName, int itemPrice) {
+        Member member = memberRepository.findById(memberId);
+        int discountPrice = discountPolicy.discount(member, itemPrice);
+
+        return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+더 이상 `OrderServiceImpl` 구현체는 스스로 할인 정책의 구현체를 의존하지 않게 되었다. 이로서 얻을 수 있는 이점은 구현체의 소스코드를 수정하지 않고 할인 정책을 바꿀 수 있다는 것이다.
+
+이러한 원리는`DIP` 가 잘 준수 되었다고 보며, 추후 유지보수를 위해 할인 정책을 또 바꿔야한다면 `AppConfig` 에서 할인 정책만 갈아끼우면 된다.&#x20;
+
+<mark style="color:red;">**이로써**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`MemberServiceImpl`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**은 의존관계에 대한 고민은 "외부(**</mark><mark style="color:red;">**`App Config`**</mark><mark style="color:red;">**)" 에게 맡기고 오로지 실행에만 집중하게된다.**</mark>
+
+
+
+
+
+
 

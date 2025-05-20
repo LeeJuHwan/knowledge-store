@@ -81,7 +81,7 @@
   * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
   * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)
     * [예제 만들기](spring-boot/undefined/undefined-1/undefined.md)
-    * [새로운 기능 개발하기](spring-boot/undefined/undefined-1/undefined-1.md)
+    * [객체 지향 원리 적용](spring-boot/undefined/undefined-1/undefined-1.md)
 
 ## Python
 
