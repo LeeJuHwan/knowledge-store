@@ -24,7 +24,7 @@ _**스노우 플레이크 서버**_
 
 > _**컨테이너는 Host OS의 시스템 커널을 사용한다.**_
 
-<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -32,7 +32,7 @@ _**스노우 플레이크 서버**_
 
 ***
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 > **가상머신**
 >
