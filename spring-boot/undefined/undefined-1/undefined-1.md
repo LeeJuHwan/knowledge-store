@@ -265,7 +265,79 @@ public class OrderServiceImpl implements OrderService {
 
 
 
+#### :bulb: 좋은 객체 지향 설계의 5가지 원칙이 어떻게 적용 되었는가?
 
 
 
+{% stepper %}
+{% step %}
+#### SRP&#x20;
+
+**한 클래스는 하나의 책임만 가져야한다.**
+
+`OrderServiceImpl` 이 개선되기 전 상황을 돌이켜보면, `DiscoutPolicy` 인터페이스를 참조하고 있었지만 그와 동시에 `FixDiscountPolicy` 를 같이 참조하며 "인터페이스" 와 "구체"를 동시에 참조하는 상황이 발생했다.
+
+이러한 설계는 할인 정책을 고르는 주체는 `OrderServiceImpl` 이 되기 때문에 여러 책임이 생기게된다.
+
+그래서, 할인 정책에 대한 구현 객체를 생성하고 연결하는 `AppConfig` 에게 관심사를 분리시키고, `OrderServiceImpl` 은 실제 주문과 관련된 기능만 집중하게 될 수 있다.
+{% endstep %}
+
+{% step %}
+#### DIP
+
+**프로그래머는 추상화에 의존해야지, 구체화에 의존하면 안된다.**
+
+SRP 에서 겪었던 문제와 동일하다.
+
+구현 객체를 생성하고 연결하는 AppConfig 가 생성됨에 따라, OrderServiceImpl 이 필요한 할인정책은 앞으로 AppConfig 내부에서 생성 하여 직접 의존관계를 주입하는 설계를 따랐다.
+
+이 방법의 이점은 당연하게도 클라이언트 코드를 수정하지 않고 요구사항을 반영할 수 있는 것이다.
+{% endstep %}
+
+{% step %}
+#### OCP
+
+**소프트웨어 요소는 확장은 열려있고 변경은 닫혀있어야한다.**
+
+DIP 규칙에 의해 클라이언트 코드가 변경되지 않고도 할인 정책을 새롭게 확장시킬 수 있었다.
+{% endstep %}
+{% endstepper %}
+
+
+
+### IoC, DI, 컨테이너
+
+***
+
+{% stepper %}
+{% step %}
+#### 제어의 역전 IoC
+
+개발자 입장에서 자신의 프로그램을 직접 제어하는 것은 당연하다. 위 예제 처럼 `OrderServiceImpl` 을 직접 생성해서, 주문을 만들고 하는 과정은 모두 개발자가 제어하여 논리적 흐름을 만들어낸다.
+
+하지만, `AppConfig` 가 등장하면서 `OrderServiceImpl` 은 개발자가 더이상 제어하지 못하게 된다. 이는, `MemberRepository`, `DiscountPolicy` 라는 두 인터페이스가 `AppConfig` 에 의해 직접 의존 관계를 주입 하기 때문에 어떠한 로직이 실행될지는 `AppConfig` 가 없이 예측하기 어렵다.
+
+또한, `AppConfig` 에서 `orderService` 라는 메서드의 반환 값으로 `OrderServiceImpl` 을 생성 해주었지만, 만약 `OrderLongCustomerService` 라는 장기고객 전용 주문 서비스가 새롭게 개발되어 해당 객체가 `orderService` 메서드로 반환된다면 어떨까? 이 모든 과정은 개발자가 제어하던 프로그램이 `AppConfig` 라는 구성 요소가 제어하게 되며 생긴 제어 방향의 역전이 일어난 것이다.
+
+> _"프레임워크 vs 라이브러리"_
+>
+> 내가 작성한 코드를 프레임워크가 제어하고, 대신 실행 한다 - 프레임워크
+>
+> 내가 작성한 코드의 흐름을 내가 직접 제어한다 - 라이브러리
+
+
+{% endstep %}
+
+{% step %}
+### 의존관계 주입
+
+
+{% endstep %}
+
+{% step %}
+###
+
+
+{% endstep %}
+{% endstepper %}
 
