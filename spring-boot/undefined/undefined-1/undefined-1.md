@@ -189,7 +189,7 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-<figure><img src="../../../.gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
 
 {% tabs %}
 {% tab title="AppConfig.java" %}
