@@ -305,6 +305,8 @@ DIP 규칙에 의해 클라이언트 코드가 변경되지 않고도 할인 정
 
 
 
+
+
 ### IoC, DI, 컨테이너
 
 ***
@@ -401,3 +403,94 @@ AppConfig 처럼 실행 시점에서 객체를 관리하고 의존성을 주입�
 과거에는 IoC 컨테이너라고 불렀지만, 시간이 지나며 의존 관계를 주입하는 역할에 맞는 명칭을 사용하기 위해 DI 컨테이너라고 명칭이 생겼고 이런 컨테이너를 부를 땐 DI 컨테이너라고 부르는것이 올바르다.
 {% endstep %}
 {% endstepper %}
+
+
+
+### AppConfig 를 스프링 컨테이너로 전환하기
+
+***
+
+스프링 컨테이너를 사용하기 위해 필요한 객체를 어노테이션을 활용 하여 생성하게 된다. 그렇게 생성 된 구성 정보는 `ApplicationContext` 객체에서 사용할 수 있다.\
+아래 어노테이션을 작성한 메서드는 스프링 컨테이너에 등록 되며, 이렇게 등록된 객체를 **스프링 빈** 이라고 한다.
+
+* `@Configuration`
+* `@Bean`
+
+
+
+#### 코드에 적용 하기
+
+{% tabs %}
+{% tab title="MemberApp" %}
+```java
+package hello.core;
+
+import hello.core.member.Grade;
+import hello.core.member.Member;
+import hello.core.member.MemberService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class MemberApp {
+
+    public static void main(String[] args) {
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+
+        Member member = new Member(1L, "A", Grade.VIP);
+        memberService.join(member);
+
+        Member findMember = memberService.findMember(1L);
+        System.out.println("new member = " + member.getName());
+        System.out.println("findMember = " + findMember.getName());
+    }
+}
+```
+{% endtab %}
+
+{% tab title="OrderApp" %}
+```java
+package hello.core;
+
+import hello.core.member.Grade;
+import hello.core.member.Member;
+import hello.core.member.MemberService;
+import hello.core.order.Order;
+import hello.core.order.OrderService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class OrderApp {
+
+    public static void main(String[] args) {
+//        AppConfig appConfig = new AppConfig();
+//
+//        MemberService memberService = appConfig.memberService();
+//        OrderService orderService = appConfig.orderService();
+
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
+
+        Long memberId = 1L;
+        Member member = new Member(memberId, "A", Grade.VIP);
+        memberService.join(member);
+
+        Order order = orderService.createOrder(memberId, "itemA", 20000);
+
+        System.out.println("order = " + order);
+
+    }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
