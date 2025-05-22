@@ -329,15 +329,75 @@ DIP 규칙에 의해 클라이언트 코드가 변경되지 않고도 할인 정
 {% endstep %}
 
 {% step %}
-### 의존관계 주입
+#### 의존관계 주입
 
+의존관계는 **정적인 클래스 의존 관계**와, 실행 시점에서 결정 되는 **동적인 객체 의존 관계**를 분리해서 생각해야한다.
 
+> "정적인 클래스 의존관계"
+
+클래스가 사용하는 코드만 보고 의존관계를 쉽게 파악할 수 있는 관계로, 애플리케이션을 직접 실행하지 않아도 어떤 의존관계를 띄고 있는지 분석할 수 있다.
+
+{% tabs %}
+{% tab title="예시" %}
+```java
+package hello.core.order;
+
+import hello.core.discount.DiscountPolicy;
+import hello.core.member.Member;
+import hello.core.member.MemberRepository;
+
+public class OrderServiceImpl implements OrderService {
+
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+```
+{% endtab %}
+{% endtabs %}
+
+위 코드에서 `OrderServiceImpl` 은 `MemberRepository`, `DiscountPolicy` 와 의존관계를 맺고 있다는 것을 굳이 애플리케이션을 실행하지 않고도 알아볼 수 있는 것이 "**정적 의존 관계**" 이다.
+
+> "동적인 객체 인스턴스 의존 관계"
+>
+> 애플리케이션 실행 시점에 실제 생성된 객체 인스턴스가 연결된 의존 관계로, 실제 외부에서 생성 하여 클라이언트에게 주입 하며 연결 되는 의존 관계이다.
+
+{% tabs %}
+{% tab title="실행 시점(런타임) 에서 의존관계 주입" %}
+```java
+public class AppConfig {
+
+    public MemberService memberService() {
+        return new MemberServiceImpl(memberRepository());
+    }
+
+    public OrderService orderService() {
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+    
+    public MemberRepository memberRepository() {
+        return new MemoryMemberRepository();
+    }
+
+    public DiscountPolicy discountPolicy() {
+        return new RateDiscountPolicy();
+    }
+
+```
+{% endtab %}
+{% endtabs %}
+
+:bulb: **의존 관계 주입을 사용하게 되면, 실제 정적인 클래스 의존관계(인터페이스 참조 등)을 변경하지 않고도 동적인 객체 인스턴스 의존관계(구현체 생성)를 변경할 수 있다.**
 {% endstep %}
 
 {% step %}
-###
+#### **DI 컨테이너**
 
+AppConfig 처럼 실행 시점에서 객체를 관리하고 의존성을 주입하는 구성을 IoC 컨테이너 또는 **DI 컨테이너** 라고 표현한다.
 
+과거에는 IoC 컨테이너라고 불렀지만, 시간이 지나며 의존 관계를 주입하는 역할에 맞는 명칭을 사용하기 위해 DI 컨테이너라고 명칭이 생겼고 이런 컨테이너를 부를 땐 DI 컨테이너라고 부르는것이 올바르다.
 {% endstep %}
 {% endstepper %}
-
