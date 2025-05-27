@@ -82,6 +82,7 @@
   * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)
     * [예제 만들기](spring-boot/undefined/undefined-1/undefined.md)
     * [객체 지향 원리 적용](spring-boot/undefined/undefined-1/undefined-1.md)
+    * [스프링 컨테이너와 스프링 빈](spring-boot/undefined/undefined-1/undefined-2.md)
 
 ## Python
 
