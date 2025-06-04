@@ -286,3 +286,248 @@ public class OrderResponse {
 ```
 {% endtab %}
 {% endtabs %}
+
+
+
+#### 서비스 계층에서 테스트 하는 영역의 독립성 보장하기
+
+도메인 계층에 있던 Repository 의 메서드를 테스트 할 때는 전혀 문제 없던 부분이 갑자기 서비스 계층을 테스트 하면서 생겨났다.
+
+문제는 테스트하는 영역이 서로 공유 되어 사용하며 의도했던 데이터가 다른 테스트에 의해 오염이 발생한 것이다.
+
+
+
+아래 예시 코드의 AS-IS 를 보면, createOrder() 테스트와 createOrderWithDuplicateProductNumbers() 테스트는 서로 같은 Repository 를 사용하게 되면서 검증 단계에서 의도치 않게 실패하게 되는 경우이다.
+
+이러한 이유로 서비스 계층을 테스트할 땐 TearDownMethod 로 데이터 클린징 작업을 해야 서로간의 영역을 침범하지 않고 독립성을 보장시킬 수 있다.
+
+{% tabs %}
+{% tab title="AS-IS" %}
+```java
+@DisplayName("주문번호 리스트를 받아 주문을 생성한다.")
+@Test
+void createOrder() {
+    // given
+    Product product1 = createProduct(HANDMADE, "001", 1000);
+    Product product2 = createProduct(HANDMADE, "002", 3000);
+    Product product3 = createProduct(HANDMADE, "003", 5000);
+    productRepository.saveAll(List.of(product1, product2, product3));
+
+    OrderCreateRequest request = OrderCreateRequest.builder()
+            .productNumbers(List.of("001", "002"))
+            .build();
+
+    // when
+    LocalDateTime registeredDateTime = LocalDateTime.now();
+    OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+
+    // then
+    assertThat(orderResponse.getId()).isNotNull();
+    assertThat(orderResponse)
+            .extracting("registeredDateTime", "totalPrice")
+            .contains(registeredDateTime, 4000);
+    assertThat(orderResponse.getProducts()).hasSize(2)
+            .extracting("productNumber", "price")
+            .containsExactlyInAnyOrder(
+                    tuple("001", 1000),
+                    tuple("002", 3000)
+            );
+
+}
+
+@DisplayName("중복되는 상품번호 리스트로 주문을 생성할 수 있다.")
+@Test
+void createOrderWithDuplicateProductNumbers() {
+    // given
+    Product product1 = createProduct(HANDMADE, "001", 1000);
+    Product product2 = createProduct(HANDMADE, "002", 3000);
+    Product product3 = createProduct(HANDMADE, "003", 5000);
+    productRepository.saveAll(List.of(product1, product2, product3));
+
+    OrderCreateRequest request = OrderCreateRequest.builder()
+            .productNumbers(List.of("001", "001"))
+            .build();
+
+    // when
+    LocalDateTime registeredDateTime = LocalDateTime.now();
+    OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+
+    // then
+    assertThat(orderResponse.getId()).isNotNull();
+    assertThat(orderResponse)
+            .extracting("registeredDateTime", "totalPrice")
+            .contains(registeredDateTime, 2000);
+    assertThat(orderResponse.getProducts()).hasSize(2)
+            .extracting("productNumber", "price")
+            .containsExactlyInAnyOrder(
+                    tuple("001", 1000),
+                    tuple("001", 1000)
+            );
+
+}
+```
+{% endtab %}
+
+{% tab title="TO-BE" %}
+```java
+@ActiveProfiles("test")
+@SpringBootTest
+//@DataJpaTest
+class OrderServiceTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderProductRepository orderProductRepository;
+
+    @Autowired
+    private OrderService orderService;
+
+    @AfterEach
+    void tearDown() {
+//        productRepository.deleteAll();
+        orderProductRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+    }
+
+    @DisplayName("주문번호 리스트를 받아 주문을 생성한다.")
+    @Test
+    void createOrder() {
+        // given
+        Product product1 = createProduct(HANDMADE, "001", 1000);
+        Product product2 = createProduct(HANDMADE, "002", 3000);
+        Product product3 = createProduct(HANDMADE, "003", 5000);
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .productNumbers(List.of("001", "002"))
+                .build();
+
+        // when
+        LocalDateTime registeredDateTime = LocalDateTime.now();
+        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+
+        // then
+        System.out.println("orderResponse = " + orderResponse);
+        assertThat(orderResponse.getId()).isNotNull();
+        assertThat(orderResponse)
+                .extracting("registeredDateTime", "totalPrice")
+                .contains(registeredDateTime, 4000);
+        assertThat(orderResponse.getProducts()).hasSize(2)
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("002", 3000)
+                );
+
+    }
+
+    @DisplayName("중복되는 상품번호 리스트로 주문을 생성할 수 있다.")
+    @Test
+    void createOrderWithDuplicateProductNumbers() {
+        // given
+        Product product1 = createProduct(HANDMADE, "001", 1000);
+        Product product2 = createProduct(HANDMADE, "002", 3000);
+        Product product3 = createProduct(HANDMADE, "003", 5000);
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .productNumbers(List.of("001", "001"))
+                .build();
+
+        // when
+        LocalDateTime registeredDateTime = LocalDateTime.now();
+        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+
+        // then
+        assertThat(orderResponse.getId()).isNotNull();
+        assertThat(orderResponse)
+                .extracting("registeredDateTime", "totalPrice")
+                .contains(registeredDateTime, 2000);
+        assertThat(orderResponse.getProducts()).hasSize(2)
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("001", 1000)
+                );
+
+    }
+```
+{% endtab %}
+{% endtabs %}
+
+실제 이 예시에 사용된 서비스 계층은 SpringBootTest 어노테이션을 사용하고 있으며, 도메인 계층에서 사용한 테스트 코드는 DataJpaTest 어노테이션을 사용하여 테스트 하게 된다.
+
+* SpringBootTest: 스프링을 실행하기 위한 모든 Bean 들을 스프링 컨테이너에 등록하여 테스트 함
+* DataJpaTest: JPA 와 관련한 Bean 들만 스프링 컨테이너에 등록하여 테스트 함
+
+
+
+어노테이션에 따른 차이는 위와 같이 단편적으로만 이해하고 있었으나, 실제 해당 어노테이션의 내부를 살펴보면 DataJpaTest 는 Transactional 을 사용하고 있기 때문에 테스트 영역간의 롤백을 지원 받아 독립성을 보장한 것이다.
+
+반면, SpringBootTest 는 Transactional이 없기 때문에 테스트 영역을 공유하여 TearDownMethod 를 사용했지만, DataJpaTest 처럼 Transcational 을 붙여도 테스트는 통과한다.
+
+<figure><img src="../../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
+
+
+
+아래 콘솔은 SpringBootFramework 의 ORM 로그 레벨을 DEBUG 상태로 변경 하여 실제 DataJpaTest 에서 테스트 영역간 롤백을 진행 하는지 확인 해볼 수 있다.
+
+테스트를 시작하기 전 트랜잭션으로 테스트 영역을 묶어둔 뒤 DML 이 일어나고, 모든 테스트가 끝나면 롤백 시킨 후 트랜잭션이 종료된다.
+
+```
+2025-06-04T13:40:31.656+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1200408049<open>)] for JPA transaction
+2025-06-04T13:40:31.656+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+Hibernate: 
+    insert 
+    into
+        product
+        (created_date_time, last_modified_date_time, name, price, product_number, selling_status, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        product
+        (created_date_time, last_modified_date_time, name, price, product_number, selling_status, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        product
+        (created_date_time, last_modified_date_time, name, price, product_number, selling_status, type, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.created_date_time,
+        p1_0.last_modified_date_time,
+        p1_0.name,
+        p1_0.price,
+        p1_0.product_number,
+        p1_0.selling_status,
+        p1_0.type 
+    from
+        product p1_0 
+    where
+        p1_0.selling_status in (?, ?)
+2025-06-04T13:40:31.793+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction rollback
+2025-06-04T13:40:31.793+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Rolling back JPA transaction on EntityManager [SessionImpl(1200408049<open>)]
+2025-06-04T13:40:31.794+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1200408049<open>)] after transaction
+2025-06-04T13:40:31.801+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [sample.cafekiosk.spring.domain.product.ProductRepositoryTest.findAllByProductNumberIn]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-06-04T13:40:31.801+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1747991213<open>)] for JPA transaction
+2025-06-04T13:40:31.801+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@1d0acb8f]
+2025-06-04T13:40:31.802+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1747991213<open>)] for JPA transaction
+2025-06-04T13:40:31.802+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+
+```
+
+
+
