@@ -1,4 +1,4 @@
-# Business Layer 테스트
+# Business Layer
 
 <figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
@@ -291,15 +291,15 @@ public class OrderResponse {
 
 #### 서비스 계층에서 테스트 하는 영역의 독립성 보장하기
 
-도메인 계층에 있던 Repository 의 메서드를 테스트 할 때는 전혀 문제 없던 부분이 갑자기 서비스 계층을 테스트 하면서 생겨났다.
+도메인 계층에 있던 `Repository` 의 메서드를 테스트 할 때는 전혀 문제 없던 부분이 갑자기 서비스 계층을 테스트 하면서 생겨났다.
 
 문제는 테스트하는 영역이 서로 공유 되어 사용하며 의도했던 데이터가 다른 테스트에 의해 오염이 발생한 것이다.
 
 
 
-아래 예시 코드의 AS-IS 를 보면, createOrder() 테스트와 createOrderWithDuplicateProductNumbers() 테스트는 서로 같은 Repository 를 사용하게 되면서 검증 단계에서 의도치 않게 실패하게 되는 경우이다.
+아래 예시 코드의 AS-IS 를 보면, `createOrder()` 테스트와 `createOrderWithDuplicateProductNumbers`() 테스트는 서로 같은 `Repository` 를 사용하게 되면서 검증 단계에서 의도치 않게 실패하게 되는 경우이다.
 
-이러한 이유로 서비스 계층을 테스트할 땐 TearDownMethod 로 데이터 클린징 작업을 해야 서로간의 영역을 침범하지 않고 독립성을 보장시킬 수 있다.
+이러한 이유로 서비스 계층을 테스트할 땐 `TearDownMethod` 로 데이터 클린징 작업을 해야 서로간의 영역을 침범하지 않고 독립성을 보장시킬 수 있다.
 
 {% tabs %}
 {% tab title="AS-IS" %}
@@ -461,24 +461,24 @@ class OrderServiceTest {
 {% endtab %}
 {% endtabs %}
 
-실제 이 예시에 사용된 서비스 계층은 SpringBootTest 어노테이션을 사용하고 있으며, 도메인 계층에서 사용한 테스트 코드는 DataJpaTest 어노테이션을 사용하여 테스트 하게 된다.
+실제 이 예시에 사용된 서비스 계층은 `SpringBootTest` 어노테이션을 사용하고 있으며, 도메인 계층에서 사용한 테스트 코드는 `DataJpaTest` 어노테이션을 사용하여 테스트 하게 된다.
 
-* SpringBootTest: 스프링을 실행하기 위한 모든 Bean 들을 스프링 컨테이너에 등록하여 테스트 함
-* DataJpaTest: JPA 와 관련한 Bean 들만 스프링 컨테이너에 등록하여 테스트 함
+* <mark style="color:purple;">`SpringBootTest`</mark>: 스프링을 실행하기 위한 모든 `Bean` 들을 스프링 컨테이너에 등록하여 테스트 함
+* <mark style="color:purple;">`DataJpaTest`</mark>: `JPA` 와 관련한 `Bean` 들만 스프링 컨테이너에 등록하여 테스트 함
 
 
 
-어노테이션에 따른 차이는 위와 같이 단편적으로만 이해하고 있었으나, 실제 해당 어노테이션의 내부를 살펴보면 DataJpaTest 는 Transactional 을 사용하고 있기 때문에 테스트 영역간의 롤백을 지원 받아 독립성을 보장한 것이다.
+어노테이션에 따른 차이는 위와 같이 단편적으로만 이해하고 있었으나, 실제 해당 어노테이션의 내부를 살펴보면 `DataJpaTest` 는 `Transactional` 을 사용하고 있기 때문에 테스트 영역간의 롤백을 지원 받아 독립성을 보장한 것이다.
 
-반면, SpringBootTest 는 Transactional이 없기 때문에 테스트 영역을 공유하여 TearDownMethod 를 사용했지만, DataJpaTest 처럼 Transcational 을 붙여도 테스트는 통과한다.
+반면, `SpringBootTest` 는 `Transactional`이 없기 때문에 테스트 영역을 공유하여 `TearDownMethod` 를 사용했지만, `DataJpaTest` 처럼 `Transcational` 을 붙여도 테스트는 통과한다.
 
 <figure><img src="../../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
 
 
 
-아래 콘솔은 SpringBootFramework 의 ORM 로그 레벨을 DEBUG 상태로 변경 하여 실제 DataJpaTest 에서 테스트 영역간 롤백을 진행 하는지 확인 해볼 수 있다.
+아래 콘솔은 `SpringBootFramework` 의 `ORM` 로그 레벨을 `DEBUG` 상태로 변경 하여 실제 `DataJpaTest` 에서 테스트 영역간 롤백을 진행 하는지 확인 해볼 수 있다.
 
-테스트를 시작하기 전 트랜잭션으로 테스트 영역을 묶어둔 뒤 DML 이 일어나고, 모든 테스트가 끝나면 롤백 시킨 후 트랜잭션이 종료된다.
+테스트를 시작하기 전 트랜잭션으로 테스트 영역을 묶어둔 뒤 `DML` 이 일어나고, 모든 테스트가 끝나면 롤백 시킨 후 트랜잭션이 종료된다.
 
 ```
 2025-06-04T13:40:31.656+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1200408049<open>)] for JPA transaction
@@ -528,6 +528,107 @@ Hibernate:
 2025-06-04T13:40:31.802+09:00 DEBUG 81634 --- [           main] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
 
 ```
+
+
+
+> #### _**"****`SpringBootTest`****&#x20;****와****&#x20;****`Transactional`****&#x20;****을 같이 쓴다면 이런 점은 주의 해야한다."**_
+
+```java
+@ActiveProfiles("test")
+@SpringBootTest
+@Transactional
+class OrderServiceTest {
+...
+}
+```
+
+{% hint style="info" %}
+스프링 데이터 JPA는 트랜잭션이 시작될 때 스냅샷을 찍어 상태를 보존하고, EntityManaer의 커밋이 완료 되는 시점에서 최초 스냅샷과 현재 상태를 비교하여 변경이 감지 되면(`Dirty Check`) 업데이트 쿼리를 호출한다.
+{% endhint %}
+
+위와 같이 테스트 클래스에서 트랜잭션이 적용되면 실제 서비스 계층에서 트랜잭션이 적용되었다는 인지의 오류를 범할 수 있다.
+
+그렇기 때문에 테스트는 항상 테스트 독립적인 환경을 구성하기 위해 노력해야 하고, 이 사실을 정확히 인지하였다고 하더라도 명시적으로 데이터 클린징 작업을 직접 하는 것이 소프트웨어의 오류를 조금이나마 줄일 수 있는 방법이다.
+
+:bulb:서비스 계층을 테스트 하면서 데이터 클린징 작업이 필요하다면 TearDown 을 적극 활용하자
+
+
+
+> #### _**"도메인 객체에서 비즈니스 로직에 대한 유효성 검증과 서비스 계층에서 연산을 위한 유효성 검증을 동일하게 할 필요가 있을까?"**_
+
+{% tabs %}
+{% tab title="Stock.java" %}
+```java
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Stock extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String productNumber;
+
+    private int quantity;
+
+    @Builder
+    private Stock(String productNumber, int quantity) {
+        this.productNumber = productNumber;
+        this.quantity = quantity;
+    }
+
+    public static Stock create(String productNumber, int quantity) {
+        return Stock.builder()
+                .productNumber(productNumber)
+                .quantity(quantity)
+                .build();
+    }
+
+    public boolean isQuantityLessThan(int quantity) {
+        return this.quantity < quantity;
+    }
+
+    public void deductQuantity(int quantity) {
+        if (isQuantityLessThan(quantity)) {
+            throw new IllegalArgumentException("차감할 재고 수량이 없습니다.");
+        }
+
+        this.quantity -= quantity;
+    }
+}
+```
+{% endtab %}
+
+{% tab title="OrderService.java" %}
+```java
+        // 재고 차감 시도
+        for (String stockProductNumber : new HashSet<>(stockProductNumbers)) {
+            Stock stock = stockMap.get(stockProductNumber);
+            int quantity = productCountingMap.get(stockProductNumber).intValue();
+
+            if (stock.isQuantityLessThan(quantity)) {
+                throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
+            }
+
+            stock.deductQuantity(quantity);
+
+        }
+```
+{% endtab %}
+{% endtabs %}
+
+위 도메인(`Stock`) 과 서비스(`OrderService`) 코드를 보면, 두 계층에서 모두 동일한 유효성 검증(isQuantityLessThan)을 하고 있다.
+
+재고를 차감하는 메서드(`deductQuantity`) 내부에서만 진행 하면 되지 않을까? 라는 궁금증이 생길 수 있지만, 이는 엄연히 객체를 바라보는 관점에서 차이를 두어야한다.
+
+`OrderService` 가 아닌 `StockService` 라는 곳에서 `deductQuantity` 메서드를 호출하는데, 만약 이 때 서비스 계층에서 유효성 검증을 진행 했었기 때문에 Stock 도메인 객체 내부에서는 유효성 검증을 진행 하지 않는다면 오류가 발생할 여지가 생긴다.
+
+또한 도메인이 제공하는 비즈니스 로직은 언제나 유효한 로직이 진행 되어야한다.
+
+그리고, 서비스 계층은 도메인의 비즈니스 로직을 호출하는 입장에서 다른 오류 메시지나 다른 관점에서 유효성 검증을 진행할 수도 있기 때문에, 두 영역이 중복되는 유효성 검증을 진행한다고 해서 검증을 제거할 필요는 없다는 것이고, 이런 검증이 필요하다는 것이다.
+
+
 
 
 
