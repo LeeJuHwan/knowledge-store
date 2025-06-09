@@ -1,6 +1,12 @@
+---
+description: Application(Service) 계층 테스트 하기
+---
+
 # Business Layer
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _**Business Layer**_
@@ -26,7 +32,7 @@ _**Business Layer**_
 
 ***
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 주문과 상품과의 다대다 관계를 띄고 있다. 하지만, JPA 의 연관관계에서 다대다 관계를 이용하기엔 성능 상 이슈나 데이터 설계 관점에서의 정규화가 어긋날 수 있어 지양하는 관계구조이다.
 
@@ -550,7 +556,7 @@ class OrderServiceTest {
 
 그렇기 때문에 테스트는 항상 테스트 독립적인 환경을 구성하기 위해 노력해야 하고, 이 사실을 정확히 인지하였다고 하더라도 명시적으로 데이터 클린징 작업을 직접 하는 것이 소프트웨어의 오류를 조금이나마 줄일 수 있는 방법이다.
 
-:bulb:서비스 계층을 테스트 하면서 데이터 클린징 작업이 필요하다면 TearDown 을 적극 활용하자
+:bulb:서비스 계층을 테스트 하면서 데이터 클린징 작업이 필요하다면 `TearDown` 을 적극 활용하자
 
 
 
@@ -618,11 +624,11 @@ public class Stock extends BaseEntity {
 {% endtab %}
 {% endtabs %}
 
-위 도메인(`Stock`) 과 서비스(`OrderService`) 코드를 보면, 두 계층에서 모두 동일한 유효성 검증(isQuantityLessThan)을 하고 있다.
+위 도메인(`Stock`) 과 서비스(`OrderService`) 코드를 보면, 두 계층에서 모두 동일한 유효성 검증(`isQuantityLessThan`)을 하고 있다.
 
 재고를 차감하는 메서드(`deductQuantity`) 내부에서만 진행 하면 되지 않을까? 라는 궁금증이 생길 수 있지만, 이는 엄연히 객체를 바라보는 관점에서 차이를 두어야한다.
 
-`OrderService` 가 아닌 `StockService` 라는 곳에서 `deductQuantity` 메서드를 호출하는데, 만약 이 때 서비스 계층에서 유효성 검증을 진행 했었기 때문에 Stock 도메인 객체 내부에서는 유효성 검증을 진행 하지 않는다면 오류가 발생할 여지가 생긴다.
+`OrderService` 가 아닌 `StockService` 라는 곳에서 `deductQuantity` 메서드를 호출하는데, 만약 이 때 서비스 계층에서 유효성 검증을 진행 했었기 때문에 `Stock` 도메인 객체 내부에서는 유효성 검증을 진행 하지 않는다면 오류가 발생할 여지가 생긴다.
 
 또한 도메인이 제공하는 비즈니스 로직은 언제나 유효한 로직이 진행 되어야한다.
 
