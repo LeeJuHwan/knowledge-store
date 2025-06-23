@@ -19,15 +19,82 @@ description: Web(Controller) 계층 테스트하기
 
 
 
-### Mock
+#### Mock
 
 ***
 
 잘 동작한다고 가정하고, 실제 사용하는 코드의 행동이 아닌 그 행동을 구사하는 척 하는 가짜 객체를 의미함
 
-> #### MockMvc
+> MockMvc
 >
 > #### Mock 객체를 사용해 스프링 MVC 동작을 재현할 수 있는 테스트 프레임워크
+
+
+
+{% tabs %}
+{% tab title="MockBean" %}
+```java
+@WebMvcTest(controllers = OrderController.class)
+class OrderControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private OrderService orderService;
+
+    @DisplayName("신규 주문을 등록한다.")
+    @Test
+    void createOrder() throws Exception {
+        // given
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .productNumbers(List.of("001"))
+                .build();
+
+        // when // then
+        mockMvc.perform(
+                        post("/api/v1/orders/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+위 테스트 코드에서 MockitoBean 으로 선언된 orderService가 어떠한 행동을 통해 얻은 결과를 검증 할 필요가 없다.&#x20;
+
+단편적인 이유는 orderService 에 대한 테스트는 서비스 계층에서 통합 테스트를 모두 끝냈을 것이다.&#x20;
+
+그렇기 때문에 웹 계층에서는 서비스 로직의 반환 값을 알 필요가 없다.
+
+⇒ 이러한 이유로 인해 Mock 객체를 활용하게 되며, 서비스 로직의 반환 값을 중점으로 둔 Stub 객체가 여기서 사용되면 어색한 이유이기도 하다.
+{% endhint %}
+
+**웹 계층에서 테스트 관점**
+
+* 외부 사용자가 입력한 값을 검증하여 정확히 서비스 계층으로 내려주고 있는지
+* 서비스 계층에서 정상적인 답변을 받았다면 외부 사용자에게 응답은 하고 있는지
+
+
+
+#### Stubbing
+
+***
+
+Mock 객체는 반환 하는 값을 검증하진 못하고, "행위에 대해 수행하는 척" 했지만 Stub 객체는 행위 이후의 반환 하는 값 즉, 상태에 대한 검증을 이루는 객체이다.
+
+
 
 
 
