@@ -4,7 +4,7 @@ description: Domain(Data) 계층 테스트 하기
 
 # Persistence Layer
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _**Persistence Layer**_

@@ -122,7 +122,7 @@ terraform console
 > local.private_subnets
 ```
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 그래서 현재 테라폼 구성을 살펴보면 서브넷이 하나의 그룹으로 통합 되어 있고 지역 변수로 내부망 서브넷을 별도로 분리 해두었다.
 
@@ -202,7 +202,7 @@ _**"VPC 구성의 종착지인 라우팅 테이블을 구성하다"**_
 
 그렇기 때문에 라우팅 테이블을 별도로 생성 하여 특정 서브넷에 대한 제어를 하도록 만든다.
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 **라우팅 테이블을 만들기 위해 필요한 세 개의 리소스**
@@ -757,13 +757,13 @@ _**"일부 보안그룹 규칙만 수정 했는데 전체 규칙이 변경되는
 
 기존에 사용중이던 보안 그룹 규칙은 테라폼 구성의 Inline-block 으로 Ingress, Egress를 분리 했지만 이렇게 사용할 경우 공식문서에서 다음과 같은 이슈가 있다고 설명한다.
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 그렇기 때문에 가장 좋은 방법은 aws\_vpc\_security\_egress\_rule 과 ingress\_rule 리소스를 사용해서 CIDR 블럭을 관리하라고 설명한다.
 
 현재 문제 상황에 가장 적합한 이슈로 이 공식문서가 가이드하는 방식대로 리소스를 새롭게 정의하여 동적 블럭에서 한 개의 리소스를 수정 했을 때 다른 리소스도 영향이 받지 않는지 확인 하는데, 이 때 기존에 사용중이던 변수 타입도 분리해야한다.
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% tabs %}
 {% tab title="AS-IS(main.tf)" %}
