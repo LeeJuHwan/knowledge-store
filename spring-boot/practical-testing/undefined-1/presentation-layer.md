@@ -149,74 +149,6 @@ Stub 은 실제 사용하는 코드의 행동에 따른 결과 값을 원하는 
 
 
 
-#### 테스트 어노테이션
-
-***
-
-* SpringBootTest
-* DataJpaTest
-* WebMvcTest
-
-
-
-{% hint style="info" %}
-#### 언제 어떤 어노테이션을 사용하여 테스트 해야할까?
-
-<mark style="color:purple;">**SpringBootTest**</mark> - 전체 통합 테스트가 필요할 때, 스프링부트에 사용되는 모든 빈을 컨테이너에 등록 하여 사용하며 빌드 시간이 오래 소요 됨
-
-<mark style="color:purple;">**DataJpaTest**</mark> - Repository 관련 빈만 컨테이너에 등록하며 데이터 접근을 위한 테스트하기 유리함, 단 QueryDSL 을 사용하여 구현체를 사용하는 경우 SpringBootTest 로 통합 테스트를 진행 해야 함
-
-<mark style="color:purple;">WebMvcTest</mark> - RestController 관련 빈만 컨테이너에 등록하며 외부 사용자가 입력하는 값 등을 검증할 때 테스트하기 유리함
-{% endhint %}
-
-간략하게 살펴보면 각 어노테이션마다 사용해야 하는 경우가 꽤 다른 편인데, 테스트코드를 작성하다보면 의외로 통합테스트를 많이 요구한다.
-
-하지만, 도메인을 잘 분리하여 도메인의 메서드를 빠르게 테스트할 수 있는 단위 테스트에 집중하는 것이 좋다.
-
-
-
-위 어노테이션 별 설명에서 보충 설명이 필요한 부분이 있다.
-
-바로 DataJpaTest 와 SpringBootTest 간의 내용인데, 이 둘의 관계는 트랜잭션에 따라 나뉘게된다.
-
-{% tabs %}
-{% tab title="SpringBootTest" %}
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
-{% endtab %}
-
-{% tab title="DataJpaTest" %}
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
-{% endtab %}
-{% endtabs %}
-
-DataJpaTest 는 기본적으로 Transactional 을 지원하여 테스트 컨텍스트 간 데이터 롤백이 자동 지원된다.
-
-반면, SpringBootTest 는 Transactional 이 없기 때문에 사용자가 직접 Teardown Method 를 통해 테스트 케이스가 끝날 때 마다 데이터를 정리하는 작업을 진행해야 한다.
-
-한 눈에 보기엔 당연히 DataJpaTest 를 사용하는게 편하리라 생각할 수 있지만, 사실 자동으로 지원된다는 것은 실제 프로덕션에 배포될 코드에 누락될 수 있는 여지를 주는 것이다.
-
-자동으로 수행하기 때문에 당연시하게 생각하고 넘기는 경우가 생길 수 있으니, 되도록이면 안전하게 테스트 환경에서는 대부분을 하드 코딩 하듯 통합테스트를 사용하고 데이터 클렌징 작업을 손수 하는 것을 권장한다.
-
-
-
-#### 트랜잭션
-
-***
-
-* Transactional
-* Transactional(read\_only)
-
-
-
-#### 동시성 제어
-
-***
-
-* 낙관전 락
-* 비관적 락
-
-
-
 #### 예외
 
 ***
@@ -236,8 +168,6 @@ DataJpaTest 는 기본적으로 Transactional 을 지원하여 테스트 컨텍�
 
 
 
-
-
 #### 레이어간 의존성 최소화
 
 ***
@@ -250,18 +180,34 @@ DataJpaTest 는 기본적으로 Transactional 을 지원하여 테스트 컨텍�
 
 
 
-계층 의존관계
+<i class="fa-message-exclamation">:message-exclamation:</i> **계층 의존관계**
 
 * \[단방향] Controller -> Service -> Domain -> Repository
 * \[양방향] Controller <-> Service -> Domain -> Repository
 
 
 
-양방향 구조가 갖고 있는 단점을 먼저 살펴보면, 컨트롤러에서 서비스 계층으로 처리해야 할 데이터를 넘길 때 서비스는 이미 컨트롤러의 모든 속성을 알고 있으며&#x20;
+<i class="fa-triangle-exclamation">:triangle-exclamation:</i> **양방향 구조의 단점**
 
+컨트롤러에서 서비스 계층으로 처리해야 할 데이터를 넘길 때 서비스는 이미 컨트롤러의 모든 속성을 알고 있다.&#x20;
 
+컨트롤러 계층에서 외부 사용자에게 입력 받을 데이터가 늘어난다고 했을 때, 서비스 계층은 불필요한 데이터를 같이 갖고 있는 샘이 된다.
 
+이는 결코, 특정 계층이 원하는 값을 받기 위해선 의존하고 있는 계층의 입력 값을 추가로 받아서 전달해야 하는 이 무모한 강결합을 어떻게 해서든 깨트려야한다.
 
+{% embed url="https://techblog.woowahan.com/2711/" %}
+
+해당 글의 "_**Controller와 Service 레이어의 강한 결합**_**"** 챕터에서 나와있듯이 규모가 커지면 커질수록 계층간 요구하는 형식은 다른 방향으로 흘러갈 때가 많다.
+
+중복 코드가 껄끄럽게 느껴지는 것 또한 이해하는 입장으로 더 이상 확장되지 않고 폐쇄적인 구조를 유지하는 프로젝트에서는 계층간 DTO 공유도 하나의 방법이 될 뿐더러, 훨씬 간편하게 개발할 수 있다.
+
+하지만, 코드는 최대한 단순하게 작성 하고 남이 이해하기 쉽도록 작성하는 것이 좋다.
+
+마치, 침팬지에게 단순노동을 알려주듯 서비스 계층에서 받는 요청 DTO 값이 들어오면 어떠한 행동을 할지만 알려주자.&#x20;
+
+"더이상 컨트롤러 계층에서 추가적인 데이터가 들어왔을 때 이 데이터는 필요 없으니 얘만 사용해서 처리해." 라는 복잡한 내용을 침팬지에게 가르치지 말자.
+
+침팬지가 전지전능 해지는 순간 굉장이 많은 지식을 습득하여 미래의 소프트웨어를 다 잡아먹는 날이 올 것이다.
 
 
 

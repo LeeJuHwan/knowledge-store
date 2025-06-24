@@ -478,9 +478,15 @@ class OrderServiceTest {
 
 반면, `SpringBootTest` 는 `Transactional`이 없기 때문에 테스트 영역을 공유하여 `TearDownMethod` 를 사용했지만, `DataJpaTest` 처럼 `Transcational` 을 붙여도 테스트는 통과한다.
 
-<figure><img src="../../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
+{% tabs %}
+{% tab title="SpringBootTest" %}
+<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+{% endtab %}
 
-
+{% tab title="DataJpaTest" %}
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+{% endtab %}
+{% endtabs %}
 
 아래 콘솔은 `SpringBootFramework` 의 `ORM` 로그 레벨을 `DEBUG` 상태로 변경 하여 실제 `DataJpaTest` 에서 테스트 영역간 롤백을 진행 하는지 확인 해볼 수 있다.
 
