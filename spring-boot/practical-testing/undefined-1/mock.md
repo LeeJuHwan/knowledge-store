@@ -114,11 +114,245 @@ ArticleService 의 read() 라는 메서드를 호출한 후 viewCount 가 1이 �
 
 
 
+### Mockito 어노테이션 사용해보기
+
+***
+
+{% tabs %}
+{% tab title="@Mock" %}
+```java
+@ExtendWith(MockitoExtension.class) // NOTE: 해당 어노테이션이 있으므로 테스트가 시작될 때 Mockito 를 활용하여 Mock 객체를 생성한다..
+class MailServiceTest {
+
+    @Mock
+    private MailSendClient mailSendClient;
+
+    @Mock
+    private MailSendHistoryRepository mailSendHistoryRepository;
+
+    @DisplayName("메일 전송 테스트")
+    @Test
+    void sendMail() {
+        // given
+        MailService mailService = new MailService(mailSendClient, mailSendHistoryRepository)
+        // @Mock Stubbing
+        when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(true);
+
+        // when
+        boolean result = mailService.sendMail("fromEmail", "toEmail", "subject", "content");
+
+        // then
+        assertThat(result).isTrue();
+
+        // save 행위가 1번 호출 됐는지 검증 하는 메서드
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+
+    }
+}
+```
+{% endtab %}
+
+{% tab title="@InjectMocks" %}
+```java
+@ExtendWith(MockitoExtension.class) // NOTE: 해당 어노테이션이 있으므로 테스트가 시작될 때 Mockito 를 활용하여 Mock 객체를 생성한다..
+class MailServiceTest {
+
+    @Mock
+    private MailSendClient mailSendClient;
+
+    @Mock
+    private MailSendHistoryRepository mailSendHistoryRepository;
+
+    @InjectMocks  // NOTE: MailService의 생성자를 확인하여 Mock 객체로 생성된 객체를 주입한다. -> DI와 동일
+    private MailService mailService;
+
+    @DisplayName("메일 전송 테스트")
+    @Test
+    void sendMail() {
+        // given
+//        MailSendClient mailSendClient1 = mock(MailSendClient.class);
+        // @Mock Stubbing
+        when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(true);
+
+        // when
+        boolean result = mailService.sendMail("fromEmail", "toEmail", "subject", "content");
+
+        // then
+        assertThat(result).isTrue();
+
+        // save 행위가 1번 호출 됐는지 검증 하는 메서드
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+
+    }
+}
+```
+{% endtab %}
+
+{% tab title="@Spy" %}
+```java
+@ExtendWith(MockitoExtension.class) // NOTE: 해당 어노테이션이 있으므로 테스트가 시작될 때 Mockito 를 활용하여 Mock 객체를 생성한다..
+class MailServiceTest {
+
+    @Spy
+    private MailSendClient mailSendClient;
+
+    @Mock
+    private MailSendHistoryRepository mailSendHistoryRepository;
+
+    @InjectMocks  // NOTE: MailService의 생성자를 확인하여 Mock 객체로 생성된 객체를 주입한다. -> DI와 동일
+    private MailService mailService;
+
+    @DisplayName("메일 전송 테스트")
+    @Test
+    void sendMail() {
+        // given
+        // @Spy Stubbing
+        doReturn(true)
+                .when(mailSendClient)
+                .sendMail(anyString(), anyString(), anyString(), anyString());
+
+        // when
+        boolean result = mailService.sendMail("fromEmail", "toEmail", "subject", "content");
+
+        // then
+        assertThat(result).isTrue();
+
+        // save 행위가 1번 호출 됐는지 검증 하는 메서드
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+#### @Mock
+
+MockitoBean 과 달리, 순수 Mock 객체를 이용하여 스프링 컨테이너 환경에서 동작하는 통합 테스트가 아닌, 단위 테스트 위주의 테스트 케이스를 작성할 수 있다.
+
+Mock 어노테이션을 클래스 변수로 작성한 뒤 ExtendWith(MockitoExtension.class) 를 클래스 레벨에 사용하면 Mock 객체가 기본으로 생성된다.
 
 
 
+@Mock 어노테이션은 아래 코드와 같은 기본 값 생성 코드를 생략할 수 있는 편리함을 제공한다.
+
+```java
+MailSendClient mailSendClient1 = mock(MailSendClient.class);
+```
+{% endhint %}
+
+> "Mock 객체의 특정 메서드를 Stubbing 하였지만, 메서드 내부에서 다른 메서드를 호출 하는 경우 어떻게 될까?"
+
+```java
+public class MailService {
+
+    private final MailSendClient mailSendClient;
+    private final MailSendHistoryRepository mailSendHistoryRepository;
+
+    public boolean sendMail(String fromEmail, String toEmail, String subject, String content) {
+
+        boolean result = mailSendClient.sendMail(fromEmail, toEmail, subject, content);
+
+        if (result) {
+            mailSendHistoryRepository.save(
+                    MailSendHistory.builder()
+                            .fromEmail(fromEmail)
+                            .toEmail(toEmail)
+                            .subject(subject)
+                            .content(content)
+                            .build()
+            );
+            mailSendClient.a();
+            mailSendClient.b();
+            mailSendClient.c();
+
+            return true;
+        }
+
+        return false;
+    }
+
+...
+
+MailServiceTest
+
+        // @Mock Stubbing
+        when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(true);
+
+```
+
+위 코드를 보면, MailServiceTest 에서 MailSendClient 의 sendMail() 을 Stubbing 하여 실제 사용자에게 보내는 메일을 보내지 않고 테스트 하기 위한 코드를 작성했다.
+
+하지만, 내부적으로 호출 되고 있는 mailSendHistoryRepository 의 save() 메서드는 어떻게 될까?&#x20;
+
+메일 발송 기록을 저장하는 코드인데, 이 내용은 테스트 할 때 마다 저장되면 안되기 때문에 똑같이 Stubbing 을 해줘야하는걸까?
 
 
 
+_**Stubbing 메서드 내부에서 실행되는 다른 메서드 디버깅하기**_
 
+<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+디버깅을 해보면 save() 메서드의 결과값이 null 인 것을 알 수 있고, 실제 저장이 되지 않았다.
+
+Mock 객체 내부 코드를 살펴보면, 생성할 때 기본값을 사용할 수 있도록 유도하며 기본 값을 반환하게 된다.
+
+<figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+#### @InjectMocks
+
+어노테이션 명칭에서도 알 수 있듯이 Mock 객체를 주입하는 어노테이션으로, MailService 같이 Mock 객체에 대한 의존관계를 갖고 있을 때 테스트 케이스에서 Mock 객체가 생성 되어 있다면 의존 관계를 주입해주는 방식이다.
+
+스프링의 DI 방식과 동일하다.
+{% endhint %}
+
+{% hint style="info" %}
+#### @Spy
+
+Mock과 유사하지만 Spy는 실제 객체의 일부 메서드만 Stubbing 하여 사용할 수 있다.
+
+Mock 은 특정 행동에 대해 정의하지 않으면 기본 값을 반환 하지만, Spy는 정의 되지 않은 행동은 실제 메서드의 반환 값을 그대로 사용한다.
+
+그 중 정의된 행동만 의도한 값이 사용된다.
+
+
+
+```java
+public boolean sendMail(String fromEmail, String toEmail, String subject, String content) {
+
+    boolean result = mailSendClient.sendMail(fromEmail, toEmail, subject, content);
+
+    if (result) {
+        mailSendHistoryRepository.save(
+                MailSendHistory.builder()
+                        .fromEmail(fromEmail)
+                        .toEmail(toEmail)
+                        .subject(subject)
+                        .content(content)
+                        .build()
+        );
+        mailSendClient.a();
+        mailSendClient.b();
+        mailSendClient.c();
+```
+
+
+
+sendMail() 에 a, b, c 메서드를 호출하고 각 메서드는 각자의 메서드명을 로그로 출력하는 행동을 한다.
+
+그 다음, 테스트 코드에서 sendMail 만 Stubbing 하면 아래와 같은 출력 결과를 얻는다.
+
+
+
+```
+12:53:45.919 [main] INFO sample.cafekiosk.spring.client.mail.MailSendClient -- a
+12:53:45.921 [main] INFO sample.cafekiosk.spring.client.mail.MailSendClient -- b
+12:53:45.921 [main] INFO sample.cafekiosk.spring.client.mail.MailSendClient -- c
+```
+{% endhint %}
 
