@@ -356,3 +356,103 @@ sendMail() 에 a, b, c 메서드를 호출하고 각 메서드는 각자의 메�
 ```
 {% endhint %}
 
+
+
+### BDDMockito
+
+***
+
+{% tabs %}
+{% tab title="MailServiceTest.java" %}
+```java
+package sample.cafekiosk.spring.api.service.mail;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import sample.cafekiosk.spring.client.mail.MailSendClient;
+import sample.cafekiosk.spring.domain.history.mail.MailSendHistory;
+import sample.cafekiosk.spring.domain.history.mail.MailSendHistoryRepository;
+
+@ExtendWith(MockitoExtension.class) // NOTE: 해당 어노테이션이 있으므로 테스트가 시작될 때 Mockito 를 활용하여 Mock 객체를 생성한다..
+class MailServiceTest {
+
+    @Mock
+    private MailSendClient mailSendClient;
+
+    @Mock
+    private MailSendHistoryRepository mailSendHistoryRepository;
+
+    @InjectMocks  // NOTE: MailService의 생성자를 확인하여 Mock 객체로 생성된 객체를 주입한다. -> DI와 동일
+    private MailService mailService;
+
+    @DisplayName("메일 전송 테스트")
+    @Test
+    void sendMail() {
+        // given
+        // @Mock Stubbing
+//        when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+//                .thenReturn(true);
+        BDDMockito.given(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+                .willReturn(true);
+
+        // when
+        boolean result = mailService.sendMail("fromEmail", "toEmail", "subject", "content");
+
+        // then
+        assertThat(result).isTrue();
+
+        // save 행위가 1번 호출 됐는지 검증 하는 메서드
+        verify(mailSendHistoryRepository, times(1)).save(any(MailSendHistory.class));
+
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+테스트 케이스를 작성할 때 현재까지 BDD 방식을 따라왔다. 그렇기에 Mock 객체 생성 또는 Stubbing 과정을 테스트를 위한 준비 과정으로써 Given 에 속하는 것이 맞다.
+
+하지만, Mockito 의 Stubbing 메서드 명칭은 Mockito.when 이다. 테스트 코드도 하나의 문서 처럼 활용할 수 있기 때문에 읽는이로 하여금 오해를 살 수 있는 부분이된다.
+
+역시 소프트웨어 세계는 대부분 누군가 했던 고민의 흔적이 있듯, 이런 Mockito 라이브러리를 그대로 래핑하여 BDDMockito 라는 라이브러리를 제공하고, 위 코드에서 볼 수 있듯이 given 이라는 명칭을 쓴다.
+
+모든 동작은 Mockito 와 같지만 더 자연스러운 읽는 흐름을 갖을 수 있기 때문에, 앞으로 Given 절에서 Stubbing 할 땐 BDDMockito 로 꾸미지 않았지만 꾸민 느낌을 주어 편안함을 제공해보자.
+
+
+
+### 당신은 Classicist 인가요? Mockist 인가요?
+
+{% embed url="https://jamesblog95.tistory.com/entry/Mockist-vs-Classicist" %}
+
+{% hint style="info" %}
+#### Classicist
+
+실제 객체의 메서드 반환 값을 중점으로 테스트 하며 동작에 대한 신뢰성을 바탕으로 하는 소프트웨어 테스팅 접근 방식
+
+이 입장은 모든 객체에 대한 Mocking 을 진행하게 되면 실제 반영되는 코드가 변경 되었을 시 모킹 객체의 행동 값을 재정의 하지 않으면 테스트는 통과하지만, 사용자 행동은 오류가 나는 상황을 일련의 방지하고자 하는 목적이다.
+
+다만, 난 클래시스트이기 때문에 모킹은 절대 하지않아 의 입장은 아니기 때문에 최소한으로 사용하자는 주의이다.
+
+> "엣헴, 누가 모키토 소리를 내었어? 😤"
+{% endhint %}
+
+
+
+... Mockist 내용 추가 예정
+
