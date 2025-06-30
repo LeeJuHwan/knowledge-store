@@ -83,6 +83,7 @@
   * [더 나은 테스트를 작성하기 위한 가이드](spring-boot/practical-testing/undefined-2/README.md)
     * [한 문단에는 한 개의 주제만 담자](spring-boot/practical-testing/undefined-2/undefined.md)
     * [완벽하게 제어하기](spring-boot/practical-testing/undefined-2/undefined-1.md)
+    * [테스트 환경의 독립성을 보장하자](spring-boot/practical-testing/undefined-2/undefined-2.md)
 * [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
   * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
   * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)
