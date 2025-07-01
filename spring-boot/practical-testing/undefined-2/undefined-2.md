@@ -116,3 +116,60 @@
 
 
 
+### 테스트 간 독립성을 보장하자
+
+두 가지 이상의 테스트 케이스가 한 개의 자원을 서로 공유하여 사용하는 경우를 방지하는 것이 목표이다.
+
+
+
+{% tabs %}
+{% tab title="예시코드" %}
+```java
+package sample.cafekiosk.spring.domain.stock;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class StockExampleTest {
+
+    private static final Stock stock = Stock.create("001", 1);
+
+    @DisplayName("재고의 수량이 제공된 수량보다 작은지 확인한다.")
+    @Test
+    void isQuantityLessThanEx() {
+      // given
+        int quantity = 2;
+
+      // when
+        boolean result = stock.isQuantityLessThan(quantity);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @DisplayName("재고를 주어진 개수만큼 차감할 수 있다.")
+    @Test
+    void deductQuantityEx() {
+      // given
+        int quantity = 1;
+
+      // when
+        stock.deductQuantity(quantity);
+
+        // then
+        assertThat(stock.getQuantity()).isZero();
+    }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+자원을 공유하게 되면 상태 값 또는 속성에 해당하는 값을 여러 테스트 케이스에서 변경하고 검증한다면 테스트가 수행 되는 순서에 따라 성공과 실패를 결정하게 된다.
+
+테스트는 서로간의 순서와 상관 없이 실행 되어야 하며, 같은 환경 내 공유하는 자원에 의존하지 말아야한다.
+
+결코 테스트 환경에서 작성한 순서대로 테스트가 수행 되지 않으니, 위에서 아래로 진행될거란 생각은 금물이다. 테스트는 언제나 병렬적으로 일어나기 때문에 순서는 보장할 수 없다.
+
