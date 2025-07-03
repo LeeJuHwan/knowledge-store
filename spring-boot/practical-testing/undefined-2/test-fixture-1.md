@@ -6,6 +6,8 @@ description: 테스트 환경에서 구성한 Fixture 들을 어떻게 하면 �
 
 
 
+
+
 ### deleteAll vs deleteAllInBatch
 
 ```java
@@ -22,6 +24,78 @@ class Test {
 테스트 코드를 작성하다보면 위 처럼 테스트 환경의 독립성을 위해 구성되었던 환경을 모두 재설정하는 작업을 하게된다.
 
 이 과정에서 deleteAll() 을 쓸지, deleteAllInBatch() 를 쓸지 결정해야 하는데 그 차이점에 대한 이해하는 내용이다.
+
+
+
+#### 예시 Entity
+
+{% tabs %}
+{% tab title="OrderProduct" %}
+```java
+public class OrderProduct extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+    public OrderProduct(Order order, Product product) {
+        this.order = order;
+        this.product = product;
+    }
+}
+```
+{% endtab %}
+
+{% tab title="Order" %}
+```java
+public class Order extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    private int totalPrice;
+
+    private LocalDateTime registeredDateTime;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts = new ArrayList<>();
+```
+{% endtab %}
+
+{% tab title="Product" %}
+```java
+public class Product extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String productNumber;
+
+    @Enumerated(EnumType.STRING)
+    private ProductType type;
+
+    @Enumerated(EnumType.STRING)
+    private ProductSellingStatus sellingStatus;
+
+    private String name;
+
+    private int price;
+```
+{% endtab %}
+{% endtabs %}
+
+앞으로 설명하게 될 메서드에서 해당 코드 구조를 기반으로 테스트 코드의 AfterEach 내 클렌징 코드를 예시로 든다.
 
 
 
@@ -63,9 +137,11 @@ class OrderServiceTest {
 
 ```
 
-이 코드에서 OrderProduct 는 Order 와 Product 의 다대다 관계를 풀어주는 N:1 매핑 테이블이다.
+<[#entity](test-fixture-1.md#entity "mention") 참고 >&#x20;
 
-만약 이 tearDown 순서를 Order 먼저 제거하거나 Product 먼저 제거하는 경우 JPA Foreign Key 제약 사항으로 인한 에러를 발생시킨다.
+OrderProduct 는 Order 와 Product 의 다대다 관계를 풀어주는 N:1 매핑 테이블이다.
+
+만약 OrderServiceTest에서 tearDown 순서를 Order 먼저 제거하거나 Product 먼저 제거하는 경우 JPA Foreign Key 제약 사항으로 인한 에러를 발생시킨다.
 
 이렇게 연관 관계를 조금 더 수월하게 삭제할 수 있는 메서드가 deleteAll() 이다.
 
@@ -77,7 +153,21 @@ class OrderServiceTest {
 
 deleteAll() 의 쿼리를 살펴보면 Product 테이블에 존재하는 모든 데이터를 지우는 것은 동일 하지만, deleteAllInBatch() 의 delete from product 가 아닌 개별로 하나씩 접근해서 지우는 것을 확인할 수 있다.
 
-또한 삭제하기 전 모든 데이터를 조건 없이 조회하는 것을 볼 수 있다. 만약 테스트 환경에서 구성한 데이터가 많다면 조건 없이 모든 데이터를 조회 하는 비용과 그 데이터를 하나씩 삭제하는 비용은 만만치 않을 것이다.
+또한 삭제하기 전 모든 데이터를 조건 없이 조회하는 것을 볼 수 있다.
+
+이 때 deleteAllInBatch 가 갖고 있던 문제점 중 "연관 관계를 맺고있는 객체를 삭제할 수 없기 때문에 순서를 고려하여 삭제해야 한다." 라는 내용을 나름 해결할 수 있다.
+
+<[#entity](test-fixture-1.md#entity "mention") 참고 >&#x20;
+
+삭제하고자 하는 테이블에 모든 데이터를 조회할 때 관계를 맺고 있던 테이블도 같이 조회하여  삭제한다.
+
+다만, 양방향인 경우 Order 를 먼저 삭제하든 Product 를 먼저 삭제하든 상관 없지만 Entity 관계를 보면 단방향으로 Product는 Order를 모르기 때문에 이 때 Product를 먼저 삭제하면 deleteAllInBatch 와 마찬가지로 외래 키 제약 에러가 발생한다.
+
+즉, 객체가 다른 객체를 참조하고 있는 경우 또한 같이 조회 하여 삭제하기 때문에 관계 매핑을 순서에 비교적 자유롭게(아예 상관 없지는 않으니) 모두 지우고 싶다면 deleteAll 이 해결책이 될 수있다.
+
+
+
+> 두 메서드의 차이는 어떻게 구현되어있을까?
 
 {% tabs %}
 {% tab title="SimpleJpaRepository" %}
