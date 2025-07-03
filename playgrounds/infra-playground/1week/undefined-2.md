@@ -6,7 +6,7 @@ description: 어플리케이션의 성능을 개선할 수 있는 요소를 찾�
 
 [미션 진행 코드](https://github.com/LeeJuHwan/infra-workshop/blob/main/subwaymap/README.md)
 
-<figure><img src="../../../.gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (5) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 사용자의 경험을 위해 어플리케이션의 성능을 검사 하고 개선점을 만들어봅시다.
 
@@ -30,7 +30,7 @@ _**TODO**_
 * 페이지 성능은 우선 기본적으로 가장 많이 방문하는 페이지나 트래픽이 많이 발생할 것으로 예상되는 페이지 등 중요하다는 페이지로 웹 성능 테스트 진행 해보아요
 {% endhint %}
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _<mark style="color:green;">**평가는 전체적인 점수와 각 측정 항목별 반응시간을 나타낸다.**</mark>_
@@ -66,7 +66,7 @@ _**TODO**_
 {% step %}
 ### Gzip 압축 설정
 
-<figure><img src="../../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 http {
@@ -86,7 +86,7 @@ http {
 {% step %}
 ### Cache 설정
 
-<figure><img src="../../../.gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 server {
@@ -129,7 +129,7 @@ server {
 {% step %}
 ### HTTP/2 설정
 
-<figure><img src="../../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 server {

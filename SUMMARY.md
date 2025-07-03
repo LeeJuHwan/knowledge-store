@@ -85,6 +85,7 @@
     * [완벽하게 제어하기](spring-boot/practical-testing/undefined-2/undefined-1.md)
     * [테스트 환경의 독립성을 보장하자](spring-boot/practical-testing/undefined-2/undefined-2.md)
     * [한 눈에 들어오는 Test Fixture 를 구성하기 위한 조언](spring-boot/practical-testing/undefined-2/test-fixture.md)
+    * [Test Fixture 클렌징](spring-boot/practical-testing/undefined-2/test-fixture-1.md)
 * [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
   * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
   * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)

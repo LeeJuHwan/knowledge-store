@@ -24,7 +24,7 @@ _**스노우 플레이크 서버**_
 
 > _**컨테이너는 Host OS의 시스템 커널을 사용한다.**_
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -32,7 +32,7 @@ _**스노우 플레이크 서버**_
 
 ***
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 > **가상머신**
 >
@@ -91,11 +91,11 @@ dockerd     880 root    6u     unix 0xffff953085804400       0t0      18324 /var
 
 > **"하지만 파일 시스템은 다르다"**
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 프로세스를 별개로 실행 시켜 파일 시스템이 다르다는 것을 어떻게 할 수 있는 것일까?
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _**chroot**_
@@ -107,7 +107,7 @@ _**chroot**_
 
 > **그래서 컨테이너 내에선 자기가 첫번째 프로세스로 할당된다.**
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 > _**"Host OS는 컨테이너를 어떻게 바라볼까?"**_
 
@@ -129,7 +129,7 @@ _**chroot**_
 {% step %}
 ### 네트워크 인터페이스 카드 생성
 
-<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
 
 위에서 <mark style="color:purple;">**chroot**</mark>를 통해 독자적인 파일 시스템이 생성 된다고 했었는데, 이 때 <mark style="color:red;">**네트워크 인터페이스 카드**</mark>도 하나 생성된다.
 

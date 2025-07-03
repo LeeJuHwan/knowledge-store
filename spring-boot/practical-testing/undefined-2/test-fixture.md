@@ -63,7 +63,7 @@ class Test {
 
 ***
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 Given 절에서 흔히 Repository 를 이용해 데이터를 생성하는 작업을 미리 구성해둔다. 이렇게 작성해둔 테스트 코드는 해당 메서드가 어떤 데이터로 인해 수행 되었다 라는 내용을 쉽게 알 수 있다.
 
