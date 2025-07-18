@@ -73,6 +73,12 @@
 
 ## Spring Boot
 
+* [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
+  * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
+  * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)
+    * [예제 만들기](spring-boot/undefined/undefined-1/undefined.md)
+    * [객체 지향 원리 적용](spring-boot/undefined/undefined-1/undefined-1.md)
+    * [스프링 컨테이너와 스프링 빈](spring-boot/undefined/undefined-1/undefined-2.md)
 * [Practical Testing](spring-boot/practical-testing/README.md)
   * [테스트 사전 지식](spring-boot/practical-testing/undefined.md)
   * [스프링 레이어드 아키텍처 테스트하기](spring-boot/practical-testing/undefined-1/README.md)
@@ -88,12 +94,9 @@
     * [Test Fixture 클렌징](spring-boot/practical-testing/undefined-2/test-fixture-1.md)
     * [테스트 수행도 비용이다. 테스트 환경 통합하기](spring-boot/practical-testing/undefined-2/untitled.md)
   * [학습 테스트](spring-boot/practical-testing/undefined-3.md)
-* [스프링 핵심 원리 - 기본편](spring-boot/undefined/README.md)
-  * [객체 지향 설계와 스프링](spring-boot/undefined/undefined.md)
-  * [스프링 핵심 원리 이해](spring-boot/undefined/undefined-1/README.md)
-    * [예제 만들기](spring-boot/undefined/undefined-1/undefined.md)
-    * [객체 지향 원리 적용](spring-boot/undefined/undefined-1/undefined-1.md)
-    * [스프링 컨테이너와 스프링 빈](spring-boot/undefined/undefined-1/undefined-2.md)
+  * [Spring REST Docs](spring-boot/practical-testing/spring-rest-docs.md)
+* [Spring Boot TDD](spring-boot/spring-boot-tdd/README.md)
+  * [TDD 철학](spring-boot/spring-boot-tdd/tdd.md)
 
 ## Python
 
