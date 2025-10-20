@@ -70,7 +70,7 @@
   * [객체지향 코드 적용하기](java/readable-code/oop-code.md)
   * [코드 다듬기](java/basic/undefined.md)
   * [읽기 좋은 코드를 도와줄 조언들](java/basic/undefined-1.md)
-* [Java-Ninja](java/java-ninja/README.md)
+* [Java 101](java/java-ninja/README.md)
   * [동일성과 동등성](java/java-ninja/undefined.md)
   * [hashCode가 뭘까요?](java/java-ninja/hashcode.md)
 
