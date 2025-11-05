@@ -9,7 +9,7 @@
 {% hint style="info" %}
 #### Dual-Pivot QuickSort 란?
 
-QuickSort 에서 기준이 되는 Pivot 을 두 개로 나누어, 파티션을 총 3개로 분할하며 정렬하는 방식이다.
+[QuickSort](../../algorithm/undefined/quick-sort.md) 에서 기준이 되는 Pivot 을 두 개로 나누어, 파티션을 총 3개로 분할하며 정렬하는 방식이다.
 
 시간 복잡도 : O(n log n) 최악의 경우 O(n^2)
 {% endhint %}
