@@ -1,17 +1,15 @@
 # 자바에서 정렬하는 방법
 
-### Arrays.sort()
+<h3 align="center"><mark style="color:$info;">Arrays.sort()</mark></h3>
 
 #### 원시타입을 정렬하는 Dual-Pivot QuickSort
-
-***
 
 {% hint style="info" %}
 #### Dual-Pivot QuickSort 란?
 
 [QuickSort](../../algorithm/undefined/quick-sort.md) 에서 기준이 되는 Pivot 을 두 개로 나누어, 파티션을 총 3개로 분할하며 정렬하는 방식이다.
 
-시간 복잡도 : O(n log n) 최악의 경우 O(n^2)
+시간 복잡도 : O(n log n) 최악의 경우 O(n<sup>2</sup>)
 {% endhint %}
 
 <figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
@@ -47,46 +45,11 @@
 
 > #### 왜 dual-pivot quick sort 일까?
 
-우선, 일반적인 `QuickSort` 는 파티션이 한쪽으로 치우쳐지는 경우 `O(n^2)` 시간 복잡도의 알고리즘이다. 한 개의 `pivot` 을 기준으로 파티셔닝 하다보니 발생할 수 있는 가능성이 현저히 낮지가 않다.
+우선, 일반적인 `QuickSort` 는 파티션이 한쪽으로 치우쳐지는 경우 `O(n`<sup>`2`</sup>`)` 시간 복잡도의 알고리즘이다. 한 개의 `pivot` 을 기준으로 파티셔닝 하다보니 발생할 수 있는 가능성이 현저히 낮지가 않다.
 
 그렇기 때문에 파티셔닝이 한쪽으로 치우쳐지는 것을 방지하기 위해 파티션을 3개로 분할하여 각 파티션 별 데이터가 균형잡히도록 유도한다.
 
 기존 `one-pivot quick sort` 보다 평균적으로 비교하는 횟수가 줄어들기 때문에 속도가 빠르다.
-
-자바에서 원시타입 배열을 정렬하는 방식은 `QuickSort` 기반일 뿐 내부적으로는 아래 처럼 타입 별로 정렬하는 방식이 최적화 되어있다.
-
-```java
-    static void sort(short[] a, int low, int high) {
-        if (high - low > MIN_SHORT_OR_CHAR_COUNTING_SORT_SIZE) {
-            countingSort(a, low, high);
-        } else {
-            sort(a, 0, low, high);
-        }
-    }
-
-    static void sort(short[] a, int bits, int low, int high) {
-        while (true) {
-            int end = high - 1, size = high - low;
-
-            /*
-             * Invoke insertion sort on small leftmost part.
-             */
-            if (size < MAX_INSERTION_SORT_SIZE) {
-                insertionSort(a, low, high);
-                return;
-            }
-
-            /*
-             * Switch to counting sort if execution
-             * time is becoming quadratic.
-             */
-            if ((bits += DELTA) > MAX_RECURSION_DEPTH) {
-                countingSort(a, low, high);
-                return;
-            }
-```
-
-
 
 원시타입에서 배열은 데이터가 메모리에 연속된 공간에 저장되기 때문에 메모리 접근이 효율적이며 연산 속도가 빠른 장점이 있다.
 
@@ -106,29 +69,124 @@ Arrays.sort(scores);
 
 
 
+#### Dual-Pivot QuickSort 내부에서 최적화된 다양한 정렬 방법
+
+자바에서 원시타입 배열을 정렬하는 방식은 `QuickSort` 기반일 뿐 내부적으로는 아래 처럼 타입 별로 정렬하는 방식이 최적화 되어있다.
+
+```java
+     static void sort(Sorter sorter, int[] a, int bits, int low, int high) {
+        while (true) {
+            int end = high - 1, size = high - low;
+
+            /*
+             * Run mixed insertion sort on small non-leftmost parts.
+             */
+            if (size < MAX_MIXED_INSERTION_SORT_SIZE + bits && (bits & 1) > 0) {
+                mixedInsertionSort(a, low, high - 3 * ((size >> 5) << 3), high);
+                return;
+            }
+
+            /*
+             * Invoke insertion sort on small leftmost part.
+             */
+            if (size < MAX_INSERTION_SORT_SIZE) {
+                insertionSort(a, low, high);
+                return;
+            }
+
+            /*
+             * Check if the whole array or large non-leftmost
+             * parts are nearly sorted and then merge runs.
+             */
+            if ((bits == 0 || size > MIN_TRY_MERGE_SIZE && (bits & 1) > 0)
+                    && tryMergeRuns(sorter, a, low, size)) {
+                return;
+            }
+
+            /*
+             * Switch to heap sort if execution
+             * time is becoming quadratic.
+             */
+            if ((bits += DELTA) > MAX_RECURSION_DEPTH) {
+                heapSort(a, low, high);
+                return;
+            }
+
+```
+
+* 작은 크기의 배열은 <mark style="color:red;">삽입 정렬</mark>을 사용한다.
+* 배열의 요소들이 대부분 정렬되어 있는 경우는 <mark style="color:red;">병합 정렬</mark>을 사용한다.
+* 재귀 깊이가 깊어지는 경우 <mark style="color:red;">힙 정렬</mark>을 사용한다.
+
+
+
+그 외적으로도 원시 타입의 종류에 따라 다른 정렬 방식을 사용하기도 하는데, 원시 타입이 표현할 수 있는 데이터 크기를 고려한 것 같다.
+
+예를 들어 아래와 같이 `byte`, `char`, `short` 같은 경우 계수 정렬을 같이 사용하는 것을 볼 수 있다.
+
+{% tabs %}
+{% tab title="byte" %}
+```java
+static void sort(byte[] a, int low, int high) {
+    if (high - low > MIN_BYTE_COUNTING_SORT_SIZE) {
+        countingSort(a, low, high);
+    } else {
+        insertionSort(a, low, high);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="char" %}
+```java
+static void sort(char[] a, int low, int high) {
+    if (high - low > MIN_SHORT_OR_CHAR_COUNTING_SORT_SIZE) {
+        countingSort(a, low, high);
+    } else {
+        sort(a, 0, low, high);
+    }
+}
+```
+{% endtab %}
+
+{% tab title="short" %}
+```java
+static void sort(short[] a, int low, int high) {
+    if (high - low > MIN_SHORT_OR_CHAR_COUNTING_SORT_SIZE) {
+        countingSort(a, low, high);
+    } else {
+        sort(a, 0, low, high);
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+
+
 #### 참조타입을 정렬하는 TimSort
 
 ***
 
 
 
-### Collections.sort() <a href="#id-2.-20collections.sort-1" id="id-2.-20collections.sort-1"></a>
+<h3 id="id-2.-20collections.sort-1" align="center"><mark style="color:$info;">Collections.sort()</mark></h3>
 
 
 
-### Comparator를 이용한 커스텀 정렬
+<h3 align="center"><mark style="color:$info;">Comparator를 이용한 커스텀 정렬</mark></h3>
 
 
 
-### Comparable 인터페이스 구현
+<h3 align="center"><mark style="color:$info;">Comparable 인터페이스 구현</mark></h3>
 
 
 
-### Stream API를 이용한 정렬
+<h3 align="center"><mark style="color:$info;">Stream API를 이용한 정렬</mark></h3>
 
 
 
-### **참고 자료**
+#### **참고 자료**
 
 {% embed url="https://www.youtube.com/watch?v=XYVbjQXkmiI&t=33s" %}
 
