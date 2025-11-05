@@ -79,6 +79,7 @@
   * [동일성과 동등성](java/java-ninja/undefined.md)
   * [hashCode가 뭘까요?](java/java-ninja/hashcode.md)
   * [JVM 이해하기](java/java-ninja/jvm.md)
+  * [자바에서 정렬하는 방법](java/java-ninja/undefined-1.md)
 
 ## Spring Boot
 
