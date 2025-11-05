@@ -45,49 +45,64 @@
 
 
 
-> #### 자바 7부터 왜 dual-pivot quick sort를 사용하게 되었을까?
+> #### 왜 dual-pivot quick sort 일까?
 
 우선, 일반적인 `QuickSort` 는 파티션이 한쪽으로 치우쳐지는 경우 `O(n^2)` 시간 복잡도의 알고리즘이다. 한 개의 `pivot` 을 기준으로 파티셔닝 하다보니 발생할 수 있는 가능성이 현저히 낮지가 않다.
 
-그렇기 때문에 파티셔닝이 한쪽으로 치우쳐지는 것을 방지하기 위해 파티션을 3개로 분할하여 각 파티션 별 숫자가 균형잡히도록 유도하고, `O(n^2)` 상황을 최대한 방지하고자 하는 목적으로 자바7부터 `dual-pivot quick sort`가 쓰인것으로 보인다.
+그렇기 때문에 파티셔닝이 한쪽으로 치우쳐지는 것을 방지하기 위해 파티션을 3개로 분할하여 각 파티션 별 데이터가 균형잡히도록 유도한다.
 
+기존 `one-pivot quick sort` 보다 평균적으로 비교하는 횟수가 줄어들기 때문에 속도가 빠르다.
 
+자바에서 원시타입 배열을 정렬하는 방식은 `QuickSort` 기반일 뿐 내부적으로는 아래 처럼 타입 별로 정렬하는 방식이 최적화 되어있다.
 
-하지만 그럼에도 불구하고 최악은 `O(n^2)` 인 것은 변함 없지만, 기존 `one-pivot quick sort` 보다 평균적으로 비교하는 횟수가 줄어들기 때문에 속도의 이점도 분명 존재한다.
-
-
-
-> #### 원시타입은 왜 dual-pivot quick sort를 사용하게 되었을까?
-
-원시 타입에서 배열은 데이터가 메모리에 연속된 공간에 저장되기 때문에 메모리 접근이 효율적이며 연산 속도가 빠른 장점이 있다.
-
-반면, 객체는 생성시 heap 에서 관리 되기 때문에 메모리 저장 위치가 분산되고, 객체간 비교를 위해 compareTo() 메서드를  호출해야하기 때문에 원시 타입에서 데이터를 바로 연산하는 것 보다 추가적인 오버헤드가 발생한다.
-
-
-
-{% tabs %}
-{% tab title="Arrays.java - DualPivotQuickSort" %}
 ```java
-public static void sort(int[] a, int fromIndex, int toIndex) {
-    rangeCheck(a.length, fromIndex, toIndex);
-    DualPivotQuicksort.sort(a, 0, fromIndex, toIndex);
-}
-```
-{% endtab %}
+    static void sort(short[] a, int low, int high) {
+        if (high - low > MIN_SHORT_OR_CHAR_COUNTING_SORT_SIZE) {
+            countingSort(a, low, high);
+        } else {
+            sort(a, 0, low, high);
+        }
+    }
 
-{% tab title="Arrays.java -TimSort" %}
+    static void sort(short[] a, int bits, int low, int high) {
+        while (true) {
+            int end = high - 1, size = high - low;
+
+            /*
+             * Invoke insertion sort on small leftmost part.
+             */
+            if (size < MAX_INSERTION_SORT_SIZE) {
+                insertionSort(a, low, high);
+                return;
+            }
+
+            /*
+             * Switch to counting sort if execution
+             * time is becoming quadratic.
+             */
+            if ((bits += DELTA) > MAX_RECURSION_DEPTH) {
+                countingSort(a, low, high);
+                return;
+            }
+```
+
+
+
+원시타입에서 배열은 데이터가 메모리에 연속된 공간에 저장되기 때문에 메모리 접근이 효율적이며 연산 속도가 빠른 장점이 있다.
+
+반면, 객체는 생성시 힙 영역 에서 관리 되기 때문에 메모리 저장 위치가 분산되고, 객체간 비교를 위해 `compareTo()` 메서드를  호출해야하기 때문에 원시 타입에서 데이터를 바로 연산하는 것 보다 추가적인 오버헤드가 발생한다.
+
+`QuickSort` 는 불안정 정렬로 정렬한 배열을 다른 기준으로 재정렬 하는 경우 순서는 무시된 채 모두 뒤죽박죽 뒤섞이게 되는 문제가 있다.
+
 ```java
-public static void sort(Object[] a) {
-    if (LegacyMergeSort.userRequested)
-        legacyMergeSort(a);
-    else
-        ComparableTimSort.sort(a, 0, a.length, null, 0, 0);
-}
+int[] scores = {95, 85, 95, 75};
+Arrays.sort(scores);
+// 결과: [75, 85, 95, 95]
 ```
-{% endtab %}
-{% endtabs %}
 
+원시 타입 배열에서 불안정 정렬을 사용해도 상관 없는 이유는 배열 내 데이터의 논리적인 의미를 두지 않기 때문이다.&#x20;
 
+반면, 객체라고 한다면 `Student(90, "A")`, `Student(90, "C")` 90점을 맞은 학생 A 와 C 에 있어 학생이라는 객체에서 논리적으로 이름이라는 속성이 의미를 갖고 있기 때문에 정렬 대상으로 두었을 때 불안정 정렬을 사용하면 뒤섞이게 된다.
 
 
 
