@@ -114,7 +114,7 @@ _**더 알아보기**_
 
 #### :writing\_hand: <mark style="color:blue;">Display Name</mark> 을 섬세하게 작성하자
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 *   도메인 용어를 사용하여 한층 추상화된 내용을 담기

@@ -2,7 +2,7 @@
 
 <h3 align="center"><mark style="color:$info;">Arrays.sort()</mark></h3>
 
-#### 원시타입을 정렬하는 Dual-Pivot QuickSort
+#### 원시타입의 배열을 정렬하는 Dual-Pivot QuickSort
 
 {% hint style="info" %}
 #### Dual-Pivot QuickSort 란?
@@ -12,7 +12,7 @@
 시간 복잡도 : O(n log n) 최악의 경우 O(n<sup>2</sup>)
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 `pivot` 의 기준점을 배열의 시작과 끝으로 지정하고, 두 개의 피벗의 값과 비교하며 배열을 총 3개의 파티션으로 나누는 것이 특징이다.
 
@@ -39,7 +39,7 @@
 
 위 기준에 맞춰 재귀를 호출할 때 기존 `QuickSort` 는 왼쪽과 오른쪽 파티션에 대해서만 재귀를 호출했지만, `Dual-Pivot QuickSort` 는 세개의 파티션에 대해 재귀를 호출하게 된다.
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -114,9 +114,9 @@ Arrays.sort(scores);
 
 ```
 
-* 작은 크기의 배열은 <mark style="color:red;">삽입 정렬</mark>을 사용한다.
-* 배열의 요소들이 대부분 정렬되어 있는 경우는 <mark style="color:red;">병합 정렬</mark>을 사용한다.
-* 재귀 깊이가 깊어지는 경우 <mark style="color:red;">힙 정렬</mark>을 사용한다.
+* 작은 크기의 배열은 [<mark style="color:$primary;">삽입 정렬</mark>](../../algorithm/undefined/insertion-sort.md)을 사용한다.
+* 배열의 요소들이 대부분 정렬되어 있는 경우는 [<mark style="color:$primary;">병합 정렬</mark>](../../algorithm/undefined/merge-sort.md)을 사용한다.
+* 재귀 깊이가 깊어지는 경우 [<mark style="color:$primary;">힙 정렬</mark>](../../algorithm/undefined/heap-sort.md)을 사용한다.
 
 
 
@@ -174,15 +174,7 @@ static void sort(short[] a, int low, int high) {
 
 
 
-<h3 align="center"><mark style="color:$info;">Comparator를 이용한 커스텀 정렬</mark></h3>
-
-
-
-<h3 align="center"><mark style="color:$info;">Comparable 인터페이스 구현</mark></h3>
-
-
-
-<h3 align="center"><mark style="color:$info;">Stream API를 이용한 정렬</mark></h3>
+<h3 align="center"></h3>
 
 
 

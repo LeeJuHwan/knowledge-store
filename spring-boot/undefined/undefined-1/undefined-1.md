@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
 
 위 코드를 보면, 서비스 계층에서 의존성을 갖고 있던 할인 정책 객체를 바꿈으로써 손쉽게 요구사항을 충족할 수 있다.&#x20;
 
-<figure><img src="../../../.gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 #### OCP, DIP 같은 객체지향 설계 원칙을 충실히 준수했다고 볼 수 있지만 그렇지 않다.

@@ -6,7 +6,7 @@ description: 지하철 노선도를 위해 구성한 망에 서버를 얹어보�
 
 [미션 진행 코드](https://github.com/LeeJuHwan/infra-workshop/blob/main/subwaymap/README.md)
 
-<figure><img src="../../../.gitbook/assets/image (5) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (5) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 프로젝트를 위해 생성한 VPC에 지하철 노선도 어플리케이션을 실행 할 서버를 구성합니다.
 

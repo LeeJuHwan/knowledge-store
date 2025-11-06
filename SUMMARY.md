@@ -9,6 +9,7 @@
   * [Insertion Sort](algorithm/undefined/insertion-sort.md)
   * [Merge Sort](algorithm/undefined/merge-sort.md)
   * [Quick Sort](algorithm/undefined/quick-sort.md)
+  * [Heap Sort](algorithm/undefined/heap-sort.md)
 
 ## AWS
 
