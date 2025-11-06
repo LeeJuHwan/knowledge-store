@@ -6,6 +6,7 @@
 ## Algorithm
 
 * [정렬](algorithm/undefined/README.md)
+  * [Insertion Sort](algorithm/undefined/insertion-sort.md)
   * [Quick Sort](algorithm/undefined/quick-sort.md)
 
 ## AWS
