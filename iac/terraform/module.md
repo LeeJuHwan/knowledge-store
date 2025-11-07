@@ -4,23 +4,19 @@
 
 튜토리얼을 진행 하며 퍼블릭 클라우드에 프로비저닝 하는 방식을 살펴 보았다면 해당 챕터에서는 비효율적인 부분을 개선합니다.
 
-
-
 ### Local scope variables
 
 {% hint style="warning" %}
 _**"불필요한 반복을 줄이고 변수에 있는 값을 최대한 재사용 할 수 없을까?"**_
 {% endhint %}
 
-이전에 진행 했던 <mark style="color:blue;">**Tutorial**</mark> 챕터에서 서브넷과 IGW, NAT Gateway 등을 생성할 때 변수를 분리하여 내부망과 외부망을 분리 시켰다.&#x20;
+이전에 진행 했던 <mark style="color:blue;">**Tutorial**</mark> 챕터에서 서브넷과 IGW, NAT Gateway 등을 생성할 때 변수를 분리하여 내부망과 외부망을 분리 시켰다.
 
 하지만, 사용하는 값이 비슷했기 때문에 가독성을 더 향상 시키기 위해 변수를 활용 하여 서브넷 그룹을 하나로 묶는 방법을 선택할 수 있다.
 
-
-
 **Examples**
 
-<figure><img src="../../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (30) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% tabs %}
 {% tab title="AS-IS" %}
@@ -71,8 +67,6 @@ resource "aws_subnet" "subnets" {
 
 <mark style="color:purple;">**`Lookup`**</mark> 함수는 <mark style="color:green;">Map type</mark> 에 있는 요소를 키로 접근하는 함수이다. 마치 파이썬의 "_Dictionary to get"_ 과 다름 없다.
 
-
-
 > _python examples_
 
 ```python
@@ -91,8 +85,6 @@ lookup({a="ay", b="bee"}, "c", "what?")  # what?
 {% endhint %}
 {% endtab %}
 {% endtabs %}
-
-
 
 > _**"서브넷 그룹에서 Private 서브넷만 필요한데 어떻게 가져오지?"**_
 
@@ -114,7 +106,7 @@ locals {
 
 :bulb: 지역 변수를 할당한 후 제대로 구성 되었는지 확인하고 싶다면 아래와 같은 명령어를 통해 확인할 수 있다.
 
-**Command**&#x20;
+**Command**
 
 ```sh
 terraform console
@@ -127,8 +119,6 @@ terraform console
 그래서 현재 테라폼 구성을 살펴보면 서브넷이 하나의 그룹으로 통합 되어 있고 지역 변수로 내부망 서브넷을 별도로 분리 해두었다.
 
 기존 내부망 서브넷을 사용하고 있던 NAT 관련 리소스는 리팩터링으로 인해 동작하지 않기 때문에 이 부분도 새롭게 수정한다.
-
-
 
 {% tabs %}
 {% tab title="AS-IS" %}
@@ -162,8 +152,6 @@ resource "aws_nat_gateway" "gateways" {
 {% endtab %}
 {% endtabs %}
 
-
-
 테라폼 구성은 동일 하지만 가독성을 위해 리팩터링을 모두 마쳤다면 테라폼 실행 계획을 살펴본 후 생성 후 재 생성 하는 테라폼 상태 파일을 제어 하여 변경 사항 없음으로 만들어준다.
 
 ```sh
@@ -174,21 +162,19 @@ resource "aws_nat_gateway" "gateways" {
 > terraform plan
 ```
 
-튜토리얼에서 비용 발생에 대한 우려로 시나리오만 진행 하여 NAT Gateway와 Private Subnet을 만들지 않은 상태라면 동일하게 6개의 리소스가 새롭게 생성 되는 화면이 나오면된다.&#x20;
+튜토리얼에서 비용 발생에 대한 우려로 시나리오만 진행 하여 NAT Gateway와 Private Subnet을 만들지 않은 상태라면 동일하게 6개의 리소스가 새롭게 생성 되는 화면이 나오면된다.
 
 <details>
 
 <summary>Summary</summary>
 
-이렇게 테라폼을 구성할 때 리소스를 가독성 있게 구성하는 방식이 중요한데, 그 중 첫번째 인 지역변수를 활용한 방식을 사용해보았다.&#x20;
+이렇게 테라폼을 구성할 때 리소스를 가독성 있게 구성하는 방식이 중요한데, 그 중 첫번째 인 지역변수를 활용한 방식을 사용해보았다.
 
 * 리팩터링 시 <mark style="color:purple;">**terraform state mv**</mark> 명령어를 사용하여 기존에 만들어둔 리소스를 이전해야 한다.
 * 유사한 변수를 하나로 합친 후 로컬 변수를 사용하여 리팩터링 할 수 있다.
 * <mark style="color:purple;">**lookup()**</mark> 함수를 사용하여 <mark style="color:green;">Map type</mark> 의 변수에서 특정 키의 값을 조회 할 수 있다.
 
 </details>
-
-
 
 ### Routing table
 
@@ -198,7 +184,7 @@ _**"VPC 구성의 종착지인 라우팅 테이블을 구성하다"**_
 
 기존 Public subnet 은 IGW를 통해 인터넷 통신을 이루고 Private subnet은 NAT Gateway를 통해 인터넷 통신을 이루도록 리스소를 정의했다.
 
-이렇게 서브넷을 분리 시켰지만 별도의 라우팅 테이블을 만들지 않는다면 AWS VPC 정책에 의해 기본적으로 모두 로컬 라우팅 테이블에 포함되어 인터넷을 사용할 수 있게 된다.&#x20;
+이렇게 서브넷을 분리 시켰지만 별도의 라우팅 테이블을 만들지 않는다면 AWS VPC 정책에 의해 기본적으로 모두 로컬 라우팅 테이블에 포함되어 인터넷을 사용할 수 있게 된다.
 
 그렇기 때문에 라우팅 테이블을 별도로 생성 하여 특정 서브넷에 대한 제어를 하도록 만든다.
 
@@ -211,8 +197,6 @@ _**"VPC 구성의 종착지인 라우팅 테이블을 구성하다"**_
 2. route: 라우팅 룰, 주로 어떤 라우트 테이블에 속해 있으며 어떤 게이트웨이를 사용 하여 통신할지 정의
 3. route\_table\_association: 라우팅 룰에 포함 될 서브넷들
 {% endhint %}
-
-
 
 {% tabs %}
 {% tab title="main.tf" %}
@@ -255,8 +239,6 @@ resource "aws_route_table_association" "associations" {
 
 </details>
 
-
-
 ### Dynamic block with SG
 
 {% hint style="warning" %}
@@ -264,8 +246,6 @@ _**"리소스 설정 중 유연하게 추가 또는 삭제를 해야할 때 어�
 {% endhint %}
 
 동적 블럭을 활용하기 위해서 보안 그룹 규칙을 생성할 때 사용 하며 <mark style="color:green;">map(object) type</mark>, <mark style="color:purple;">for\_each</mark>, <mark style="color:purple;">dynamic</mark> 등을 활용한다
-
-
 
 > _**"만약 동적 블럭을 구성하지 않고 보안 그룹을 생성하면 어떻게 될까?"**_
 
@@ -338,8 +318,6 @@ resource "aws_security_group" "permit_http_" {
 {% endtabs %}
 
 두 코드는 거의 비슷하며 지금 단 두개의 보안 그룹 규칙을 생성했다. 만약, 4개, 5개 일 때 이와 같이 구성할 수 있겠는가? 이러한 비효율적인 코드를 줄이고 가독성을 높히는 것이 목적이기 때문에 동적 블럭을 활용하여 이 코드를 간소화할 수 있다.
-
-
 
 {% tabs %}
 {% tab title="main.tf" %}
@@ -460,8 +438,6 @@ security_groups = {
 
 </details>
 
-
-
 ### Module
 
 {% hint style="warning" %}
@@ -475,8 +451,6 @@ _**"하나 이상의 리소스와 관련된 코드 블록을 재사용 가능하
 <figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
 위 코드를 Copy & Paste 로 사용할 경우 추후 변경되는 리소스에 대한 동기화를 위해 각 리전에서 정의 된 변수 파일을 탐색 하며 수정해야한다. 이 때 휴먼에러가 발생할 확률이 굉장히 높기 때문에 코드화 하는 의미가 많이 퇴색된다.
-
-
 
 바람직하게 모듈을 이용하여 미리 정의된 리소스를 참조 하도록 만들기 위해서 아래와 같이 구성할 수 있다.
 
@@ -570,23 +544,21 @@ module "vpc" {
 
 이렇게 기존 리소스 구성에서 모듈화를 진행 하면 테라폼을 사용할 준비를 다시 해야하기 때문에 워크플로우를 익혀보자면아래와 같다.
 
-
-
 {% stepper %}
 {% step %}
-### 모듈 참조 구성 및 Terraform init
+#### 모듈 참조 구성 및 Terraform init
 
 기존 리소스에서 사용하던 상태 파일은 모듈로 넘어가있기 때문에 참조된 곳에 테라폼을 사용하기 위한 준비를 마친다.
 {% endstep %}
 
 {% step %}
-### Terraform plan
+#### Terraform plan
 
 이 때, 실행 계획을 살펴보면 기존에 만들어둔 리소스가 모두 삭제되고 새롭게 재생성 되는 것을 볼 수 있는데 이러한 이유는 기존에는 모듈에서 참조하지 않았기 때문에 "aws\_vpc.main"이었다면 모듈에 참조된 후 "module.aws\_vpc.main"이 되어 상태파일에 변경이 생긴다.
 {% endstep %}
 
 {% step %}
-### Terraform state mv
+#### Terraform state mv
 
 {% code overflow="wrap" %}
 ```sh
@@ -617,23 +589,17 @@ terraform show -json | jq -r ".values.root_module.resources[] | .address" | awk 
 
 </details>
 
-
-
 ### Variables In Yaml File
 
 {% hint style="warning" %}
 _**"YAML 파일을 읽어서 변수 값을 지정하여 가독성을 향상 시킨다"**_
 {% endhint %}
 
-
-
 > _**"왜 YAML 파일을 활용해야 할까?"**_
 
 <figure><img src="../../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
 
 기존 변수 파일로 관리 했을 때 변수를 선언하고 해당 변수에 대한 값을 할당 해서 사용 해야 했지만 YAML을 활용하게 되면 **테라폼을 구성하는 데이터들과 실제 테라폼 로직을 분리**할 수 있어 가독성이 좋아진다. 또한, 테라폼을 잘 모르더라도 YAML 파일만 수정하면 되는 유연함이 있다.
-
-
 
 {% tabs %}
 {% tab title="AS-IS" %}
@@ -742,8 +708,6 @@ module "vpc" {
 * YAML 파일 활용하면 테라폼 구성의 가독성을 높일 수 있고 데이터와 로직을 분리할 수 있다.
 
 </details>
-
-
 
 ### Dynamic Syntax Optimization
 
@@ -957,10 +921,3 @@ terraform import module.vpc.aws_vpc_security_group_ingress_rule.rules\[\"oimarke
 * <mark style="color:purple;">**terraform import**</mark> 명령을 사용하면 이미 프로비저닝 되어 있는 리소스를 테라폼으로 관리할 수 있게 됩니다.
 
 </details>
-
-
-
-
-
-
-

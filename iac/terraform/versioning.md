@@ -9,10 +9,8 @@
 
 JSON 형태로 리소스 정보, 프로바이더 정보 등 여러 섹션으로 구성 되어 있으며 <mark style="color:red;">**절대 수동으로 파일을 수정하면 안되고**</mark> <mark style="color:purple;">**terraform state**</mark> 명령을 사용해서 조작해야 한다.
 
-![](<../../.gitbook/assets/image (37).png>)
+<img src="../../.gitbook/assets/image (37).png" alt="" data-size="original">
 {% endhint %}
-
-
 
 ### Backend Block
 
@@ -30,13 +28,9 @@ _**"테라폼 상태 파일을 어디에 저장하고 관리할지 설정"**_
 
 또, 내가 아닌 다른 사람이 작업 하면 상태 파일을 Git 으로 관리하거나 파일을 전달해야 하는걸까?
 
-
-
 > _**"원격 저장소 구성의 장점"**_
 
 원격 저장소에 있는 상태 파일은 계속 동기화 되어 있기 때문에 작업자 A가 어디 까지 작업을 했는지에 대해 다른 작업자가 쉽게 알 수 있다.
-
-
 
 > _**"같은 파일을 동시에 작업한다면?"**_
 
@@ -47,10 +41,8 @@ _**"테라폼 상태 파일을 어디에 저장하고 관리할지 설정"**_
 {% hint style="info" %}
 DynamoDB State Locking
 
-![](<../../.gitbook/assets/image (39).png>)
+<img src="../../.gitbook/assets/image (39).png" alt="" data-size="original">
 {% endhint %}
-
-
 
 **Remote Backend Example**
 
@@ -63,13 +55,11 @@ DynamoDB State Locking
 1. 로컬 테라폼 작성
 2. 콘솔(S3, DynamoDB Table) 작업 후 공유
 
-
-
 **AWS Console 환경에서 원격 저장소 구성을 위한 리소스 생성하기**
 
 {% stepper %}
 {% step %}
-### S3 Bucket 생성
+#### S3 Bucket 생성
 
 S3 Bucket을 생성 할 때 원하는 <mark style="color:red;">**이름만 작성한 뒤 모두 기본값**</mark>을 사용하여 생성한다.
 
@@ -77,7 +67,7 @@ S3 Bucket을 생성 할 때 원하는 <mark style="color:red;">**이름만 작�
 {% endstep %}
 
 {% step %}
-### Dynamo DB Table 생성
+#### Dynamo DB Table 생성
 
 Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용하여 생성한다.
 
@@ -89,7 +79,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 {% endstep %}
 
 {% step %}
-### Terraform Init
+#### Terraform Init
 
 백엔드 구성 파일이 없는 경우 기본값으로 "local"을 사용했지만 현재 S3를 사용하기 때문에 새롭게 terraform init을 통해 원격 저장소를 구성한다. 이 때, 기본 로컬 백엔드를 사용하고 있었다면 현재 구성을 변경할 것인지 물어보는데 "yes"라고 하면 정상적으로 변경이 완료된다.
 
@@ -97,7 +87,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 {% endstep %}
 
 {% step %}
-### Terraform Lock
+#### Terraform Lock
 
 테스트를 위해 기본 <mark style="color:blue;">**`config.yaml`**</mark> 파일에서 SG 구성의 HTTP 허용 포트를 443 -> 543으로 변경한 후 <mark style="color:purple;">**terraform apply**</mark>를 하고 있다고 가정한다.
 
@@ -117,15 +107,13 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 
 </details>
 
-
-
 ### Remote Data
 
 {% hint style="warning" %}
 _**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성에서 재사용 하는 기능"**_
 {% endhint %}
 
-> _**"기존에 만든****&#x20;**<mark style="color:green;">**VPC**</mark>**에****&#x20;**<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
+> _**"기존에 만든\*\*\*\*****&#x20;**<mark style="color:green;">**VPC**</mark>**에**\*\* \*\*<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
 
 <figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
@@ -181,8 +169,6 @@ data "terraform_remote_state" "vpc" {
 
 그 후 해당 출력 값을 사용할 수 있는 리소스를 정의 해서 참조하면 되는데, 해당 챕터는 <mark style="color:green;">Bastion EC2</mark>를 생성한다.
 
-
-
 > "외부 모듈에서 원격 저장소 데이터 사용하기"
 
 EC2 Bastion을 생성하기 위해 작성한 테라폼 구성은 위 <mark style="color:blue;">datasources</mark> 값을 기준으로 작성한다.
@@ -229,19 +215,17 @@ data "terraform_remote_state" "vpc" {
 
 </details>
 
-
-
 ### Provider Version Spec
 
 {% hint style="warning" %}
 _**"버전 관리를 통해 안정성과 협업 중요시하게 여기기"**_
 {% endhint %}
 
-> #### "Terraform version"
+> **"Terraform version"**
 
 <figure><img src="../../.gitbook/assets/image (6) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-> #### "Provider version"
+> **"Provider version"**
 
 <figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
@@ -260,8 +244,6 @@ _**"버전 관리를 통해 안정성과 협업 중요시하게 여기기"**_
 {% endhint %}
 
 **위 처럼&#x20;**<mark style="color:blue;">**providers.tf**</mark>**&#x20;에 특정 버전을 명시하지 않는다면&#x20;**<mark style="color:purple;">**terraform init**</mark>**&#x20;단계에서 가장 최신 버전을 다운로드 받아서 사용하게 된다.**
-
-
 
 > _**"버전 충돌이 발생한 경우 어떻게 해결 해야할까?"**_
 
@@ -290,13 +272,13 @@ terraform {
 
 {% stepper %}
 {% step %}
-### Terraform plan
+#### Terraform plan
 
 <figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
-### Terraform init -uprade
+#### Terraform init -uprade
 
 <figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
@@ -311,12 +293,3 @@ terraform {
 * 각 프로바이더의 버전은 <mark style="color:purple;">required\_providers</mark> 블록 밑에 version 지시자로 지정할 수 있습니다.
 
 </details>
-
-
-
-
-
-
-
-
-

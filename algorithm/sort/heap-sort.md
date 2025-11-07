@@ -1,20 +1,16 @@
 # Heap Sort
 
-
-
 {% hint style="info" %}
-#### 힙 정렬이란?
+**힙 정렬이란?**
 
 정렬 명칭에도 나와있듯 힙 자료구조를 이용한 정렬 방법이며 선택 정렬의 최적화 버전이다.
 
 * Heap: 최솟값 또는 최댓값을 빠르게 찾아내기 위해 완전이진트리 형태로 만들어진 자료구조
 
-![](<../../.gitbook/assets/image (6).png>)
+<img src="../../.gitbook/assets/image (5) (2).png" alt="" data-size="original">
 
 최소힙으로 오름차순으로 구현하게 되는 경우, 형제노드간 우선순위를 고려할 수 없어 최대힙 자료구조로 재구성하고 최대힙의 루트노드를 뒤로 배치시켜 다시 최대힙으로 재구성하는 과정을 반복하며 정렬 하는 방식이다.
 {% endhint %}
-
-
 
 ### 동작 방식
 
@@ -53,8 +49,6 @@
 <figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
-
-
 
 ### 구현
 
@@ -131,8 +125,6 @@ public class HeapSort {
 
 이 과정을 반복하여 배열에 있는 요소가 순차적으로 정렬이된다.
 
-
-
 ### 선택 가이드
 
 #### 시간 복잡도
@@ -140,13 +132,9 @@ public class HeapSort {
 * 힙에서 요소를 추출하고 재구성하는 과정을 n-1번 반복하므로 O(n log n)이 걸린다.
 * 데이터의 초기 상태와 관계없이 항상 O(n log n)의 성능을 보장한다.
 
-
-
 #### 장점
 
 * 최악의 경우에도 O(n log n) 을 보장하며, Quick Sort 의 최악의 경우인 O(n<sup>2</sup>) 을 피하기에 적합하다.
-
-
 
 #### 단점
 
@@ -154,12 +142,6 @@ public class HeapSort {
   * 이는 캐시 메모리로 인한 지역 참조성 때문인데, 힙 정렬 과정에서 루트 노드를 배열에 맨 뒤로 배치하고 최대 힙으로 재구성하는 과정은 캐시가 예측하기 어렵기에 캐시 미스가 발생한다.
   * 반대로, Quick Sort 는 연속적인 메모리 접근 덕분에 캐시가 다음 행동을 예측하여 캐시 히트를 자주 일으켜 물리 메모리에 있는 데이터에 접근하지 않기 때문에 속도가 더 빠르다.
 * 재구성 과정에서 같은 값을 가진 요소들의 상대적인 순서가 바뀔 수 있는 불안정 정렬이다.
-
-
-
-
-
-
 
 **참고 자료**
 
@@ -170,4 +152,3 @@ public class HeapSort {
 {% embed url="https://medium.com/pocs/locality%EC%9D%98-%EA%B4%80%EC%A0%90%EC%97%90%EC%84%9C-quick-sort%EA%B0%80-merge-sort%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%9D%B4%EC%9C%A0-824798181693" %}
 
 {% embed url="https://www.baeldung.com/cs/quicksort-vs-heapsort" %}
-

@@ -6,10 +6,11 @@
 ## Algorithm
 
 * [정렬](algorithm/sort/README.md)
+  * [Counting Sort](algorithm/sort/counting-sort.md)
   * [Insertion Sort](algorithm/sort/insertion-sort.md)
   * [Merge Sort](algorithm/sort/merge-sort.md)
-  * [Quick Sort](algorithm/sort/quick-sort.md)
   * [Heap Sort](algorithm/sort/heap-sort.md)
+  * [Quick Sort](algorithm/sort/quick-sort.md)
 
 ## AWS
 
@@ -71,7 +72,7 @@
 ## Java
 
 * [Readable Code](java/readable-code/README.md)
-  * [학습 목적](java/readable-code/README.md)
+  *
   * [추상화](java/readable-code/abstract.md)
   * [논리적 사고 흐름](java/readable-code/logical_thinking.md)
   * [객체지향 이론](java/readable-code/oop.md)
@@ -123,7 +124,7 @@
 ## Playgrounds
 
 * [Java Playground](playgrounds/java-playground/README.md)
-  * [학습 목적](playgrounds/java-playground/README.md)
+  *
   * [숫자 야구 게임](playgrounds/java-playground/java-baseball/README.md)
     * [학습 테스트](playgrounds/java-playground/java-baseball/학습테스트.md)
     * [문자열 계산기](playgrounds/java-playground/java-baseball/문자열_계산기.md)
@@ -136,7 +137,7 @@
     * [연료 주입](playgrounds/java-playground/java-coordinate/연료_주입.md)
     * [좌표 계산기 미션 구현](playgrounds/java-playground/java-coordinate/좌표_계산기_구현.md)
 * [Infra Playground](playgrounds/infra-playground/README.md)
-  * [VPC: 망분리 그리고 테스트](infra-playground/pre-activity-topology.md)
+  * [VPC: 망분리 그리고 테스트](playgrounds/infra-playground/vpc.md)
   * [컨테이너 사전 지식](playgrounds/infra-playground/컨테이너_사전_지식.md)
   * [화면 성능 개선 전 학습 테스트](playgrounds/infra-playground/화면_성능_개선_전_학습_테스트.md)
   * [SSM: Session Manager](playgrounds/infra-playground/ssm-session-manager.md)

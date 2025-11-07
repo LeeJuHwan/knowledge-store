@@ -27,18 +27,16 @@ tfenv use 1.9.5
 
 #### **Optional**
 
-* **JetBrains IDE Plugin Install**&#x20;
+* **JetBrains IDE Plugin Install**
   * **Plugins - "Terraform and HCL" Install**
 * **Visual Studio Code Plugin Install&#x20;**<mark style="color:green;">**`recommend 👍`**</mark>
-  * **Plugins -  "Hashi Corp Terraform"**
+  * **Plugins - "Hashi Corp Terraform"**
   * **Editor - Auto save to formatter**
     * [follow article step](https://medium.com/nerd-for-tech/how-to-auto-format-hcl-terraform-code-in-visual-studio-code-6fa0e7afbb5e)
-* **Git repository ignore**&#x20;
+* **Git repository ignore**
   * **"intellij", "Terraform"**
 
 {% embed url="https://www.toptal.com/developers/gitignore" %}
-
-
 
 #### Pre Setting
 
@@ -50,8 +48,6 @@ AWS VPC 를 생성해야 하기 때문에 권한이 있는(자격 증명) AWS �
 export AWS_ACCESS_KEY_ID={secret}
 export AWS_SECRET_ACCESS_KEY={secret}
 ```
-
-
 
 ### Terraform Config
 
@@ -88,8 +84,6 @@ export AWS_SECRET_ACCESS_KEY={secret}
 
 * `backend.tf`: local, S3, GCS 등 저장할 수 있는 위치는 다양하기 때문에 상태를 어디에 저장할 것인지 관리
 {% endhint %}
-
-
 
 #### Workflows
 
@@ -142,8 +136,6 @@ terraform apply
 * `main.tf`: 구성하고자 하는 인프라 리소스를 정의
 * `backend.tf`: 구성된 인프라 리소스의 상태 저장 방법(로컬, S3, GCS 등)을 정의
 
-
-
 **테라폼 워크 플로우는 `terraform init`, `terraform plan`, `terraform apply`로 구성**
 
 * `terraform init`: 프로바이더의 코드와 백엔드 환경 구성
@@ -152,15 +144,13 @@ terraform apply
 
 </details>
 
-
-
 ### Basic Terraform Structure
 
 ***
 
 {% stepper %}
 {% step %}
-### AWS VPC 기본 구성하기&#x20;
+#### AWS VPC 기본 구성하기
 
 {% tabs %}
 {% tab title="providers.tf" %}
@@ -200,7 +190,7 @@ Name 컨벤션은 다양하게 이용할 수 있지만 현재 단계에선 "회�
 {% endstep %}
 
 {% step %}
-### Terraform Init
+#### Terraform Init
 
 ```sh
 terraform init
@@ -209,12 +199,10 @@ terraform init
 <figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
 
 위 이론에서 학습 했듯이 AWS 프로바이더를 어디로 설정 하는지, 상태를 어디에 저장할 것인지 초기 작업을 진행 하고 테라폼이 수행 되기 위한 숨김 파일을 생성한다.
-
-
 {% endstep %}
 
 {% step %}
-### Terraform Plan
+#### Terraform Plan
 
 ```shell
 terraform plan
@@ -226,7 +214,7 @@ AWS ACCESS KEY, SECRET ACCESS KEY를 환경 변수에 등록 되어 있다면 �
 {% endstep %}
 
 {% step %}
-### Terraform Apply
+#### Terraform Apply
 
 ```sh
 terraform apply
@@ -236,7 +224,7 @@ terraform apply
 {% endstep %}
 
 {% step %}
-### AWS Console
+#### AWS Console
 
 Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성된 VPC를 확인할 수 있다.
 
@@ -262,8 +250,6 @@ Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성�
 * 테라폼 워크플로우인 `terraform init` -> `terraform plan` -> `terraofrm apply` 의 순서대로 진행한다.
 
 </details>
-
-
 
 ## How to use HCL?
 
@@ -328,12 +314,10 @@ cidr_block = "10.0.0.0/16"
 
 </details>
 
-
-
 ### Reference other resources
 
 {% hint style="warning" %}
-#### _"미리 정의한 리소스들의 정보를 재사용할 수 없을까?"_
+_**"미리 정의한 리소스들의 정보를 재사용할 수 없을까?"**_
 {% endhint %}
 
 {% tabs %}
@@ -356,7 +340,7 @@ output "vpc_id" {
 
 <img src="../../.gitbook/assets/image (13) (1).png" alt="" data-size="original">
 
-* [ ] &#x20;위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
+* [ ] 위 코드를 작성 해보고 테라폼 워크플로우를 따라 VPC ID를 출력 해보기
 
 </details>
 
@@ -370,8 +354,6 @@ output "vpc_id" {
 </details>
 
 ***
-
-
 
 ### Resoucre Dependency
 
@@ -412,8 +394,6 @@ resource "aws_internet_gateway" "main" {
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 > _**"암시적 의존성 vs 명시적 의존성"**_
 
@@ -473,8 +453,6 @@ resource "aws_internet_gateway" "main" {
 * [ ] AWS Console에서 제대로 생성 되었는지 확인하기
 
 </details>
-
-
 
 학습한 의존성을 바탕으로 VPC 대역에대 할당할 수 있는 IP 서브넷팅을 위한 외부망 서브넷을 생성 한다.
 
@@ -550,8 +528,6 @@ resource "aws_subnet" "public_b" {
 
 </details>
 
-
-
 ### Use loop syntax
 
 {% hint style="warning" %}
@@ -561,8 +537,6 @@ _**"비슷한 코드에서 살짝만 다른 리소스들 어떻게 편리하게 
 <figure><img src="../../.gitbook/assets/image (29).png" alt=""><figcaption></figcaption></figure>
 
 동일한 리소스에서 가용 영역만 다른 두 서브넷이 있다. 만약 4개, 8개 등 더 많은 서브넷을 생성 해야 한다면 `main.tf`가 굉장히 길어지기 때문에 이런 경우 반복문을 활용하면 쉽게 리소스를 정의할 수 있다.
-
-
 
 > _**"변수와 Count 지시자를 활용한 반복문 사용 방법"**_
 
@@ -663,8 +637,6 @@ availability_zones = [ "a", "b" ]
 
 </details>
 
-
-
 이렇게 작성한 리소스를 AWS에 적용 하기 위해 <mark style="color:purple;">**`terraform plan`**</mark>을 입력하는 순간 테라폼은 별도의 리소스로 확인 하고 삭제 및 생성을 한다. 기존과 같았으면 "No Changes"가 나와야 하지만 그렇지 않다는 것을 아래 이미지로 확인할 수 있다.
 
 <figure><img src="../../.gitbook/assets/image (12) (1).png" alt=""><figcaption></figcaption></figure>
@@ -679,8 +651,6 @@ _**테라폼 구성 리팩터링 과정에서 발생할 수 있는 가장 흔한
 * 반복문을 사용하면 테라폼 구성을 더 효율적으로 만들 수 있다.
 
 </details>
-
-
 
 ### State file control
 
@@ -706,8 +676,6 @@ _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 �
 
 테라폼은 기본적으로 상태파일을 관리하며 이 상태에 따라 프로바이더에 적용할 지 계획을 세우게 되는데, 그 상태를 관리할 수 있는 명령어를 통해 문제를 해결할 수 있다.
 
-
-
 **Command**
 
 ```shell
@@ -725,7 +693,7 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 
 <figure><img src="../../.gitbook/assets/image (5) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-<mark style="color:purple;">**`terraform state show aws_subnet.public_a`**</mark>&#x20;
+<mark style="color:purple;">**`terraform state show aws_subnet.public_a`**</mark>
 
 <figure><img src="../../.gitbook/assets/image (7) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
@@ -735,7 +703,7 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 
 <figure><img src="../../.gitbook/assets/image (8) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-<mark style="color:purple;">**`terraform state list`**</mark>&#x20;
+<mark style="color:purple;">**`terraform state list`**</mark>
 
 <figure><img src="../../.gitbook/assets/image (9) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
@@ -749,8 +717,6 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 * [ ] Terraform Plan으로 "No changes" 출력 확인 해보기
 
 </details>
-
-
 
 **추가적인 옵션 알아보기**
 
@@ -771,8 +737,6 @@ terraform state rm aws_subnet.public\[1\]
 
 상태파일을 제거한 뒤 상태 목록을 확인 해보면 당연히 파일이 없고 plan을 입력했을 때 새롭게 생성되는 것을 확인할 수 있다.
 {% endhint %}
-
-
 
 > _**"테라폼 상태로 가져오기"**_
 >
@@ -815,8 +779,6 @@ terraform import aws_subnet.public\[1\] subnet-05dba3eb205ad6dd6
 
 </details>
 
-
-
 ### Data types
 
 {% hint style="warning" %}
@@ -834,9 +796,7 @@ _**"복잡한 타입의 변수를 사용 해서 효율적으로 리소스를 관
 
 _HCL도 코드의 영역이기 때문에 <mark style="color:red;">**가독성을 향상**</mark> 시키는 방법 중 다양한 자료구조를 활용해서 알고리즘과 같은 형식을 단순 변수 사용으로 변경 하는 과정_
 
-
-
-> **list(object) type**&#x20;
+> **list(object) type**
 >
 > * <mark style="color:red;">**순서가 매우 중요한 자료형**</mark>
 
@@ -918,12 +878,10 @@ public_subnets = [
 ]
 ```
 
-![](<../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1).png>)
+<img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
 {% endhint %}
 
 `List`의 치명적 단점으로 중요한 리소스는 `List`가 아닌 `Map`으로 관리하는 것이 안정적이다.
-
-
 
 > **map(object) type**
 >
@@ -1007,14 +965,14 @@ public_subnets = {
 }
 ```
 
-:bulb: <mark style="color:blue;">**당연히**</mark>**&#x20;**<mark style="color:green;">**`Map[object]`**</mark><mark style="color:blue;">**의 Key 값으로 접근하기 때문에 동일하다.**</mark>
+:bulb: <mark style="color:blue;">**당연히**</mark> <mark style="color:green;">**`Map[object]`**</mark><mark style="color:blue;">**의 Key 값으로 접근하기 때문에 동일하다.**</mark>
 
 <details>
 
 <summary>Hands-On</summary>
 
 * [ ] <mark style="color:green;">**Map\[object] type**</mark> 의 변수를 활용 하여 서브넷 리소스의 순서와 관계 없이 항상 일정한 리소스를 생성하도록 수정하기
-* [ ] 상태파일을 관리 하여  <mark style="color:purple;">`plan`</mark>에서 변경사항 없음이 제대로 나오는지 확인하기
+* [ ] 상태파일을 관리 하여 <mark style="color:purple;">`plan`</mark>에서 변경사항 없음이 제대로 나오는지 확인하기
 
 </details>
 
@@ -1028,19 +986,15 @@ public_subnets = {
 
 </details>
 
-
-
 ### Conditional
 
 {% hint style="warning" %}
 _**"조건에 따라 다른 리소스를 생성할 수 없을까?"**_
 {% endhint %}
 
-매번 리소스를 정의할 때 한가지 상황만 가지고 정의할 수 없다. 만약, 테라폼 구성을 할 때 "개발" 환경과 "운영" 환경의 차이가 있다면 어떻게 구성을 분리하여 리소스를 정의할 수 있을지 고민하게 된다.&#x20;
+매번 리소스를 정의할 때 한가지 상황만 가지고 정의할 수 없다. 만약, 테라폼 구성을 할 때 "개발" 환경과 "운영" 환경의 차이가 있다면 어떻게 구성을 분리하여 리소스를 정의할 수 있을지 고민하게 된다.
 
 그럴 때 프로그래밍 단계에서의 꽃이라고 불리울 수 있는 조건을 이용한 리소스 정의 방식을 이용한다.
-
-
 
 **NAT Gateway를 조건문으로 추가하는 시나리오 만들어보기**
 
@@ -1065,8 +1019,6 @@ resource "aws_instance" "example" {
 {% endtab %}
 {% endtabs %}
 
-
-
 NAT Gateway를 위 조건문을 활용해서 한 번 만들어본다면 이렇게 만들어볼 수 있다.
 
 <figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
@@ -1080,12 +1032,10 @@ _**여기서 잠깐!**_
 {% hint style="info" %}
 **Map(object) type 을 List(object) type 으로 형 변환 하기**
 
-![](<../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1).png>)
+<img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
 
 [테라폼 공식문서에서 확인하기](https://developer.hashicorp.com/terraform/language/functions/tolist#examples)
 {% endhint %}
-
-
 
 **Code**
 
@@ -1150,8 +1100,6 @@ private_subnets = {
 
 * [SNAT 와 DNAT 개념 더 알아보기](https://zigispace.net/1121)
 
-
-
 위 코드를 작성 했다면 <mark style="color:purple;">**`Plan`**</mark>을 살펴보자. 그렇다면 생성 항목이 6개가 나온다면 정상이다. 하지만, 이 코드를 AWS에 반영하여 프로비저닝 하진 않고 실행 계획에서 어떤 리소스가 생성 되는지만 살펴볼 것이다.
 
 {% hint style="info" %}
@@ -1169,10 +1117,3 @@ private_subnets = {
 * 테라폼에서 조건문은 <mark style="color:purple;">**`condition ? true : false`**</mark> 형태로 사용할 수 있다.
 
 </details>
-
-
-
-
-
-
-

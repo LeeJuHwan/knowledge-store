@@ -4,8 +4,6 @@ description: Application(Service) 계층 테스트 하기
 
 # Business Layer
 
-
-
 <figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
@@ -16,17 +14,13 @@ _**Business Layer**_
 * <mark style="color:red;">**트랜잭션**</mark>을 보장해야한다.
 {% endhint %}
 
-
-
 ### 비즈니스 요구사항
 
 ***
 
-* [ ] &#x20;상품 번호 리스트를 받아 주문 생성하기
+* [ ] 상품 번호 리스트를 받아 주문 생성하기
 * [ ] 주문은 주문 상태, 주문 등록 시간을 가져야 함
 * [ ] 주문의 총 금액을 계산 할 수 있어야 함
-
-
 
 ### 엔티티 설계
 
@@ -36,7 +30,7 @@ _**Business Layer**_
 
 주문과 상품과의 다대다 관계를 띄고 있다. 하지만, JPA 의 연관관계에서 다대다 관계를 이용하기엔 성능 상 이슈나 데이터 설계 관점에서의 정규화가 어긋날 수 있어 지양하는 관계구조이다.
 
-그렇기에 대부분 다대다 관계를 풀어 내기 위한 해결책으로 일대다 - 다대일 방식으로 풀어내며 중간 테이블을 만든다.&#x20;
+그렇기에 대부분 다대다 관계를 풀어 내기 위한 해결책으로 일대다 - 다대일 방식으로 풀어내며 중간 테이블을 만든다.
 
 이 것이 그 예제이다.
 
@@ -154,8 +148,6 @@ public class OrderProduct extends BaseEntity {
 {% endtab %}
 {% endtabs %}
 
-
-
 ### TDD와 함께 비즈니스 로직 테스트 하기
 
 ***
@@ -244,11 +236,9 @@ class OrderServiceTest {
 {% endtab %}
 {% endtabs %}
 
-
-
 #### 컴파일 에러를 없애 줄 객체 생성하기
 
-실패하는 테스트 코드를 우선 "실패" 시키기 위해서라면 컴파일 단계에서 발생할 수 있는 에러는 모두 잡아줘야한다.&#x20;
+실패하는 테스트 코드를 우선 "실패" 시키기 위해서라면 컴파일 단계에서 발생할 수 있는 에러는 모두 잡아줘야한다.
 
 이 코드로 인해서 아주 빠르게 테스트 코드를 실패시킬 수 있다.
 
@@ -293,15 +283,11 @@ public class OrderResponse {
 {% endtab %}
 {% endtabs %}
 
-
-
 #### 서비스 계층에서 테스트 하는 영역의 독립성 보장하기
 
 도메인 계층에 있던 `Repository` 의 메서드를 테스트 할 때는 전혀 문제 없던 부분이 갑자기 서비스 계층을 테스트 하면서 생겨났다.
 
 문제는 테스트하는 영역이 서로 공유 되어 사용하며 의도했던 데이터가 다른 테스트에 의해 오염이 발생한 것이다.
-
-
 
 아래 예시 코드의 AS-IS 를 보면, `createOrder()` 테스트와 `createOrderWithDuplicateProductNumbers`() 테스트는 서로 같은 `Repository` 를 사용하게 되면서 검증 단계에서 의도치 않게 실패하게 되는 경우이다.
 
@@ -472,8 +458,6 @@ class OrderServiceTest {
 * <mark style="color:purple;">`SpringBootTest`</mark>: 스프링을 실행하기 위한 모든 `Bean` 들을 스프링 컨테이너에 등록하여 테스트 함
 * <mark style="color:purple;">`DataJpaTest`</mark>: `JPA` 와 관련한 `Bean` 들만 스프링 컨테이너에 등록하여 테스트 함
 
-
-
 어노테이션에 따른 차이는 위와 같이 단편적으로만 이해하고 있었으나, 실제 해당 어노테이션의 내부를 살펴보면 `DataJpaTest` 는 `Transactional` 을 사용하고 있기 때문에 테스트 영역간의 롤백을 지원 받아 독립성을 보장한 것이다.
 
 반면, `SpringBootTest` 는 `Transactional`이 없기 때문에 테스트 영역을 공유하여 `TearDownMethod` 를 사용했지만, `DataJpaTest` 처럼 `Transcational` 을 붙여도 테스트는 통과한다.
@@ -541,9 +525,7 @@ Hibernate:
 
 ```
 
-
-
-> #### _**"****`SpringBootTest`****&#x20;****와****&#x20;****`Transactional`****&#x20;****을 같이 쓴다면 이런 점은 주의 해야한다."**_
+> _**"****`SpringBootTest`****&#x20;****와****&#x20;****`Transactional`****&#x20;****\*\*\*\*을 같이 쓴다면 이런 점은 주의 해야한다."**_
 
 ```java
 @ActiveProfiles("test")
@@ -564,9 +546,7 @@ class OrderServiceTest {
 
 :bulb:서비스 계층을 테스트 하면서 데이터 클린징 작업이 필요하다면 `TearDown` 을 적극 활용하자
 
-
-
-> #### _**"도메인 객체에서 비즈니스 로직에 대한 유효성 검증과 서비스 계층에서 연산을 위한 유효성 검증을 동일하게 할 필요가 있을까?"**_
+> _**"도메인 객체에서 비즈니스 로직에 대한 유효성 검증과 서비스 계층에서 연산을 위한 유효성 검증을 동일하게 할 필요가 있을까?"**_
 
 {% tabs %}
 {% tab title="Stock.java" %}
@@ -639,8 +619,3 @@ public class Stock extends BaseEntity {
 또한 도메인이 제공하는 비즈니스 로직은 언제나 유효한 로직이 진행 되어야한다.
 
 그리고, 서비스 계층은 도메인의 비즈니스 로직을 호출하는 입장에서 다른 오류 메시지나 다른 관점에서 유효성 검증을 진행할 수도 있기 때문에, 두 영역이 중복되는 유효성 검증을 진행한다고 해서 검증을 제거할 필요는 없다는 것이고, 이런 검증이 필요하다는 것이다.
-
-
-
-
-

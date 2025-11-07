@@ -12,17 +12,15 @@ description: 조회 성능 개선하기 미션을 진행할 때 최소한으로 
 
 </details>
 
-
-
 ### 실습하기
 
 {% hint style="info" %}
-[해당 사이트](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_concat)에서 아래 쿼리를 작성해보세요.&#x20;
+[해당 사이트](https://www.w3schools.com/sql/trymysql.asp?filename=trysql_func_mysql_concat)에서 아래 쿼리를 작성해보세요.
 {% endhint %}
 
 {% stepper %}
 {% step %}
-### 200개 이상 팔린 상품명과 그 수량을 수량 기준 내림차순으로 보여주세요.
+#### 200개 이상 팔린 상품명과 그 수량을 수량 기준 내림차순으로 보여주세요.
 
 ```sql
 SELECT 
@@ -41,7 +39,7 @@ ORDER BY SUM(od.Quantity) DESC;
 {% endstep %}
 
 {% step %}
-### 많이 주문한 순으로 고객 리스트(ID, 고객명)를 구해주세요. (고객별 구매한 물품 총 갯수)
+#### 많이 주문한 순으로 고객 리스트(ID, 고객명)를 구해주세요. (고객별 구매한 물품 총 갯수)
 
 ```sql
 SELECT
@@ -61,7 +59,7 @@ ORDER BY SUM(Quantity) DESC;
 {% endstep %}
 
 {% step %}
-### 많은 돈을 지출한 순으로 고객 리스트를 구해주세요.
+#### 많은 돈을 지출한 순으로 고객 리스트를 구해주세요.
 
 ```sql
 SELECT
@@ -82,6 +80,3 @@ ORDER BY SUM(Quantity * Price) DESC;
 <figure><img src="../../.gitbook/assets/image (52).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
-
-
-
