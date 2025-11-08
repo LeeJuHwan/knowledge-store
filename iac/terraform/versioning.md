@@ -59,7 +59,7 @@ DynamoDB State Locking
 
 {% stepper %}
 {% step %}
-#### S3 Bucket 생성
+**S3 Bucket 생성**
 
 S3 Bucket을 생성 할 때 원하는 <mark style="color:red;">**이름만 작성한 뒤 모두 기본값**</mark>을 사용하여 생성한다.
 
@@ -67,7 +67,7 @@ S3 Bucket을 생성 할 때 원하는 <mark style="color:red;">**이름만 작�
 {% endstep %}
 
 {% step %}
-#### Dynamo DB Table 생성
+**Dynamo DB Table 생성**
 
 Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용하여 생성한다.
 
@@ -79,7 +79,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 {% endstep %}
 
 {% step %}
-#### Terraform Init
+**Terraform Init**
 
 백엔드 구성 파일이 없는 경우 기본값으로 "local"을 사용했지만 현재 S3를 사용하기 때문에 새롭게 terraform init을 통해 원격 저장소를 구성한다. 이 때, 기본 로컬 백엔드를 사용하고 있었다면 현재 구성을 변경할 것인지 물어보는데 "yes"라고 하면 정상적으로 변경이 완료된다.
 
@@ -87,7 +87,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 {% endstep %}
 
 {% step %}
-#### Terraform Lock
+**Terraform Lock**
 
 테스트를 위해 기본 <mark style="color:blue;">**`config.yaml`**</mark> 파일에서 SG 구성의 HTTP 허용 포트를 443 -> 543으로 변경한 후 <mark style="color:purple;">**terraform apply**</mark>를 하고 있다고 가정한다.
 
@@ -113,7 +113,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 _**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성에서 재사용 하는 기능"**_
 {% endhint %}
 
-> _**"기존에 만든\*\*\*\*****&#x20;**<mark style="color:green;">**VPC**</mark>**에**\*\* \*\*<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
+> _**"기존에 만든\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:green;">**VPC**</mark>**에**\*\* \*\*<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
 
 <figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
@@ -272,13 +272,13 @@ terraform {
 
 {% stepper %}
 {% step %}
-#### Terraform plan
+**Terraform plan**
 
 <figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
-#### Terraform init -uprade
+**Terraform init -uprade**
 
 <figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}

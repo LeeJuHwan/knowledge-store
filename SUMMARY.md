@@ -72,7 +72,6 @@
 ## Java
 
 * [Readable Code](java/readable-code/README.md)
-  *
   * [추상화](java/readable-code/abstract.md)
   * [논리적 사고 흐름](java/readable-code/logical_thinking.md)
   * [객체지향 이론](java/readable-code/oop.md)
@@ -124,7 +123,6 @@
 ## Playgrounds
 
 * [Java Playground](playgrounds/java-playground/README.md)
-  *
   * [숫자 야구 게임](playgrounds/java-playground/java-baseball/README.md)
     * [학습 테스트](playgrounds/java-playground/java-baseball/학습테스트.md)
     * [문자열 계산기](playgrounds/java-playground/java-baseball/문자열_계산기.md)
