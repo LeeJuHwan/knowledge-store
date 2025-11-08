@@ -82,6 +82,7 @@
   * [동일성과 동등성](java/java-ninja/동일성과_동등성.md)
   * [hashCode가 뭘까요?](java/java-ninja/hashcode.md)
   * [JVM 이해하기](java/java-ninja/jvm.md)
+  * [가비지 컬렉션](java/java-ninja/가비지_컬렉션.md)
   * [자바에서 정렬하는 방법](java/java-ninja/자바에서_정렬하는_방법.md)
 
 ## Spring Boot
