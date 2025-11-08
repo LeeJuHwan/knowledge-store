@@ -30,7 +30,7 @@
 
 > **예시로 살펴보기**
 >
-> _**"In both cases I'm using a test double instead of the real mail service. There is a difference in that the\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:red;">**stub uses state verification**</mark>**&#x20;****while the****&#x20;**<mark style="color:red;">**mock uses behavior verification**</mark>**."**_
+> _**"In both cases I'm using a test double instead of the real mail service. There is a difference in that the\*\*\*\*\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:red;">**stub uses state verification**</mark>**&#x20;****while the****&#x20;**<mark style="color:red;">**mock uses behavior verification**</mark>**."**_
 
 {% tabs %}
 {% tab title="Mock" %}
@@ -283,7 +283,7 @@ MailServiceTest
 
 _**Stubbing 메서드 내부에서 실행되는 다른 메서드 디버깅하기**_
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 디버깅을 해보면 save() 메서드의 결과값이 null 인 것을 알 수 있고, 실제 저장이 되지 않았다.
 
