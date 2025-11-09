@@ -113,7 +113,7 @@ Table, Partition Key(String type) 만 작성한 뒤 모두 기본값을 사용�
 _**"외부에서 관리하는 인프라 데이터를 현재의 테라폼 구성에서 재사용 하는 기능"**_
 {% endhint %}
 
-> _**"기존에 만든\*\*\*\*\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:green;">**VPC**</mark>**에**\*\* \*\*<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
+> _**"기존에 만든\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:green;">**VPC**</mark>**에**\*\* \*\*<mark style="color:green;">**EC2**</mark>**를 생성하려면?"**_
 
 <figure><img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
