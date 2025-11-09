@@ -150,7 +150,7 @@ terraform apply
 
 {% stepper %}
 {% step %}
-#### AWS VPC 기본 구성하기
+**AWS VPC 기본 구성하기**
 
 {% tabs %}
 {% tab title="providers.tf" %}
@@ -190,7 +190,7 @@ Name 컨벤션은 다양하게 이용할 수 있지만 현재 단계에선 "회�
 {% endstep %}
 
 {% step %}
-#### Terraform Init
+**Terraform Init**
 
 ```sh
 terraform init
@@ -202,7 +202,7 @@ terraform init
 {% endstep %}
 
 {% step %}
-#### Terraform Plan
+**Terraform Plan**
 
 ```shell
 terraform plan
@@ -214,7 +214,7 @@ AWS ACCESS KEY, SECRET ACCESS KEY를 환경 변수에 등록 되어 있다면 �
 {% endstep %}
 
 {% step %}
-#### Terraform Apply
+**Terraform Apply**
 
 ```sh
 terraform apply
@@ -224,7 +224,7 @@ terraform apply
 {% endstep %}
 
 {% step %}
-#### AWS Console
+**AWS Console**
 
 Apply로 변경사항을 적용 했다면 콘솔에서 아래와 같이 생성된 VPC를 확인할 수 있다.
 
@@ -668,7 +668,7 @@ _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 �
 
 </details>
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 이렇게 바뀐 이유는 서브넷을 생성 하는 코드에서 명시적으로 `public_a`, `public_b` 를 정의 했지만 리팩터링 단계에서 이를 반복문으로 교체하며 배열의 인덱스로 참조 했기 때문이다. 관련 코드는 해당 페이지의 ["Use loop syntax"](https://1eejuhwany.gitbook.io/studylog/iac/terraform/tutorial#use-loop-syntax) 의 코드 블럭을 확인 해보면 된다.
 
@@ -1032,7 +1032,7 @@ _**여기서 잠깐!**_
 {% hint style="info" %}
 **Map(object) type 을 List(object) type 으로 형 변환 하기**
 
-<img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
 
 [테라폼 공식문서에서 확인하기](https://developer.hashicorp.com/terraform/language/functions/tolist#examples)
 {% endhint %}

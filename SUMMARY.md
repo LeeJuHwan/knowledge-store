@@ -3,56 +3,6 @@
 * [INTRO](README.md)
 * [README](readme-1.md)
 
-## Algorithm
-
-* [정렬](algorithm/sort/README.md)
-  * [Counting Sort](algorithm/sort/counting-sort.md)
-  * [Insertion Sort](algorithm/sort/insertion-sort.md)
-  * [Merge Sort](algorithm/sort/merge-sort.md)
-  * [Heap Sort](algorithm/sort/heap-sort.md)
-  * [Quick Sort](algorithm/sort/quick-sort.md)
-
-## AWS
-
-* [AWS101](aws/aws101/README.md)
-  * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
-  * [AWS account and free-tier](aws/aws101/account_freetier.md)
-  * [AWS IAM](aws/aws101/iam_basic.md)
-  * [AWS EC2](aws/aws101/ec2/README.md)
-    * [EC2 basic](aws/aws101/ec2/ec2_basic.md)
-    * [ENI and EIP](aws/aws101/ec2/eni_eip.md)
-    * [Elastic Block Storage](aws/aws101/ec2/ebs.md)
-    * [Auto Scaling](aws/aws101/ec2/autoscaling.md)
-    * [Elastic Load Balancer](aws/aws101/ec2/elb.md)
-
-## IaC
-
-* [Terraform](iac/terraform/README.md)
-  * [License Change](iac/terraform/license-change.md)
-  * [Tutorial](iac/terraform/tutorial.md)
-  * [Module](iac/terraform/module.md)
-  * [Versioning](iac/terraform/versioning.md)
-
-## Airflow
-
-* [Airflow-Ninja](airflow/basic/README.md)
-  * [Introduction and Goal](airflow/ninja/README.md)
-  * [Tutorial: Settings](airflow/ninja/tutorial.md)
-  * [Tutorial: Module Import, Alert](airflow/ninja/basic.md)
-
-## Docker
-
-* [Production with Docker](docker/basic/README.md)
-  * [Customizing root directory](docker/docker_story/change_root_directory.md)
-
-## Network
-
-* [Network-Handbook](network/basic/README.md)
-  * [Introduction and Goal](network/network-handbook/README.md)
-  * [OSI7Layer](network/network-handbook/osi7layer.md)
-  * [DNS](network/network-handbook/dns.md)
-  * [SSL/TLS](network/network-handbook/ssl_tls.md)
-
 ## Comupter Architecture
 
 * [Basic](comupter-architecture/basic/README.md)
@@ -68,6 +18,28 @@
   * [project](comupter-architecture/hands-on/project/README.md)
     * [Project 1. Elementary logic gates implement](comupter-architecture/computer-architecture-hands-on/project1.md)
     * [Project 2. Boolean Arithmetic](comupter-architecture/computer-architecture-hands-on/project2.md)
+
+## Algorithm
+
+* [정렬](algorithm/sort/README.md)
+  * [Counting Sort](algorithm/sort/counting-sort.md)
+  * [Insertion Sort](algorithm/sort/insertion-sort.md)
+  * [Merge Sort](algorithm/sort/merge-sort.md)
+  * [Heap Sort](algorithm/sort/heap-sort.md)
+  * [Quick Sort](algorithm/sort/quick-sort.md)
+
+## Operating Systems
+
+* [프로세스와 스레드](operating-systems/process_thread.md)
+* [동기, 비동기](operating-systems/sync_async.md)
+
+## Network
+
+* [Network-Handbook](network/basic/README.md)
+  * [Introduction and Goal](network/network-handbook/README.md)
+  * [OSI7Layer](network/network-handbook/osi7layer.md)
+  * [DNS](network/network-handbook/dns.md)
+  * [SSL/TLS](network/network-handbook/ssl_tls.md)
 
 ## Java
 
@@ -121,6 +93,39 @@
   * [Python public attributes are better getter-setter](python/effective-python-2nd/attributes.md)
   * [No refactoring attribute, we can use property decorator](python/effective-python-2nd/property.md)
   * [You can do it, but it means you don't have to](python/better-python-code51/chapter5.md)
+
+## Airflow
+
+* [Airflow-Ninja](airflow/basic/README.md)
+  * [Introduction and Goal](airflow/ninja/README.md)
+  * [Tutorial: Settings](airflow/ninja/tutorial.md)
+  * [Tutorial: Module Import, Alert](airflow/ninja/basic.md)
+
+## AWS
+
+* [AWS101](aws/aws101/README.md)
+  * [Virtualization and the AWS structures](aws/aws101/cloud_basic_vm.md)
+  * [AWS account and free-tier](aws/aws101/account_freetier.md)
+  * [AWS IAM](aws/aws101/iam_basic.md)
+  * [AWS EC2](aws/aws101/ec2/README.md)
+    * [EC2 basic](aws/aws101/ec2/ec2_basic.md)
+    * [ENI and EIP](aws/aws101/ec2/eni_eip.md)
+    * [Elastic Block Storage](aws/aws101/ec2/ebs.md)
+    * [Auto Scaling](aws/aws101/ec2/autoscaling.md)
+    * [Elastic Load Balancer](aws/aws101/ec2/elb.md)
+
+## IaC
+
+* [Terraform](iac/terraform/README.md)
+  * [License Change](iac/terraform/license-change.md)
+  * [Tutorial](iac/terraform/tutorial.md)
+  * [Module](iac/terraform/module.md)
+  * [Versioning](iac/terraform/versioning.md)
+
+## Docker
+
+* [Production with Docker](docker/basic/README.md)
+  * [Customizing root directory](docker/docker_story/change_root_directory.md)
 
 ## Playgrounds
 

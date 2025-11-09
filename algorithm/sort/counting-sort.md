@@ -1,12 +1,10 @@
 # Counting Sort
 
 {% hint style="info" %}
-#### 카운팅 정렬이란?
+**카운팅 정렬이란?**
 
 보통의 정렬 알고리즘은 배열의 값을 서로 비교하는 알고리즘인데, 카운팅 정렬은 비교 알고리즘이 아닌 누적합을 구성하여 정렬하는 알고리즘으로 배열의 크기가 작을 때 특히 유용하다.
 {% endhint %}
-
-
 
 ### 동작 원리
 
@@ -16,7 +14,7 @@
 {% step %}
 **주어진 배열에서 가장 큰 값을 찾는다**
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (2).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
@@ -51,8 +49,6 @@
 <figure><img src="../../.gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
-
-
 
 ### 구현
 
@@ -118,8 +114,6 @@ public class CountingSort {
 {% endtab %}
 {% endtabs %}
 
-
-
 #### 풀이
 
 주어진 배열에서 최대 값을 찾는다.
@@ -134,35 +128,24 @@ public class CountingSort {
 
 위 과정을 반복하여 뒤에서부터 0번째 인덱스까지 모두 순회하면 정렬이 완료된다.
 
-
-
 ### 선택 가이드
 
 #### 시간 복잡도
 
 * 모든 데이터에서 최대 값 검색 N 회, 요소 갯 수 카운트 N 회, 누적합 N -1 회, 결과 배열로 이동 N 회의 흐름을 따르며 O(n) 알고리즘이다.
 
-
-
 #### 장점
 
 * 요소가 등장한 횟수를 세기 때문에 안정 정렬 알고리즘이다.
 * 값을 비교하는 알고리즘이 아닌 계산 하는 알고리즘은 비교 알고리즘보다 훨씬 빠른 속도를 자랑한다.
-
-
 
 #### 단점
 
 * 배열의 요소 중 큰 값이 클수록 배열의 크기가 커지기 때문에 비효율적이다.
 * 배열 요소를 중간에 저장하기 위해 추가적인 메모리 공간을 필요로한다.
 
-
-
 **참고 자료**
 
 ***
 
 {% embed url="https://www.geeksforgeeks.org/dsa/counting-sort/" %}
-
-
-
