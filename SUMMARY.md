@@ -81,7 +81,7 @@
     * [테스트 환경의 독립성을 보장하자](spring-boot/practical-testing/test-advanced/테스트_환경의_독립성을_보장하자.md)
     * [한 눈에 들어오는 Test Fixture 를 구성하기 위한 조언](spring-boot/practical-testing/test-advanced/한_눈에_들어오는_Test_Fixture_를_구성하기_위한_조언.md)
     * [Test Fixture 클렌징](spring-boot/practical-testing/test-advanced/테스트_환경에서_구성한_Fixtrue_들을_어떻게_효율적으로_삭제할수있을까.md)
-    * [테스트 수행도 비용이다. 테스트 환경 통합하기](spring-boot/practical-testing/test-advanced/untitled.md)
+    * [테스트 수행도 비용이다. 테스트 환경 통합하기](spring-boot/practical-testing/test-advanced/테스트_수행도_비용이다.md)
   * [학습 테스트](spring-boot/practical-testing/학습테스트.md)
   * [Spring REST Docs](spring-boot/practical-testing/spring-rest-docs.md)
 * [Spring Boot TDD](spring-boot/spring-boot-tdd/README.md)
