@@ -52,7 +52,7 @@
   * [읽기 좋은 코드를 도와줄 조언들](java/readable-code/읽기_좋은_코드를_도와줄_조언들.md)
 * [Java 101](java/java-ninja/README.md)
   * [동일성과 동등성](java/java-ninja/동일성과_동등성.md)
-  * [hashCode가 뭘까요?](java/java-ninja/hashcode.md)
+  * [해시 코드](java/java-ninja/hashcode.md)
   * [JVM 이해하기](java/java-ninja/jvm.md)
   * [가비지 컬렉션](java/java-ninja/가비지_컬렉션.md)
   * [자바에서 정렬하는 방법](java/java-ninja/자바에서_정렬하는_방법.md)
