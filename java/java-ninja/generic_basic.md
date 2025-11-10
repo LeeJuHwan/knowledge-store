@@ -5,22 +5,18 @@ description: 제네릭이 무엇인지, 왜 제네릭을 사용하는지 그리�
 # 제네릭의 기본 이해
 
 {% hint style="info" %}
-#### 제네릭이란?
+**제네릭이란?**
 
 제네릭은 사전적 의미 자체적으로도 "일반적인" 이라는 뜻을 갖고 있으며, 자바에서는 클래스 내부에서 사용할 데이터 타입을 외부에서 직접 지정하는 방식이다.
 {% endhint %}
 
 제네릭은 사용할 타입을 미리 결정하지 않는 것이 중요한데, 클래스 내부에서 사용하는 타입을 클래스를 정의 하는 시점이 아닌 실제 사용하는 생성 시점에 타입이 결정되는 매커니즘이다.
 
-
-
 #### 제네릭 명명 관례
 
 타입 매개변수는 변수명 처럼 아무렇게 작성해도 상관이 없다. 하지만, 일반적으로 대문자를 사용하고 용도에 맞도록 영문자의 앞 첫글자를 사용하는 관례를 따른다.
 
 <table><thead><tr><th valign="middle">keyword</th><th>description</th></tr></thead><tbody><tr><td valign="middle">E</td><td>Element</td></tr><tr><td valign="middle">K</td><td>Key</td></tr><tr><td valign="middle">N</td><td>Number</td></tr><tr><td valign="middle">T</td><td>Type</td></tr><tr><td valign="middle">V</td><td>Value</td></tr><tr><td valign="middle">S, U, V</td><td>2nd, 3rd, 4th type</td></tr></tbody></table>
-
-
 
 ### 제네릭은 왜 필요할까?
 
@@ -88,8 +84,6 @@ public class BoxMain {
 
 만약, 여기서 `Double`, `Boolean` 타입도 저장하고 조회할 수 있는 기능이 필요하다면 어떨까?
 
-
-
 #### **제네릭을 사용하지 않고 `Object` 의 다형성 특성을 활용하여 해결 해보기**
 
 위 예시에서 제네릭이라는 기법을 모르는 상태로 이 문제를 해결하고자 할 때 쉽게 사용할 수 있는 다형성의 특성을 살리면 된다.
@@ -142,8 +136,6 @@ public class BoxMain {
 
 `Object` 로 해결하는 방법은 재사용을 통해 여러 객체가 생성 되는 것을 보완 하였지만 타입의 안정성을 지키지 못하였다.
 
-
-
 #### 제네릭 적용 하여 문제 해결 하기
 
 {% tabs %}
@@ -190,25 +182,21 @@ public class BoxMain3 {
 
 이로써 제네릭을 사용하지 않을 때의 문제점인 **코드 재사용성** 과 객체를 저장할 때와 반환할 때 타입이 동일한 **타입 안정성** 을 모두 해결할 수 있다.
 
-
-
 #### 제네릭 사용시 주의할 점
 
 {% stepper %}
 {% step %}
 제네릭 타입을 지정하지 않는 경우 Object 로 타입 추론된다.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
 제네릭 타입은 참조형 객체만 사용할 수 있다. -> 원시 타입은 사용할 수 없다.
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 {% endstepper %}
-
-
 
 ### 자바에서는 제네릭을 어떻게 사용하고 있을까?
 
@@ -263,8 +251,6 @@ public class ArrayList<E> extends AbstractList<E>
 {% endtabs %}
 
 그 외에도 `HashMap` 도 동일하게 이런 제네릭을 사용하여 사용자가 자유롭게 다양한 타입을 이용할 수 있는 컬렉션을 구성한 것을 알 수 있다.
-
-
 
 **참고 자료**
 
