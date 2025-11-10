@@ -4,31 +4,23 @@ description: 간단한 토이 프로젝트를 레이어드 아키텍처로 구�
 
 # 스프링 레이어드 아키텍처 테스트하기
 
-
-
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
-
-
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### Project settings
 
 {% hint style="success" %}
-#### Core
+**Core**
 
 * [x] Java 21
 * [x] Spring Boot 3.4.2
 
-
-
-#### Dependency
+**Dependency**
 
 * [x] spring boot web
 * [x] spring data JPA
 * [x] H2 Database
 * [x] Lombok
 {% endhint %}
-
-
 
 #### Resources Configuration
 
@@ -103,12 +95,9 @@ values ('001', 'HANDMADE', 'SELLING', '아메리카노', 4000),
 {% endtab %}
 {% endtabs %}
 
-
-
 #### Structures
 
 ***
 
 ```
 ```
-

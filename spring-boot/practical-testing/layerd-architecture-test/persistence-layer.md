@@ -4,7 +4,7 @@ description: Domain(Data) 계층 테스트 하기
 
 # Persistence Layer
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _**Persistence Layer**_
@@ -36,8 +36,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllBySellingStatusIn(List<ProductSellingStatus> sellingStatuses);
 }
 ```
-
-
 
 #### 테스트 코드
 
@@ -119,8 +117,3 @@ class ProductRepositoryTest {
 ```
 
 List 반환 값을 검증할 땐 해당 배열의 크기를 1차적으로 검증하고 그 다음 내부 데이터 요소를 하나씩 뽑아서 검증 하는 단계를 거치면 번거롭게 테스트 코드를 중복으로 작성하지 않고도 검증할 수 있다.
-
-
-
-
-

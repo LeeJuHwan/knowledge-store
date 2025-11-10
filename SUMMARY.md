@@ -57,6 +57,7 @@
   * [가비지 컬렉션](java/java-ninja/가비지_컬렉션.md)
   * [자바에서 정렬하는 방법](java/java-ninja/자바에서_정렬하는_방법.md)
   * [컬렉션 프레임워크](java/java-ninja/컬렉션_프레임워크.md)
+  * [제네릭의 기본 이해](java/java-ninja/generic_basic.md)
 
 ## Spring Boot
 

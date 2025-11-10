@@ -4,20 +4,16 @@ description: Web(Controller) 계층 테스트하기
 
 # Presentation Layer
 
-
-
-<figure><img src="../../../.gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
-#### Prensentation Layer
+**Prensentation Layer**
 
 * 외부 사용자의 요청을 가장 먼저 받는 계층
 * 외부 사용자에게 필요한 정보에 대해 최소한의 검증을 수행
 {% endhint %}
 
 외부 사용자가 의도한 대로 데이터를 보냈을 시 어플리케이션은 내부적으로 어떻게 처리할 것인가를 해당 레이어에서 명시하게 되며, 이 때 주로 데이터가 처리 되는 부분을 "Mocking" 해서 테스트를 진행한다.
-
-
 
 #### Mock
 
@@ -28,8 +24,6 @@ description: Web(Controller) 계층 테스트하기
 > MockMvc
 >
 > Mock 객체를 사용해 스프링 MVC 동작을 재현할 수 있는 테스트 프레임워크
-
-
 
 {% tabs %}
 {% tab title="MockBean" %}
@@ -76,15 +70,11 @@ class OrderControllerTest {
 * 외부 사용자가 입력한 값을 검증하여 정확히 서비스 계층으로 내려주고 있는지
 * 서비스 계층에서 정상적인 답변을 받았다면 외부 사용자에게 응답은 하고 있는지
 
-
-
 #### Stubbing
 
 ***
 
 Mock 객체는 반환 하는 값에 초점을 두지 않고, "행위에 대해 수행하는 척" 했지만 Stub 객체는 행위 이후의 변하는 상태 값 즉, 상태에 대한 검증을 이루는 객체이다.
-
-
 
 {% tabs %}
 {% tab title="Stubbing" %}
@@ -129,16 +119,12 @@ Mock 객체는 반환 하는 값에 초점을 두지 않고, "행위에 대해 �
 
 Mock 과 Stub 의 자세한 정의와 둘의 차이는 [#test-double](mock.md#test-double "mention") 에서 상세하게 설명하니, 해당 테스트에선 예시 코드만 다루거 넘어간다.
 
-
-
 #### 예외
 
 ***
 
 * rest controller advice
 * excpetion handler
-
-
 
 #### 컨트롤러 유효성 검증
 
@@ -147,8 +133,6 @@ Mock 과 Stub 의 자세한 정의와 둘의 차이는 [#test-double](mock.md#te
 * not null
 * not empty
 * not blank
-
-
 
 #### 레이어간 의존성 최소화
 
@@ -160,18 +144,14 @@ Mock 과 Stub 의 자세한 정의와 둘의 차이는 [#test-double](mock.md#te
 
 프로젝트의 아키텍처를 구성하다보면 많은 양의 코드를 수정하지 않고도 요구사항을 반영하길 원한다. 그렇게 레이어드 아키텍처, 클린 아키텍처, 헥사고날 아키텍처 등 다양한 아키텍처가 고안 되었는데 이런 아키텍처를 생각하기 전에 계층간 의존 관계를 단방향으로 만드는 것을 먼저 신경 써 볼 필요가 있다.
 
-
-
 <i class="fa-message-exclamation">:message-exclamation:</i> **계층 의존관계**
 
 * \[단방향] Controller -> Service -> Domain -> Repository
 * \[양방향] Controller <-> Service -> Domain -> Repository
 
-
-
 <i class="fa-triangle-exclamation">:triangle-exclamation:</i> **양방향 구조의 단점**
 
-컨트롤러에서 서비스 계층으로 처리해야 할 데이터를 넘길 때 서비스는 이미 컨트롤러의 모든 속성을 알고 있다.&#x20;
+컨트롤러에서 서비스 계층으로 처리해야 할 데이터를 넘길 때 서비스는 이미 컨트롤러의 모든 속성을 알고 있다.
 
 컨트롤러 계층에서 외부 사용자에게 입력 받을 데이터가 늘어난다고 했을 때, 서비스 계층은 불필요한 데이터를 같이 갖고 있는 샘이 된다.
 
@@ -185,13 +165,11 @@ Mock 과 Stub 의 자세한 정의와 둘의 차이는 [#test-double](mock.md#te
 
 하지만, 코드는 최대한 단순하게 작성 하고 남이 이해하기 쉽도록 작성하는 것이 좋다.
 
-마치, 침팬지에게 단순노동을 알려주듯 서비스 계층에서 받는 요청 DTO 값이 들어오면 어떠한 행동을 할지만 알려주자.&#x20;
+마치, 침팬지에게 단순노동을 알려주듯 서비스 계층에서 받는 요청 DTO 값이 들어오면 어떠한 행동을 할지만 알려주자.
 
 "_더이상 컨트롤러 계층에서 추가적인 데이터가 들어왔을 때 이 데이터는 필요 없으니 얘만 사용해서 처리해_." 라는 복잡한 내용을 침팬지에게 가르치지 말자.
 
 침팬지가 전지전능 해지는 순간 굉장히 많은 지식을 습득하여 미래의 소프트웨어를 공격하는 날이 올 것이다.
-
-
 
 #### 레이어드 아키텍처의 단점
 
@@ -243,8 +221,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 이런 단점이 대두 되다 보니 업계에서는 더 나은 구조로 "헥사고날 아키텍처"를 많이 언급한다.
 
-
-
 > 헥사고날 아키텍처
 
 <figure><img src="../../../.gitbook/assets/image (64).png" alt=""><figcaption></figcaption></figure>
@@ -252,10 +228,3 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 도메인 모델에 접근하기 위해서 어댑터와 포트를 활용하고, 도메인 모델은 외부 요소들을 전혀 알 필요가 없다.
 
 이 아키텍처는 DI 의 개념을 확장시킨 구조로, 위 레이어드 아키텍처에서 발생했던 문제 중 하나인 `DomainRepository` 인터페이스를 하나 두고, 그 구현체인 `JpaRepository` 를 사용하게 되면 추후 `MongoRepository` 가 등장 되더라도 `DomainRepository`만 구현하면 된다.
-
-
-
-
-
-
-
