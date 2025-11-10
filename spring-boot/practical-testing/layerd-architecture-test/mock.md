@@ -30,7 +30,7 @@
 
 > **예시로 살펴보기**
 >
-> _**"In both cases I'm using a test double instead of the real mail service. There is a difference in that the\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:red;">**stub uses state verification**</mark>**&#x20;****while the****&#x20;**<mark style="color:red;">**mock uses behavior verification**</mark>**."**_
+> _**"In both cases I'm using a test double instead of the real mail service. There is a difference in that the\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*****&#x20;**<mark style="color:red;">**stub uses state verification**</mark>**&#x20;****while the****&#x20;**<mark style="color:red;">**mock uses behavior verification**</mark>**."**_
 
 {% tabs %}
 {% tab title="Mock" %}
