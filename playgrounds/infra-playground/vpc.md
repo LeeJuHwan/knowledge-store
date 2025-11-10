@@ -78,7 +78,7 @@ Port를 대상으로 테스트할 때는 "<mark style="color:red;">**서버가 �
 
 > _**"Port 는 한 개만 열었는데 어떻게 다수의 사용자가 연결할 수 있는걸까?"**_
 
-<figure><img src="../.gitbook/assets/image (46).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (46).png" alt=""><figcaption></figcaption></figure>
 
 _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remote port` 등 5가지 정보를 활용하여 생성 된다.
 
@@ -92,7 +92,7 @@ _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remo
 
 > _**"하나의 프로세스(서버)에서 몇 개의 클라이언트와 연결이 가능할까?"**_
 
-<figure><img src="../.gitbook/assets/image (47).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (47).png" alt=""><figcaption></figcaption></figure>
 
 위 이미지 처럼 해당 프로세스에 별다른 제약이 없다면 기본적으로 생성할 수 있는 <mark style="color:red;">**파일의 갯수가 제한**</mark>되어 있다.
 
@@ -100,7 +100,7 @@ _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remo
 
 > _**"소켓을 하나 더 두어 요청을 다른 포트 번호로 전달할 수는 없을까?"**_
 
-<figure><img src="../.gitbook/assets/image (48).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (48).png" alt=""><figcaption></figcaption></figure>
 
 192.168.0.1:80 포트로 요청을 전달 받아 192.168.0.1:8080 포트로 전달하여 프로세스가 처리할 수 있는데, 이를 "<mark style="color:red;">**포트 포워딩**</mark>" 이라고 한다.
 
