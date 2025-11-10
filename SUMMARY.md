@@ -40,6 +40,7 @@
   * [OSI7Layer](network/network-handbook/osi7layer.md)
   * [DNS](network/network-handbook/dns.md)
   * [SSL/TLS](network/network-handbook/ssl_tls.md)
+  * [Socket](network/network-handbook/socket.md)
 
 ## Java
 
