@@ -19,14 +19,14 @@
 {% hint style="info" %}
 **Multiple AZ 구성 시 알아두면 좋은 점**
 
-`AZ a`와 `AZ c`는 그룹으로 버저닝을 지원 받는다.&#x20;
+`AZ a`와 `AZ c`는 그룹으로 버저닝을 지원 받는다.
 
 {% hint style="info" %}
 _<mark style="color:red;">**a에 있는 버전이 b에 없는 경우가 존재 할 수 있기 때문에 a, c로 Multiple AZ 구성이 유리함**</mark>_
 {% endhint %}
 {% endhint %}
 
-> #### _서브넷을 잘 구성 했는지 확인 하려면 어떻게 해야할까?_
+> _**서브넷을 잘 구성 했는지 확인 하려면 어떻게 해야할까?**_
 
 {% hint style="info" %}
 OSI 7 Layer 기준 3계층, 4계층, 7계층 테스트 진행
@@ -34,7 +34,7 @@ OSI 7 Layer 기준 3계층, 4계층, 7계층 테스트 진행
 
 {% stepper %}
 {% step %}
-### 3계층 [(네트워크)](../../network/network-handbook/osi7layer.md#network-layer)
+#### 3계층 [(네트워크)](../../network/network-handbook/osi7layer.md#network-layer)
 
 {% hint style="info" %}
 **Ping check:&#x20;**<mark style="color:blue;">**`ICMP`**</mark>
@@ -60,7 +60,7 @@ traceroute google.com
 
 > _**"Ping 테스트가 실패하면 어떻게 해야할까?"**_
 
-* [ ] &#x20;서버가 요청을 받을 수 있는 상태인지 확인하기
+* [ ] 서버가 요청을 받을 수 있는 상태인지 확인하기
 * [ ] 서버에 할당한 **공인 IP**를 대상으로 테스트하고 있는지 확인하기
 * [ ] ICMP 접근 허용 설정이 되어있는지 <mark style="color:blue;">**보안 그룹**</mark> 확인하기
 * [ ] <mark style="color:blue;">**라우팅 테이블**</mark> 정책에서 외부망 <mark style="color:blue;">**인터넷 게이트웨이**</mark>로 요청을 보내도록 설정 되어있는지 확인하기
@@ -68,7 +68,7 @@ traceroute google.com
 {% endstep %}
 
 {% step %}
-### 4계층 ([트랜스포트](../../network/network-handbook/osi7layer.md#transport-layer))
+#### 4계층 ([트랜스포트](../../network/network-handbook/osi7layer.md#transport-layer))
 
 {% hint style="info" %}
 **Port check:&#x20;**<mark style="color:purple;">**`telnet`**</mark>
@@ -88,15 +88,11 @@ _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remo
 
 **`remote port`는 client의 브라우저에서 요청 보낼 시 랜덤으로 지정하는 `unknown port` 이며 이로인해 요청을 구분할 수 있게 된다**.
 
-
-
 > _**"하나의 프로세스(서버)에서 몇 개의 클라이언트와 연결이 가능할까?"**_
 
 <figure><img src="../../.gitbook/assets/image (47).png" alt=""><figcaption></figcaption></figure>
 
 위 이미지 처럼 해당 프로세스에 별다른 제약이 없다면 기본적으로 생성할 수 있는 <mark style="color:red;">**파일의 갯수가 제한**</mark>되어 있다.
-
-
 
 > _**"소켓을 하나 더 두어 요청을 다른 포트 번호로 전달할 수는 없을까?"**_
 
@@ -108,17 +104,15 @@ _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remo
 
 > _**"Port 테스트가 실패하는 경우는 어떻게 해야할까?"**_
 
-* [ ] &#x20;<mark style="color:blue;">**보안 그룹**</mark> 에서 특정 포트 허용 정책이 있는지 확인하기
+* [ ] <mark style="color:blue;">**보안 그룹**</mark> 에서 특정 포트 허용 정책이 있는지 확인하기
 * [ ] 포트에 할당된 프로세스가 수신 받을 수 있는 상태인지 확인하기 -> <mark style="color:purple;">**`netstat`**</mark>
 * [ ] 서버까지 요청이 도달하는지 확인하기 -> <mark style="color:purple;">**`tcpdump`**</mark>
 * [ ] 프로세스가 현재 정상적으로 동작하고 있는지 확인하기
-  *   [ ] 터미널로 서버 내에서 localhost:\[포트번호] 요청시 정상 응답인지
-
-
+  * [ ] 터미널로 서버 내에서 localhost:\[포트번호] 요청시 정상 응답인지
 {% endstep %}
 
 {% step %}
-### 7계층 ([어플리케이션](../../network/network-handbook/osi7layer.md#application-layer))
+#### 7계층 ([어플리케이션](../../network/network-handbook/osi7layer.md#application-layer))
 
 {% hint style="info" %}
 HTTP Response Check: <mark style="color:purple;">**`curl`**</mark>
@@ -161,8 +155,6 @@ curl -i google.com
 * _<mark style="color:green;">**Http Status check**</mark>_: 특정 URL에 대한 API 이상 유무 확인
 
 </details>
-
-
 
 ## 실습
 
