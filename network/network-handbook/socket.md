@@ -84,7 +84,7 @@ TCP 소켓에서 데이터를 받을 때 스트림 형태로 받게 된다. 이�
 
 > _**"하나의 프로세스(서버)에서 몇 개의 클라이언트와 연결이 가능할까?"**_
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 위 이미지 처럼 해당 프로세스에 별다른 제약이 없다면 기본적으로 생성할 수 있는 <mark style="color:red;">**파일의 갯수가 제한**</mark>되어 있다.
 
