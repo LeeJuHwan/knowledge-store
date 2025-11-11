@@ -34,7 +34,7 @@ OSI 7 Layer 기준 3계층, 4계층, 7계층 테스트 진행
 
 {% stepper %}
 {% step %}
-### 3계층 [(네트워크)](../network/network-handbook/osi7layer.md#network-layer)
+### 3계층 [(네트워크)](../../network/network-handbook/osi7layer.md#network-layer)
 
 {% hint style="info" %}
 **Ping check:&#x20;**<mark style="color:blue;">**`ICMP`**</mark>
@@ -68,7 +68,7 @@ traceroute google.com
 {% endstep %}
 
 {% step %}
-### 4계층 ([트랜스포트](../network/network-handbook/osi7layer.md#transport-layer))
+### 4계층 ([트랜스포트](../../network/network-handbook/osi7layer.md#transport-layer))
 
 {% hint style="info" %}
 **Port check:&#x20;**<mark style="color:purple;">**`telnet`**</mark>
@@ -118,7 +118,7 @@ _**소켓**_ 은 `file descriptor`, `local ip`, `local port`, `remote ip`, `remo
 {% endstep %}
 
 {% step %}
-### 7계층 ([어플리케이션](../network/network-handbook/osi7layer.md#application-layer))
+### 7계층 ([어플리케이션](../../network/network-handbook/osi7layer.md#application-layer))
 
 {% hint style="info" %}
 HTTP Response Check: <mark style="color:purple;">**`curl`**</mark>
@@ -197,7 +197,7 @@ curl -i google.com
 
     * 결과: 성공
 
-    ![ping check](../.gitbook/assets/ping.png)
+    ![ping check](../../.gitbook/assets/ping.png)
 
 ### 내부망 구성
 
@@ -214,12 +214,12 @@ curl -i google.com
 
     * 결과: 성공
 
-    ![ping check](../.gitbook/assets/ping2.png)
+    ![ping check](../../.gitbook/assets/ping2.png)
 6.  외부망 -> 내부망 Ping 테스트
 
     * 결과: 성공
 
-    ![ping check](../.gitbook/assets/ping3.png)
+    ![ping check](../../.gitbook/assets/ping3.png)
 
 ### 망 분리
 
@@ -232,22 +232,22 @@ curl -i google.com
 
     * 결과: 실패
 
-    ![ping check](../.gitbook/assets/ping4.png)
+    ![ping check](../../.gitbook/assets/ping4.png)
 4.  내부망 -> 인터넷망 접근 체크
 
     * 결과: 실패
 
-    ![system update](../.gitbook/assets/curl_fail.png)
+    ![system update](../../.gitbook/assets/curl_fail.png)
 5.  외부망 -> 내부망 telnet 테스트
 
     * 결과: 성공
 
-    ![system update](../.gitbook/assets/telnet.png)
+    ![system update](../../.gitbook/assets/telnet.png)
 6. Internal 라우팅 테이블에 NAT GW 연결
    * 내부망이 외부망과 통신을 위해 0.0.0.0 대역으로 NAT 게이트웨이 연결
 7.  내부망에서 라이브러리 업데이트를 통해 인터넷망 사용 여부 체크
 
-    ![system update](../.gitbook/assets/apt_update.png)
+    ![system update](../../.gitbook/assets/apt_update.png)
 8. 외부망 443 Port listen 후 접근 확인
    * socket listen
      * `sudo socket -s 443`
@@ -258,4 +258,4 @@ curl -i google.com
 
 ### VPC 리소스 맵
 
-![resource map](../.gitbook/assets/resource-map.png)
+![resource map](../../.gitbook/assets/resource-map.png)
