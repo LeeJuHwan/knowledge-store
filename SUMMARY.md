@@ -59,7 +59,7 @@
   * [자바에서 정렬하는 방법](java/java-ninja/자바에서_정렬하는_방법.md)
   * [컬렉션 프레임워크](java/java-ninja/컬렉션_프레임워크.md)
   * [제네릭의 기본 이해](java/java-ninja/generic_basic.md)
-  * [자바의 멀티 스레딩](java/java-ninja/java_thread.md)
+  * [자바에서 스레드를 조작하는 방법](java/java-ninja/java_thread.md)
 
 ## Spring Boot
 
