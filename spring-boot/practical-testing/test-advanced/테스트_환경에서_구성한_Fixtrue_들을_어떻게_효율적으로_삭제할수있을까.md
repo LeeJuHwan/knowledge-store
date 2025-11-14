@@ -93,7 +93,7 @@ public class Product extends BaseEntity {
 
 #### deleteAllInBatch
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 deleteAllInBatch 가 실행하는 쿼리를 보면 실제 테이블에 대한 아무런 조건 없이 모든 데이터를 삭제하게 된다.
 
