@@ -2,7 +2,7 @@
 
 ## Project2: Boolean Arithmetic
 
-![image](../../statics/computer-architecture-images/project2\_image0001.png)
+![image](../../.gitbook/assets/project2_image0001.png)
 
 **프로젝트 1에서 작성한 모든 칩들을 이용 하여 반가산기, 전가산기, 가산기, 증분기, 산술 논리 장치를 구현하세요.**
 
@@ -12,7 +12,7 @@
 
 > 제출
 
-```Plaintext
+```plaintext
 작성한 모든 *.hdl 파일을 project2.zip이라는 이름의 zip 파일로 압축하여(폴더 안에 넣지 말고 파일 자체만 압축) 제출해야 합니다. 코스에서 지정하지 않은 도우미 칩을 빌드하는 경우 해당 도우미 칩을 zip 파일에 포함해야 합니다. 제출 횟수는 무제한이며 성적은 모든 제출물의 최대치가 되므로 다시 제출해도 점수를 잃지 않습니다.
 
 감사관으로 코스를 수강하는 경우 설명된 테스트를 사용하여 자신의 작업을 직접 확인할 수 있습니다.
@@ -37,7 +37,7 @@
   * carry: 올림 수
   * sum: 더한 결과 값
 
-![image](../../.gitbook/assets/project2\_image0002.png)
+![image](<../../.gitbook/assets/project2_image0002 (1).png>)
 
 *   implement
 
@@ -63,7 +63,7 @@
   * sum = sumTemp + c
   * carry = carry
 
-![image](../../.gitbook/assets/project2\_image0003.png)
+![image](<../../.gitbook/assets/project2_image0003 (1).png>)
 
 *   implement
 
@@ -139,7 +139,7 @@ Incrementer는 주어진 값에 +1 하는 기능을 맡는다. HalfAdder 에서 
 
 > ALU
 
-![image](../../.gitbook/assets/project2\_image0004.png)
+![image](<../../.gitbook/assets/project2_image0004 (1).png>)
 
 *   implement
 

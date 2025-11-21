@@ -10,7 +10,7 @@
 
 ## Project1: Logic gates implemention
 
-![image](../../statics/computer-architecture-images/project1\_image0001.png)
+![image](../../.gitbook/assets/project1_image0001.png)
 
 **프로젝트에서 제공 하는 NAND 게이트로 나머지를 구현하세요.**
 
@@ -28,8 +28,7 @@
 
 감사관으로 코스를 수강하는 경우 설명된 테스트를 사용하여 자신의 작업을 직접 확인할 수 있습니다.
 
-\
-
+\\
 
 ### Table of Contents
 
@@ -37,8 +36,7 @@
 * [16-Bit Variants](project1.md#16-bit-variants)
 * [Multi-Way Variants](project1.md#multi-way-variants)
 
-\
-
+\\
 
 ### Elementary Logic Gates
 
@@ -169,8 +167,7 @@
       }
     ```
 
-\
-
+\\
 
 ### 16-Bit Variants
 
@@ -212,12 +209,11 @@ Multi-bit logic gates: `Not`/`And`/`Or` 기본 버전에서 n개의 비트 수 �
       }
     ```
 
-\
-
+\\
 
 ### Multi-Way Variants
 
-![image](../../statics/computer-architecture-images/project1\_image0002.png)
+![image](../../.gitbook/assets/project1_image0002.png)
 
 * 다입력인 경우는 기존 제작된 논리 게이트를 기준으로 입력 값을 정한다.
   * a, b를 받는 Mux16에서 2개만 받을 수 있으니 a,b / c,d를 2개로 나누어 임의 변수에 저장 하고 그 두가지 값을 다른 선택비트를 입력 하여 결과물을 나태면 된다.
@@ -292,4 +288,4 @@ Multi-bit logic gates: `Not`/`And`/`Or` 기본 버전에서 n개의 비트 수 �
       }
     ```
 
-\
+\\

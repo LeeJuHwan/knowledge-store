@@ -62,6 +62,7 @@
   * [자바에서 스레드를 조작하는 방법](java/java-ninja/java_thread/README.md)
     * [Thread 와 Runnable](java/java-ninja/java_thread/thread-runnable.md)
     * [Future 와 Callable 그리고 스레드 풀](java/java-ninja/java_thread/future-callable.md)
+    * [Future 를 개선한 CompletableFuture](java/java-ninja/java_thread/future-completablefuture.md)
 
 ## Spring Boot
 

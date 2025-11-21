@@ -712,14 +712,24 @@ public static ExecutorService newSingleThreadExecutor(ThreadFactory threadFactor
 
 ### Executors 팩터리 클래스 선택 가이드
 
-<table data-full-width="true"><thead><tr><th width="226.68359375" align="center">스레드풀</th><th width="242.09375" align="center">목적</th><th align="center">이유</th></tr></thead><tbody><tr><td align="center"><code>newFixedThreadPool</code></td><td align="center">CPU 처리가 많은 경우</td><td align="center">CPU 코어 수 + 1 개 만큼의 스레드를 생성할 경우, 효율적인 병렬 처리가 가능하기 때문</td></tr><tr><td align="center"><code>newCachedThreadPool</code></td><td align="center">실행 시간이 짧고 빈번한 작업</td><td align="center">큐를 사용하지 않고 바로 작업을 처리하며, 이미 생성된 스레드가 놀고 있다면 재사용 하여 스레드 생성 비용을 아낄 수 있기 때문</td></tr><tr><td align="center"><code>newScheduledThreadPool</code></td><td align="center">주기적인 작업, 지연 작업</td><td align="center">여러 스레드를 사용하여, 하나의 작업이 오래 걸려도 다른 예정된 작업이 밀리지 않고 제시간에 실행됨을 보장하고, 스레드가 종료되더라도 새로운 스레드로 다음 작업을 다시 실행하기 때문</td></tr><tr><td align="center"><code>newSingleThreadExecutor</code></td><td align="center">작업의 순서 보장이 필수적인 경우</td><td align="center">작업을 큐에 담긴 순서대로(FIFO) 하나씩 처리함을 보장하기 때문</td></tr></tbody></table>
+<table data-full-width="false"><thead><tr><th width="226.68359375" align="center">스레드풀</th><th width="242.09375" align="center">목적</th><th align="center">이유</th></tr></thead><tbody><tr><td align="center"><code>newFixedThreadPool</code></td><td align="center">CPU 처리가 많은 경우</td><td align="center">CPU 코어 수 + 1 개 만큼의 스레드를 생성할 경우, 효율적인 병렬 처리가 가능하기 때문</td></tr><tr><td align="center"><code>newCachedThreadPool</code></td><td align="center">실행 시간이 짧고 빈번한 작업</td><td align="center">큐를 사용하지 않고 바로 작업을 처리하며, 이미 생성된 스레드가 놀고 있다면 재사용 하여 스레드 생성 비용을 아낄 수 있기 때문</td></tr><tr><td align="center"><code>newScheduledThreadPool</code></td><td align="center">주기적인 작업, 지연 작업</td><td align="center">여러 스레드를 사용하여, 하나의 작업이 오래 걸려도 다른 예정된 작업이 밀리지 않고 제시간에 실행됨을 보장하고, 스레드가 종료되더라도 새로운 스레드로 다음 작업을 다시 실행하기 때문</td></tr><tr><td align="center"><code>newSingleThreadExecutor</code></td><td align="center">작업의 순서 보장이 필수적인 경우</td><td align="center">작업을 큐에 담긴 순서대로(FIFO) 하나씩 처리함을 보장하기 때문</td></tr></tbody></table>
 
 
 
+### Future 의 단점
+
+1. `Future` 의 `get()` 메서드를 통해 비동기 작업의 완료까지 블락킹 상태로 대기 해야한다.
+2. `Future` 작업의 결과를 의존하여 다음 작업을 실행 시키는 조합이 불가능하다.
+3. `Future` 작업 도중 예외가 발생하면 `CheckedException` 예외가 발생하기 때문에 `try-catch` 가 강제된다.
 
 
 
+<details>
 
-{% embed url="https://www.baeldung.com/java-executor-service-tutorial" %}
+<summary>참고 자료</summary>
 
-{% embed url="https://www.codingshuttle.com/blogs/java-executor-framework-tutorial-simplifying-multithreading-with-executor-service/" %}
+[https://www.baeldung.com/java-executor-service-tutorial](https://www.baeldung.com/java-executor-service-tutorial)
+
+[https://www.codingshuttle.com/blogs/java-executor-framework-tutorial-simplifying-multithreading-with-executor-service/](https://www.codingshuttle.com/blogs/java-executor-framework-tutorial-simplifying-multithreading-with-executor-service/)
+
+</details>
