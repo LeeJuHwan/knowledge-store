@@ -262,19 +262,19 @@ thenRun Thread: main
 
 
 
-
-
-#### 비동기 작업 조합
+#### 비동기 작업 조합 (작성중)
 
 ***
 
 **thenCompose()**
 
+
+
 **thenCombine()**
 
 
 
-#### 예외 처리
+#### 예외 처리 (작성중)
 
 ***
 
@@ -284,15 +284,13 @@ thenRun Thread: main
 
 
 
-#### 병렬 처리
+#### 병렬 처리 (작성중)
 
 ***
 
 **allof()**
 
 **anyOf()**
-
-
 
 
 
@@ -308,8 +306,3 @@ thenRun Thread: main
 * [https://mangkyu.tistory.com/263](https://mangkyu.tistory.com/263)
 
 </details>
-
-
-
-
-
