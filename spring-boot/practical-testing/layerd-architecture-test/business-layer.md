@@ -4,7 +4,7 @@ description: Application(Service) 계층 테스트 하기
 
 # Business Layer
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 _**Business Layer**_
@@ -26,7 +26,7 @@ _**Business Layer**_
 
 ***
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 주문과 상품과의 다대다 관계를 띄고 있다. 하지만, JPA 의 연관관계에서 다대다 관계를 이용하기엔 성능 상 이슈나 데이터 설계 관점에서의 정규화가 어긋날 수 있어 지양하는 관계구조이다.
 
@@ -468,7 +468,7 @@ class OrderServiceTest {
 {% endtab %}
 
 {% tab title="DataJpaTest" %}
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 {% endtabs %}
 

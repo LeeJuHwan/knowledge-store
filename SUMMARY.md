@@ -63,6 +63,7 @@
     * [Thread 와 Runnable](java/java-ninja/java_thread/thread-runnable.md)
     * [Future 와 Callable 그리고 스레드 풀](java/java-ninja/java_thread/future-callable.md)
     * [Future 를 개선한 CompletableFuture](java/java-ninja/java_thread/future-completablefuture.md)
+    * [스레드 풀을 새롭게 디자인하다.](java/java-ninja/java_thread/untitled.md)
 
 ## Spring Boot
 

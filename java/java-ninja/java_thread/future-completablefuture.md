@@ -262,39 +262,274 @@ thenRun Thread: main
 
 
 
-#### 비동기 작업 조합 (작성중)
+#### 비동기 작업 조합&#x20;
 
 ***
 
-**thenCompose()**
+**작업간의 의존 관계가 존재할 때 `thenCompose()`**
+
+`thenCompose` 는 두 개의 `Future`를 순차적으로 연결하여, 이전 작업의 결과를 다음 작업 안에서 사용할 수 있다.
+
+{% tabs %}
+{% tab title="예시" %}
+```java
+CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+    return "Hello";
+});
+
+CompletableFuture<String> result = hello.thenCompose(x -> CompletableFuture.supplyAsync(() -> {
+    return x + " " + Thread.currentThread().getName() + "- thenCompose";
+}));
+System.out.println(result.get());
+```
+
+```
+Hello ForkJoinPool.commonPool-worker-1- thenCompose
+```
+{% endtab %}
+{% endtabs %}
 
 
 
-**thenCombine()**
+**두 작업의 처리 결과를 결합 하고 싶은 경우 thenCombine()**
+
+`thenCombine` 은 두 개의 독립적인 `Future`를 처리하고 두 결과를 결합하여 추가적인 작업을 수행할 수 있습니다.
+
+{% tabs %}
+{% tab title="예시" %}
+```java
+CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+    return "Hello " + Thread.currentThread().getName();
+});
+
+CompletableFuture<String> thread = CompletableFuture.supplyAsync(() -> {
+    return "Thread " + Thread.currentThread().getName();
+});
+
+CompletableFuture<String> result = hello.thenCombine(thread, (h, t) -> h + "/" + t);
+System.out.println(result.get());
+```
+
+```
+Hello ForkJoinPool.commonPool-worker-1/Thread ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+{% endtabs %}
 
 
 
-#### 예외 처리 (작성중)
+#### 예외 처리
 
 ***
 
 **handle()**
 
+작업 결과와 예외를 매개변수로 받아 에러 상황과 정상 작업 종료 상황을 모두 처리할 수 있다.
+
+```java
+private static CompletableFuture<String> sample(boolean isThrow) {
+    return CompletableFuture.supplyAsync(() -> {
+        if (isThrow) {
+            throw new IllegalArgumentException("멀티 스레드 동작 과정에서 에러 발생");
+        }
+
+        return "Thread sample method " + Thread.currentThread().getName();
+    });
+}
+```
+
+{% tabs %}
+{% tab title="예외가 발생하지 않는 경우" %}
+<pre class="language-java"><code class="lang-java"><strong>CompletableFuture&#x3C;String> future = sample(false).handle(
+</strong>        (result, error) -> error == null ? result : error.getMessage());
+
+System.out.println("future = " + future.get());
+</code></pre>
+
+```
+future = Thread sample method ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+
+{% tab title="예외가 발생한 경우" %}
+<pre class="language-java"><code class="lang-java"><strong>CompletableFuture&#x3C;String> future = sample(true).handle(
+</strong>        (result, error) -> error == null ? result : error.getMessage());
+
+System.out.println("future = " + future.get());
+</code></pre>
+
+```
+future = java.lang.IllegalArgumentException: 멀티 스레드 동작 과정에서 에러 발생
+```
+{% endtab %}
+{% endtabs %}
+
+
+
 **exceptionally()**
 
+작업의 예외만 매개변수로 받아 예외 상황을 처리할 수 있다.
+
+{% tabs %}
+{% tab title="예외가 발생하지 않는 경우" %}
+<pre class="language-java"><code class="lang-java"><strong>CompletableFuture&#x3C;String> future = sample(false).exceptionally(
+</strong>        Throwable::getMessage);
+
+System.out.println("future = " + future.get());
+</code></pre>
+
+```
+future = Thread sample method ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+
+{% tab title="예외가 발생한 경우" %}
+<pre class="language-java"><code class="lang-java"><strong>CompletableFuture&#x3C;String> future = sample(true).exceptionally(
+</strong>        Throwable::getMessage);
+
+System.out.println("future = " + future.get());
+</code></pre>
+
+```
+future = java.lang.IllegalArgumentException: 멀티 스레드 동작 과정에서 에러 발생
+```
+{% endtab %}
+{% endtabs %}
 
 
-#### 병렬 처리 (작성중)
+
+#### 병렬 처리
 
 ***
 
-**allof()**
+<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-**anyOf()**
+**모든 스레드의 작업을 병렬로 실행 시킬 때 `allOf()`**
+
+`allOf` 메서드는 인자를 `var-arg` 로 받아 병렬로 실행 하여 작업이 모두 완료될 때 까지 대기한 뒤 모든 작업이 끝난 경우 `CompletableFuture<Void>` 타입을 반환한다.
+
+`var-arg` 타입으로 인자를 받기 때문에 컬렉션을 사용할 수 없으며 이를 위해  `Future` 객체를 손수 인자로 넘기거나, 컬렉션을 사용하기 위해 우회 하는 코드를 작성해야 한다.
+
+{% tabs %}
+{% tab title="allOf 내부 코드" %}
+```java
+public static CompletableFuture<Void> allOf(CompletableFuture<?>... cfs) {
+    return andTree(cfs, 0, cfs.length - 1);
+}
+```
+{% endtab %}
+
+{% tab title="컬렉션을 사용하지 않는 예시" %}
+```java
+private static CompletableFuture<String> sample(boolean isThrow) {
+    return CompletableFuture.supplyAsync(() -> {
+        if (isThrow) {
+            throw new IllegalArgumentException("멀티 스레드 동작 과정에서 에러 발생");
+        }
+
+        return "Thread sample method " + Thread.currentThread().getName();
+    });
+}
+
+CompletableFuture<String> future1 = sample(true).exceptionally(
+Throwable::getMessage);
+
+CompletableFuture<String> future2 = sample(false).exceptionally(
+        Throwable::getMessage);
+
+CompletableFuture<Void> combineFutures = CompletableFuture.allOf(future1, future2);
+
+System.out.println(future1.get());
+System.out.println(future2.get());
+```
+
+```
+java.lang.IllegalArgumentException: 멀티 스레드 동작 과정에서 에러 발생
+Thread sample method ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+
+{% tab title="컬렉션을 사용한 예시" %}
+```java
+private static CompletableFuture<List<String>> allOfWithCollections(List<CompletableFuture<String>> futures) {
+    CompletableFuture<Void> futuresResult = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
+    return futuresResult.thenApply(v ->
+            futures.stream().
+                    map(CompletableFuture::join).
+                    collect(Collectors.toList())
+    );
+}
+
+private static CompletableFuture<String> sample(boolean isThrow) {
+    return CompletableFuture.supplyAsync(() -> {
+        if (isThrow) {
+            throw new IllegalArgumentException("멀티 스레드 동작 과정에서 에러 발생");
+        }
+
+        return "Thread sample method " + Thread.currentThread().getName();
+    });
+}
+
+CompletableFuture<String> future1 = sample(true).exceptionally(
+        Throwable::getMessage);
+
+CompletableFuture<String> future2 = sample(false).exceptionally(
+        Throwable::getMessage);
+
+
+List<CompletableFuture<String>> futures = List.of(future1, future2);
+CompletableFuture<List<String>> listCompletableFuture = allOfWithCollections(futures);
+
+listCompletableFuture.get().forEach(System.out::println);
+```
+
+```
+java.lang.IllegalArgumentException: 멀티 스레드 동작 과정에서 에러 발생
+Thread sample method ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+{% endtabs %}
 
 
 
+**병렬로 수행하는 작업 중 가장 빨리 끝나는 작업을 얻고 싶을 때 `anyOf()`**
 
+`anyOf()` 메서드는 `allOf()` 와 동일하게 메서드 시그니처를 구성하고 있으며, 컬렉션을 사용할 수 없고 우회하는 방식 또한 같다.
+
+`allOf()` 는 병렬로 모든 작업을 수행 시킨 뒤 추후 콜백을 통해 값을 획득할 수 있었지만, `anyOf()` 는 그와 달리 가장 빨리 끝나는 작업의 값을 반환한다.
+
+{% tabs %}
+{% tab title="예시" %}
+```java
+private static CompletableFuture<String> sample(boolean isThrow) {
+    return CompletableFuture.supplyAsync(() -> {
+        if (isThrow) {
+            throw new IllegalArgumentException("멀티 스레드 동작 과정에서 에러 발생");
+        }
+
+        return "Thread sample method " + Thread.currentThread().getName();
+    });
+}
+
+
+CompletableFuture<String> future1 = sample(true).exceptionally(
+        Throwable::getMessage);
+
+CompletableFuture<String> future2 = sample(false).exceptionally(
+        Throwable::getMessage);
+
+
+List<CompletableFuture<String>> futures = List.of(future1, future2);
+
+CompletableFuture<Object> objectCompletableFuture = CompletableFuture.anyOf(future2, future1);
+System.out.println(objectCompletableFuture.get());
+```
+
+```
+Thread sample method ForkJoinPool.commonPool-worker-1
+```
+{% endtab %}
+{% endtabs %}
 
 <details>
 
@@ -304,5 +539,8 @@ thenRun Thread: main
 * [https://www.baeldung.com/java-completablefuture-join-vs-get](https://www.baeldung.com/java-completablefuture-join-vs-get)
 * [https://11st-tech.github.io/2024/01/04/completablefuture/](https://11st-tech.github.io/2024/01/04/completablefuture/)
 * [https://mangkyu.tistory.com/263](https://mangkyu.tistory.com/263)
+* [https://wbluke.tistory.com/50](https://wbluke.tistory.com/50)
+* [https://dkswnkk.tistory.com/733](https://dkswnkk.tistory.com/733)
+* [https://stackoverflow.com/questions/35809827/java-8-completablefuture-allof-with-collection-or-list](https://stackoverflow.com/questions/35809827/java-8-completablefuture-allof-with-collection-or-list)
 
 </details>
