@@ -60,10 +60,11 @@
   * [컬렉션 프레임워크](java/java-ninja/컬렉션_프레임워크.md)
   * [제네릭의 기본 이해](java/java-ninja/generic_basic.md)
   * [자바에서 스레드를 조작하는 방법](java/java-ninja/java_thread/README.md)
+    * [동시성을 벗어나게 해줄 Thread Local](java/java-ninja/java_thread/thread-local.md)
     * [Thread 와 Runnable](java/java-ninja/java_thread/thread-runnable.md)
     * [Future 와 Callable 그리고 스레드 풀](java/java-ninja/java_thread/future-callable.md)
+    * [스레드 풀을 새롭게 디자인하다](java/java-ninja/java_thread/fork-join-pool.md)
     * [Future 를 개선한 CompletableFuture](java/java-ninja/java_thread/future-completablefuture.md)
-    * [스레드 풀을 새롭게 디자인하다.](java/java-ninja/java_thread/untitled.md)
 
 ## Spring Boot
 
