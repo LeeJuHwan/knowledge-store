@@ -998,11 +998,11 @@ _**"조건에 따라 다른 리소스를 생성할 수 없을까?"**_
 
 **NAT Gateway를 조건문으로 추가하는 시나리오 만들어보기**
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption><p>senario</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption><p>senario</p></figcaption></figure>
 
 실제 NAT Gateway를 생성 하는 시점 이후 부터 비용이 발생한다. 그렇기 때문에 프로비저닝 하지 않고 시나리오를 통해 어떤 방식으로 조건문을 활용하는지 알아보는 방식으로 학습한다.
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 > **조건문 사용 방법**
 >

@@ -27,7 +27,7 @@ description: 프로세스와 스레드의 개념 이해 및 스레드의 필요�
 
 ### 멀티 태스킹
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 프로세스는 개별 실행 프로그램이 현재 실행되어 메모리에 올라온 상태라고 했을 때, 여러 개의 프로그램을 동시에 실행하게 된다면 순차적으로 종료될 때 까지 기다렸다가 실행하지 않는다.
 
@@ -107,7 +107,7 @@ OS 스케줄러에 의해 아주 짧은 시간동안 CPU 코어를 점유하는 
 
 ### 유저 스레드와 커널 스레드
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 #### 유저 스레드

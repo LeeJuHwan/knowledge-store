@@ -283,7 +283,7 @@ MailServiceTest
 
 _**Stubbing 메서드 내부에서 실행되는 다른 메서드 디버깅하기**_
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 디버깅을 해보면 save() 메서드의 결과값이 null 인 것을 알 수 있고, 실제 저장이 되지 않았다.
 

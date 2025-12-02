@@ -18,7 +18,7 @@
 {% step %}
 **힙 자료구조를 이용하기 위해 최초 입력 받은 배열을 힙에 저장한다**
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
