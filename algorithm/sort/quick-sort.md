@@ -1,12 +1,10 @@
 # Quick Sort
 
 {% hint style="info" %}
-#### 퀵정렬이란?
+**퀵정렬이란?**
 
 영국의 컴퓨터과학자 [토니 호어](https://ko.wikipedia.org/wiki/%ED%86%A0%EB%8B%88_%ED%98%B8%EC%96%B4)가 1959년에 고안한 알고리즘으로, 피벗을 기준으로 좌우를 나누는 특징 때문에 파티션 교환 정렬이라고도 불린다.
 {% endhint %}
-
-
 
 퀵 정렬은 병합 정렬과 마찬가지로 분할 정복 알고리즘이며, 피벗이라는 개념을 통해 피벗보다 작은 왼쪽, 크면 오른쪽과 같은 방식으로 파티셔닝하면서 쪼개나간다.
 
@@ -23,8 +21,6 @@
 > 토니 호어의 퀵 정렬 알고리즘 동작 원리
 
 {% embed url="https://upload.wikimedia.org/wikipedia/commons/9/9c/Quicksort-example.gif" %}
-
-
 
 다시, 니코 로무토가 고안한 방식으로 돌아와서 이 코드를 자바로 작성해보자.
 
@@ -96,7 +92,7 @@ public class QuickSort {
 
 {% stepper %}
 {% step %}
-오른쪽 `right` 포인터가 이동하면서 피벗의 값이 오른쪽 값 보다 더 클 때, 왼쪽과 오른쪽을 스왑한다. <mark style="color:$info;">(도식화 5번)</mark>
+오른쪽 `right` 포인터가 이동하면서 피벗의 값이 오른쪽 값 보다 더 클 때, 왼쪽과 오른쪽을 스왑한다. (도식화 5번)
 {% endstep %}
 
 {% step %}
@@ -104,20 +100,18 @@ public class QuickSort {
 {% endstep %}
 
 {% step %}
-오른쪽 포인터가 끝에 도달하게 되면 `pivot` 을 기준으로 작은 파티션보다 앞에 위치하기 위해 `left` 와 `pivot` 의 위치를 스왑한 후 `left` 를 반환한다. <mark style="color:$info;">(도식화 7번)</mark>
+오른쪽 포인터가 끝에 도달하게 되면 `pivot` 을 기준으로 작은 파티션보다 앞에 위치하기 위해 `left` 와 `pivot` 의 위치를 스왑한 후 `left` 를 반환한다. (도식화 7번)
 {% endstep %}
 {% endstepper %}
 
 이렇게 계속 분할하면서 정복을 진행하여 코드 기준으로 `low < high` 를 만족하지 않을 때 까지 즉, 서로 위치가 역전될 때까지 계속 재귀로 반복하며 정렬을 완료한다.
-
-
 
 #### 요약
 
 퀵 정렬은 평균적으로 `O(n log n)` 을 나타내지만, 최악의 경우 O(n^2) 이 된다.
 
 {% hint style="warning" %}
-#### O(n^2) 은 어떤 상황일까?
+**O(n^2) 은 어떤 상황일까?**
 
 만약, 이미 정렬된 배열이 입력값으로 들어왔다고 가정해보자.
 
@@ -133,13 +127,11 @@ public class QuickSort {
 자바의 `Arrays.sort()` 또한 병합 정렬을 개선해서 만든 `Timsort` 를 기본적으로 채택하여 사용하고 있으며, 원시 자료형처럼 안정성이 중요하지 않은 경우에만 제한적으로 퀵 정렬(`Dual-Pivot Quick Sort`) 을 활용한다.
 
 {% hint style="info" %}
-#### 용어 설명
+**용어 설명**
 
 1. Timsort: 파이썬 개발자가 만든 파이썬의 기본 정렬 알고리즘으로, 우수한 성능으로 인해 다른 언어에 적극 채택된 알고리즘
 2. Dual-Pivot Quick Sort: 2개의 피벗을 이용하는 퀵 정렬 개선 버전
 {% endhint %}
-
-
 
 #### 참고 자료
 
@@ -150,4 +142,3 @@ public class QuickSort {
 {% embed url="https://www.youtube.com/watch?v=7h1s2SojIRw" %}
 
 {% embed url="https://www.youtube.com/watch?v=aY0yYfztKMY&t=117s" %}
-
