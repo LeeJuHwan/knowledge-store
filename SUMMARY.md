@@ -66,6 +66,7 @@
     * [Future 와 Callable 그리고 스레드 풀](java/java-ninja/java_thread/future-callable.md)
     * [스레드 풀을 새롭게 디자인하다](java/java-ninja/java_thread/fork-join-pool.md)
     * [Future 를 개선한 CompletableFuture](java/java-ninja/java_thread/future-completablefuture.md)
+  * [런타임 도중 코드를 조작하는 마법, 리플렉션](java/java-ninja/undefined.md)
 
 ## Spring Boot
 
