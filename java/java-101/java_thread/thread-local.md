@@ -19,7 +19,7 @@
 
 #### 장점
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
 각 스레드마다 별도의 내부 저장소를 제공하여, 같은 인스턴스의 스레드 로컬 필드에 접근하더라도 동시성 문제가 발생하지 않는다.
 

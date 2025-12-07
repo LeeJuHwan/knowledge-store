@@ -664,11 +664,11 @@ _**"테라폼 구성을 변경할 때 같은 리소스이지만 자꾸 삭제 �
 
 <summary>Console</summary>
 
-![](<../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1) (1).png>)
+![](<../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1) (1) (1).png>)
 
 </details>
 
-<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 이렇게 바뀐 이유는 서브넷을 생성 하는 코드에서 명시적으로 `public_a`, `public_b` 를 정의 했지만 리팩터링 단계에서 이를 반복문으로 교체하며 배열의 인덱스로 참조 했기 때문이다. 관련 코드는 해당 페이지의 ["Use loop syntax"](https://1eejuhwany.gitbook.io/studylog/iac/terraform/tutorial#use-loop-syntax) 의 코드 블럭을 확인 해보면 된다.
 
@@ -691,21 +691,21 @@ terraform state mv aws_subnet.public_b aws_subnet.public\[1\]
 {% tab title="AS-IS" %}
 <mark style="color:purple;">**`terraform state list`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (5) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 <mark style="color:purple;">**`terraform state show aws_subnet.public_a`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (7) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (7) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 
 {% tab title="TO-BE" %}
 <mark style="color:purple;">**`terraform state plan`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (8) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (8) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 <mark style="color:purple;">**`terraform state list`**</mark>
 
-<figure><img src="../../.gitbook/assets/image (9) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (9) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
 {% endtabs %}
 
@@ -878,7 +878,7 @@ public_subnets = [
 ]
 ```
 
-<img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (4) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
 {% endhint %}
 
 `List`의 치명적 단점으로 중요한 리소스는 `List`가 아닌 `Map`으로 관리하는 것이 안정적이다.
@@ -947,7 +947,7 @@ terraform state mv aws_subnet.public\[1\] aws_subnet.public\[\"oimarket-apne2-pu
 
 상태파일을 변경했다면 <mark style="color:purple;">**Plan**</mark>을 확인 해보면 성공적으로 리팩터링이 완료된 것을 알 수 있다.
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 > _**"그렇다면 변수에 선언한 값의 순서를 바꿔도 동일할까?"**_
 
@@ -998,11 +998,11 @@ _**"조건에 따라 다른 리소스를 생성할 수 없을까?"**_
 
 **NAT Gateway를 조건문으로 추가하는 시나리오 만들어보기**
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption><p>senario</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption><p>senario</p></figcaption></figure>
 
 실제 NAT Gateway를 생성 하는 시점 이후 부터 비용이 발생한다. 그렇기 때문에 프로비저닝 하지 않고 시나리오를 통해 어떤 방식으로 조건문을 활용하는지 알아보는 방식으로 학습한다.
 
-<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 > **조건문 사용 방법**
 >
@@ -1021,7 +1021,7 @@ resource "aws_instance" "example" {
 
 NAT Gateway를 위 조건문을 활용해서 한 번 만들어본다면 이렇게 만들어볼 수 있다.
 
-<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 _**여기서 잠깐!**_
 
@@ -1032,7 +1032,7 @@ _**여기서 잠깐!**_
 {% hint style="info" %}
 **Map(object) type 을 List(object) type 으로 형 변환 하기**
 
-<img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/image (3) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt="" data-size="original">
 
 [테라폼 공식문서에서 확인하기](https://developer.hashicorp.com/terraform/language/functions/tolist#examples)
 {% endhint %}

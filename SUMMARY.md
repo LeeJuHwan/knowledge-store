@@ -72,7 +72,12 @@
 ## Spring Boot
 
 * [Spring Boot 101](spring-boot/spring-boot-101/README.md)
-  * [Filter, Interceptor, AOP - Spring의 요청 처리 계층](spring-boot/spring-boot-101/filter-interceptor-aop-spring.md)
+  * [스프링이 사랑한 디자인 패턴](https://1eejuhwany.gitbook.io/studylog/booklog/undefined/6-.#undefined-7)
+  * [프록시 기술](spring-boot/spring-boot-101/proxy.md)
+  * [스프링의 3가지 핵심 개념](spring-boot/spring-boot-101/ioc-di-aop-psa.md)
+  * [실행 흐름에 끼어들기](spring-boot/spring-boot-101/undefined.md)
+  * [Nginx 와 Tomcat 의 차이는 무엇일까?](spring-boot/spring-boot-101/nginx-tomcat.md)
+  * [스프링의 Transaction](spring-boot/spring-boot-101/spring-transaction.md)
 * [스프링 핵심 원리 - 기본편](spring-boot/spring-core-basic/README.md)
   * [객체 지향 설계와 스프링](spring-boot/spring-core-basic/객체_지향_설계와_스프링.md)
   * [스프링 핵심 원리 이해](spring-boot/spring-core-basic/spring-core/README.md)

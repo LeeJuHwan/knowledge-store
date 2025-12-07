@@ -150,7 +150,7 @@ public class CallableMain {
 
 ### 자바 5 에서 제공하는 스레드의 생성과 관리를 위한 스레드 풀
 
-<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 과거 버전에서는 `Thread()` 의 `start()` 메서드가 호출 되면서 무조건 한 개의 스레드가 생성되고 종료되기를 반복하는 사이클로 오버헤드에 대한 문제가 있었다.
 
@@ -211,7 +211,7 @@ executor.execute(
 
 ### ExecutorService
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 `ExecutorService`는 `Executor`를 상속받아, 작업 실행뿐만 아니라 스레드 풀의 종료와 생성된 스레드의 생명주기 관리 기능을 추가로 제공한다.
 

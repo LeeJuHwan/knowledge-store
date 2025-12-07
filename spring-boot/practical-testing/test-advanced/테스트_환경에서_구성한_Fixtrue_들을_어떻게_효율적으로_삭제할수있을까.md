@@ -93,7 +93,7 @@ public class Product extends BaseEntity {
 
 #### deleteAllInBatch
 
-<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 deleteAllInBatch 가 실행하는 쿼리를 보면 실제 테이블에 대한 아무런 조건 없이 모든 데이터를 삭제하게 된다.
 
@@ -139,7 +139,7 @@ OrderProduct 는 Order 와 Product 의 다대다 관계를 풀어주는 N:1 매�
 
 #### deleteAll()
 
-<figure><img src="../../../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 deleteAll() 의 쿼리를 살펴보면 Product 테이블에 존재하는 모든 데이터를 지우는 것은 동일 하지만, deleteAllInBatch() 의 delete from product 가 아닌 개별로 하나씩 접근해서 지우는 것을 확인할 수 있다.
 

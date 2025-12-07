@@ -402,7 +402,7 @@ future = java.lang.IllegalArgumentException: 멀티 스레드 동작 과정에�
 
 ***
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 **모든 스레드의 작업을 병렬로 실행 시킬 때 `allOf()`**
 

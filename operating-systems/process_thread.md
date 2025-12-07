@@ -4,7 +4,7 @@ description: 프로세스와 스레드의 개념 이해 및 스레드의 필요�
 
 # 프로세스와 스레드
 
-<figure><img src="../.gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ## 프로세스
 
@@ -27,7 +27,7 @@ description: 프로세스와 스레드의 개념 이해 및 스레드의 필요�
 
 ### 멀티 태스킹
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 프로세스는 개별 실행 프로그램이 현재 실행되어 메모리에 올라온 상태라고 했을 때, 여러 개의 프로그램을 동시에 실행하게 된다면 순차적으로 종료될 때 까지 기다렸다가 실행하지 않는다.
 
@@ -41,7 +41,7 @@ description: 프로세스와 스레드의 개념 이해 및 스레드의 필요�
 
 ### 멀티 프로세싱
 
-<figure><img src="../.gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 CPU 코어가 제한적일 때 최대 효율을 내기 위해 멀티 태스킹 전략을 사용했지만, 사용자는 불편함을 느끼고 기술은 나날이 발전하여 **물리적 코어 갯수를 늘리게 된다.**
 
@@ -107,7 +107,7 @@ OS 스케줄러에 의해 아주 짧은 시간동안 CPU 코어를 점유하는 
 
 ### 유저 스레드와 커널 스레드
 
-<figure><img src="../.gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 #### 유저 스레드

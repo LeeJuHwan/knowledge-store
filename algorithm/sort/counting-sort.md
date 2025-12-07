@@ -20,7 +20,7 @@
 {% step %}
 **누적합을 저장하기 위해 배열에서 가장 큰 값에 1을 더한 크기의 배열을 생성한다**
 
-<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (6) (2).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}
